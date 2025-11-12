@@ -18,7 +18,7 @@ const Y = 1;
 
 /**
  * A 2d vector.
- * @extends number[]
+ * @category Linear Algebra
  */
 export class Vec2 extends Array<number> {
 	// length: 2 = 2 as const;

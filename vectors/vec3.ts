@@ -18,6 +18,10 @@ const X = 0;
 const Y = 1;
 const Z = 2;
 
+/**
+ * A 3d vector.
+ * @category Linear Algebra
+ */
 export class Vec3 extends Array<number> {
 	// length: 3 = 3 as const;
 

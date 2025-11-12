@@ -2,6 +2,9 @@ import type { Mat3Like, Matrix, Vec3Like } from './common.js';
 import { posEqual } from './common.js';
 import { magnitude3D, Vec3 } from './vec3.js';
 
+/**
+ * @category Linear Algebra
+ */
 export const isMat3 = (mat: Matrix): mat is Mat3 => {
 	return mat instanceof Mat3;
 };
@@ -37,6 +40,7 @@ const M22 = INDICES[8];
 /**
  * A 3x3 matrix. While it is initialized/set as row-major, internally,
  * it represents itself as column-major
+ * @category Linear Algebra
  */
 export class Mat3 extends Array<number> {
 	// length: 9 = 9 as const;
@@ -554,7 +558,8 @@ export class Mat3 extends Array<number> {
 }
 
 /**
- * Transposes a matrix
+ * Transposes a matrix.
+ * @category Linear Algebra
  * @param m Input matrix
  * @returns New, transposed matrix
  */
@@ -579,6 +584,7 @@ export const transpose3D = <T extends Mat3Like>(m: T): T => {
 
 /**
  * Throws an error if input is not a 3x3 matrix.
+ * @category Linear Algebra
  * @param m Input matrix
  */
 const assertMat3 = (m: Mat3Like): void => {
@@ -587,6 +593,7 @@ const assertMat3 = (m: Mat3Like): void => {
 
 /**
  * Throws an error if input is not a 2D array
+ * @category Linear Algebra
  * @param m Input matrix
  */
 const assertVec3 = (v: Vec3Like): void => {
@@ -595,6 +602,7 @@ const assertVec3 = (v: Vec3Like): void => {
 
 /**
  * Computes the determinant of a matrix.
+ * @category Linear Algebra
  * @param m Input matrix
  * @returns Determinant
  */
@@ -609,6 +617,7 @@ export const determinantM3 = (m: Mat3Like): number => {
 
 /**
  * Multiplies the matrices (left x right) left to right.
+ * @category Linear Algebra
  * @param l Left matrix
  * @param r Right matrix
  * @returns The product of the two matrices
@@ -638,6 +647,7 @@ export const multiplyM3M3 = <T extends Mat3Like>(l: T, r: Mat3Like): T => {
 
 /**
  * Multiplies a 3x3 matrix by a 2D vector
+ * @category Linear Algebra
  * @param m Matrix
  * @param v Vector
  * @returns Product (2D Vector)
@@ -652,6 +662,9 @@ export const multiplyM3V3 = (m: Mat3Like, v: Vec3Like): Vec3 => {
 	return result;
 };
 
+/**
+ * @category Linear Algebra
+ */
 export function invertM3(m: Mat3): Mat3 {
 	const cross = new Mat3();
 

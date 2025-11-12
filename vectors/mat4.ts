@@ -11,6 +11,9 @@ import { Mat3 } from './mat3.js';
 import { magnitude3D, Vec3 } from './vec3.js';
 import { Vec4 } from './vec4.js';
 
+/**
+ * @category Linear Algebra
+ */
 export const isMat4 = (mat: Matrix): mat is Mat4 => {
 	return mat instanceof Mat4;
 };
@@ -62,6 +65,7 @@ const M33 = INDICES[15];
 /**
  * A 4x4 matrix. While it is initialized/set as row-major, internally,
  * it represents itself as column-major
+ * @category Linear Algebra
  */
 export class Mat4 extends Array<number> {
 	// length: 9 = 9 as const;
@@ -715,6 +719,7 @@ export class Mat4 extends Array<number> {
 
 /**
  * Transposes a matrix
+ * @category Linear Algebra
  * @param m Input matrix
  * @returns New, transposed matrix
  */
@@ -752,6 +757,7 @@ export const transpose4D = <T extends Mat4Like>(m: T): T => {
 
 /**
  * Throws an error if input is not a 4x4 matrix.
+ * @category Linear Algebra
  * @param m Input matrix
  */
 const assertMat4 = (m: Mat4Like): void => {
@@ -760,6 +766,7 @@ const assertMat4 = (m: Mat4Like): void => {
 
 /**
  * Throws an error if input is not a 2D array
+ * @category Linear Algebra
  * @param m Input matrix
  */
 const assertVec4 = (v: Vec4Like): void => {
@@ -768,6 +775,7 @@ const assertVec4 = (v: Vec4Like): void => {
 
 /**
  * Computes the determinant of a matrix.
+ * @category Linear Algebra
  * @param m Input matrix
  * @returns Determinant
  */
@@ -808,6 +816,7 @@ export const determinantM4 = (m: Mat4Like): number => {
 
 /**
  * Multiplies the matrices (left x right) left to right.
+ * @category Linear Algebra
  * @param l Left matrix
  * @param r Right matrix
  * @returns The product of the two matrices
@@ -866,6 +875,7 @@ export const multiplyM4M4 = <T extends Mat4Like>(l: T, r: Mat4Like): T => {
 
 /**
  * Multiplies a 4x4 matrix by a 2D vector
+ * @category Linear Algebra
  * @param m Matrix
  * @param v Vector
  * @returns Product (2D Vector)
@@ -882,6 +892,9 @@ export const multiplyM4V4 = (m: Mat4Like, v: Vec4Like): Vec4 => {
 	return result;
 };
 
+/**
+ * @category Linear Algebra
+ */
 export function invertM4(m: Mat4): Mat4 {
 	const { col0, col1, col2, col3 } = m;
 

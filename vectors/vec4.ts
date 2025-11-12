@@ -21,6 +21,10 @@ const Y = 1;
 const Z = 2;
 const W = 3;
 
+/**
+ * A 4d vector.
+ * @category Linear Algebra
+ */
 export class Vec4 extends Array<number> {
 	// length: 4 = 4 as const;
 

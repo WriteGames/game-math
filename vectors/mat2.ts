@@ -2,6 +2,9 @@ import type { Mat2Like, Matrix, Vec2Like } from './common.js';
 import { posEqual } from './common.js';
 import { Vec2 } from './vec2.js';
 
+/**
+ * @category Linear Algebra
+ */
 export const isMat2 = (mat: Matrix): mat is Mat2 => {
 	return mat instanceof Mat2;
 };
@@ -25,6 +28,7 @@ const M11 = INDICES[3];
 /**
  * A 2x2 matrix. While it is initialized/set as row-major, internally,
  * it represents itself as column-major
+ * @category Linear Algebra
  */
 export class Mat2 extends Array<number> {
 	// length: 4 = 4 as const;
@@ -347,6 +351,7 @@ export class Mat2 extends Array<number> {
 
 /**
  * Transposes a matrix
+ * @category Linear Algebra
  * @param m Input matrix
  * @returns New, transposed matrix
  */
@@ -361,6 +366,7 @@ export const transpose2D = <T extends Mat2Like>(m: T): T => {
 
 /**
  * Throws an error if input is not a 2x2 matrix.
+ * @category Linear Algebra
  * @param m Input matrix
  */
 const assertMat2 = (m: Mat2Like): void => {
@@ -369,6 +375,7 @@ const assertMat2 = (m: Mat2Like): void => {
 
 /**
  * Throws an error if input is not a 2D array
+ * @category Linear Algebra
  * @param m Input matrix
  */
 const assertVec2 = (v: Vec2Like): void => {
@@ -377,6 +384,7 @@ const assertVec2 = (v: Vec2Like): void => {
 
 /**
  * Computes the determinant of a matrix.
+ * @category Linear Algebra
  * @param m Input matrix
  * @returns Determinant
  */
@@ -387,6 +395,7 @@ export const determinantM2 = (m: Mat2Like): number => {
 
 /**
  * Multiplies the matrices (left x right) left to right.
+ * @category Linear Algebra
  * @param left Matrix a
  * @param right Matrix b
  * @returns The product of the two matrices
@@ -407,6 +416,7 @@ export const multiplyM2M2 = <T extends Mat2Like>(
 
 /**
  * Multiplies a 2x2 matrix by a 2D vector
+ * @category Linear Algebra
  * @param m Matrix
  * @param v Vector
  * @returns Product (2D Vector)
