@@ -39,3 +39,7 @@ export const VEC4_DIFF = [
 	VEC_DIFF_Z,
 	VEC_DIFF_W,
 ] as V4_T;
+
+export const CROSS3D_A = [1, 2, 3] as V3_T;
+export const CROSS3D_B = [4, 5, 6] as V3_T;
+export const CROSS3D_RESULT = [-3, 6, -3] as V3_T;

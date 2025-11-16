@@ -85,6 +85,9 @@ export const posEqual: FuncCompare<Vector> = (a, b) => {
 	return aa.length === bb.length && aa.every((v, i) => equal(v, bb[i]));
 };
 
-export const magnitude = (a: Vector): number => {
-	return Math.sqrt(a.map((v) => v ** 2).reduce((a, v) => a + v));
+export const lengthSq = (a: Vector): number => {
+	return a.map((v) => v ** 2).reduce((a, v) => a + v);
+};
+export const length = (a: Vector): number => {
+	return Math.sqrt(lengthSq(a));
 };
