@@ -34,14 +34,11 @@ export const V2 = Object.defineProperties(
 	one: V2_T;
 };
 
-export type FuncMapVector<T extends Vector = Vector> = <
-	V extends T,
-	A extends V,
-	B extends V,
->(
-	a: A,
-	b: B,
-) => A;
+export type FuncMapVector<
+	T extends Vector = Vector,
+	AT extends T = T,
+	BT extends T = T,
+> = <A extends AT, B extends BT>(a: A, b: B) => A;
 
 export type FuncCompare<T> = (a: T, b: T) => boolean;
 

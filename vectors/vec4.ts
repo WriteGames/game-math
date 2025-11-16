@@ -1,4 +1,12 @@
-import { addPos, posEqual, scalePos, subPos, type Vector } from './common';
+import {
+	addPos,
+	type FuncReduceVector,
+	posEqual,
+	scalePos,
+	subPos,
+	V4_T,
+	type Vector,
+} from './common';
 
 export const isVec4 = (vec: Vector): vec is Vec4 => {
 	return vec instanceof Vec4;
@@ -113,31 +121,31 @@ export class Vec4 extends Array<number> {
 		return new Vec4(...this);
 	}
 
-	static add = (a: Vec4, b: Vec4): Vec4 => addPos(a, b);
-	add(v: Vec4): this {
-		this.x += v.x;
-		this.y += v.y;
-		this.z += v.z;
-		this.w += v.w;
+	static add = (a: Vec4, b: Vec4 | Vector): Vec4 => addPos(a, b);
+	add(v: Vec4 | Vector): this {
+		this.x += v[X];
+		this.y += v[Y];
+		this.z += v[Z] ?? 0;
+		this.w += v[W] ?? 0;
 		return this;
 	}
 
-	static plus = (a: Vec4, b: Vec4): Vec4 => Vec4.add(a, b);
-	plus(v: Vec4): this {
+	static plus = (a: Vec4, b: Vec4 | Vector): Vec4 => Vec4.add(a, b);
+	plus(v: Vec4 | Vector): this {
 		return this.add(v);
 	}
 
-	static sub = (a: Vec4, b: Vec4): Vec4 => subPos(a, b);
-	sub(v: Vec4): this {
-		this.x -= v.x;
-		this.y -= v.y;
-		this.w -= v.w;
-		this.z -= v.z;
+	static sub = (a: Vec4, b: Vec4 | Vector): Vec4 => subPos(a, b);
+	sub(v: Vec4 | Vector): this {
+		this.x -= v[X];
+		this.y -= v[Y];
+		this.z -= v[Z] ?? 0;
+		this.w -= v[W] ?? 0;
 		return this;
 	}
 
-	static minus = (a: Vec4, b: Vec4): Vec4 => Vec4.sub(a, b);
-	minus(v: Vec4): this {
+	static minus = (a: Vec4, b: Vec4 | Vector): Vec4 => Vec4.sub(a, b);
+	minus(v: Vec4 | Vector): this {
 		return this.sub(v);
 	}
 
@@ -160,10 +168,12 @@ export class Vec4 extends Array<number> {
 		return this;
 	}
 
-	// TODO(bret): is there a cross & dot product for vec4?
-	// TODO(bret): rotation
+	static dot = (a: Vec4, b: Vec4 | V4_T): number => dotProduct4D(a, b);
+	dot(v: Vec4 | V4_T): number {
+		return Vec4.dot(this, v);
+	}
 
-	static equal = (a: Vec4, b: Vec4): boolean => posEqual(a, b);
+	static equal = (a: Vec4, b: Vec4 | V4_T): boolean => posEqual(a, b);
 	equal(v: Vec4): boolean {
 		return Vec4.equal(this, v);
 	}
@@ -173,5 +183,7 @@ export class Vec4 extends Array<number> {
 	};
 }
 
+export const dotProduct4D: FuncReduceVector<Vec4 | V4_T> = (a, b) =>
+	a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z] + a[W] * b[W];
 export const magnitude4D = (v: Vec4): number =>
 	Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2 + v[W] ** 2);

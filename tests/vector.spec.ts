@@ -80,6 +80,52 @@ describe('(Vec) Vector operations', () => {
 			expect(a === b).toEqual(false);
 			expectVec2Equal(a, b);
 		});
+
+		describe('add(v)', () => {
+			test('should add Vec2 to itself', () => {
+				const a = new Vec2(4, 5);
+				const b = new Vec2(0, 1);
+				expectVec2Equal(a.add(b), [4, 6]);
+				expectVec2Equal(a, [4, 6]);
+			});
+
+			test('should add Vec3 to itself', () => {
+				const a = new Vec2(4, 5);
+				const b = new Vec3(0, 1, 2);
+				expectVec2Equal(a.add(b), [4, 6]);
+				expectVec2Equal(a, [4, 6]);
+			});
+
+			test('should add Vec4 to itself', () => {
+				const a = new Vec2(4, 5);
+				const b = new Vec4(0, 1, 2, 3);
+				expectVec2Equal(a.add(b), [4, 6]);
+				expectVec2Equal(a, [4, 6]);
+			});
+		});
+
+		describe('sub(v)', () => {
+			test('should subtract Vec2 from itself', () => {
+				const a = new Vec2(4, 5);
+				const b = new Vec2(0, 1);
+				expectVec2Equal(a.sub(b), [4, 4]);
+				expectVec2Equal(a, [4, 4]);
+			});
+
+			test('should subtract Vec3 from itself', () => {
+				const a = new Vec2(4, 5);
+				const b = new Vec3(0, 1, 2);
+				expectVec2Equal(a.sub(b), [4, 4]);
+				expectVec2Equal(a, [4, 4]);
+			});
+
+			test('should subtract Vec4 from itself', () => {
+				const a = new Vec2(4, 5);
+				const b = new Vec4(0, 1, 2, 3);
+				expectVec2Equal(a.sub(b), [4, 4]);
+				expectVec2Equal(a, [4, 4]);
+			});
+		});
 	});
 
 	describe('Vec3', () => {
@@ -135,6 +181,52 @@ describe('(Vec) Vector operations', () => {
 			const b = a.clone();
 			expect(a === b).toEqual(false);
 			expectVec3Equal(a, b);
+		});
+
+		describe('add(v)', () => {
+			test('should add Vec2 to itself', () => {
+				const a = new Vec3(4, 5, 6);
+				const b = new Vec2(0, 1);
+				expectVec3Equal(a.add(b), [4, 6, 6]);
+				expectVec3Equal(a, [4, 6, 6]);
+			});
+
+			test('should add Vec3 to itself', () => {
+				const a = new Vec3(4, 5, 6);
+				const b = new Vec3(0, 1, 2);
+				expectVec3Equal(a.add(b), [4, 6, 8]);
+				expectVec3Equal(a, [4, 6, 8]);
+			});
+
+			test('should add Vec4 to itself', () => {
+				const a = new Vec3(4, 5, 6);
+				const b = new Vec4(0, 1, 2, 3);
+				expectVec3Equal(a.add(b), [4, 6, 8]);
+				expectVec3Equal(a, [4, 6, 8]);
+			});
+		});
+
+		describe('sub(v)', () => {
+			test('should subtract Vec2 from itself', () => {
+				const a = new Vec3(4, 5, 6);
+				const b = new Vec2(0, 1);
+				expectVec3Equal(a.sub(b), [4, 4, 6]);
+				expectVec3Equal(a, [4, 4, 6]);
+			});
+
+			test('should subtract Vec3 from itself', () => {
+				const a = new Vec3(4, 5, 6);
+				const b = new Vec3(0, 1, 2);
+				expectVec3Equal(a.sub(b), [4, 4, 4]);
+				expectVec3Equal(a, [4, 4, 4]);
+			});
+
+			test('should subtract Vec4 from itself', () => {
+				const a = new Vec3(4, 5, 6);
+				const b = new Vec4(0, 1, 2, 3);
+				expectVec3Equal(a.sub(b), [4, 4, 4]);
+				expectVec3Equal(a, [4, 4, 4]);
+			});
 		});
 	});
 
@@ -203,6 +295,52 @@ describe('(Vec) Vector operations', () => {
 			expect(a === b).toEqual(false);
 			expectVec4Equal(a, b);
 		});
+
+		describe('add(v)', () => {
+			test('should add Vec2 to itself', () => {
+				const a = new Vec4(4, 5, 6, 7);
+				const b = new Vec2(0, 1);
+				expectVec4Equal(a.add(b), [4, 6, 6, 7]);
+				expectVec4Equal(a, [4, 6, 6, 7]);
+			});
+
+			test('should add Vec3 to itself', () => {
+				const a = new Vec4(4, 5, 6, 7);
+				const b = new Vec3(0, 1, 2);
+				expectVec4Equal(a.add(b), [4, 6, 8, 7]);
+				expectVec4Equal(a, [4, 6, 8, 7]);
+			});
+
+			test('should add Vec4 to itself', () => {
+				const a = new Vec4(4, 5, 6, 7);
+				const b = new Vec4(0, 1, 2, 3);
+				expectVec4Equal(a.add(b), [4, 6, 8, 10]);
+				expectVec4Equal(a, [4, 6, 8, 10]);
+			});
+		});
+
+		describe('sub(v)', () => {
+			test('should subtract Vec2 from itself', () => {
+				const a = new Vec4(4, 5, 6, 7);
+				const b = new Vec2(0, 1);
+				expectVec4Equal(a.sub(b), [4, 4, 6, 7]);
+				expectVec4Equal(a, [4, 4, 6, 7]);
+			});
+
+			test('should subtract Vec3 from itself', () => {
+				const a = new Vec4(4, 5, 6, 7);
+				const b = new Vec3(0, 1, 2);
+				expectVec4Equal(a.sub(b), [4, 4, 4, 7]);
+				expectVec4Equal(a, [4, 4, 4, 7]);
+			});
+
+			test('should subtract Vec4 from itself', () => {
+				const a = new Vec4(4, 5, 6, 7);
+				const b = new Vec4(0, 1, 2, 3);
+				expectVec4Equal(a.sub(b), [4, 4, 4, 4]);
+				expectVec4Equal(a, [4, 4, 4, 4]);
+			});
+		});
 	});
 
 	describe('Vector & Vector', () => {
@@ -222,7 +360,7 @@ describe('(Vec) Vector operations', () => {
 					expect(Vec3.add(a, b)).toEqual([4, 6, 8]);
 				});
 
-				test('Vec4 + Vec4 should result in a V4 sum', () => {
+				test('Vec4 + Vec4 should result in a Vec4 sum', () => {
 					const a = new Vec4(4, 5, 6, 7);
 					const b = new Vec4(0, 1, 2, 3);
 					expect(addPos(a, b)).toEqual([4, 6, 8, 10]);
@@ -244,29 +382,6 @@ describe('(Vec) Vector operations', () => {
 					expect(sum).toHaveLength(2);
 					expect(sum).toEqual([3, 5]);
 				});
-			});
-		});
-
-		describe('add(v)', () => {
-			test('should add other Vec2 to itself', () => {
-				const a = new Vec2(4, 5);
-				const b = new Vec2(0, 1);
-				expectVec2Equal(a.add(b), [4, 6]);
-				expectVec2Equal(a, [4, 6]);
-			});
-
-			test('should add other Vec3 to itself', () => {
-				const a = new Vec3(4, 5, 6);
-				const b = new Vec3(0, 1, 2);
-				expectVec3Equal(a.add(b), [4, 6, 8]);
-				expectVec3Equal(a, [4, 6, 8]);
-			});
-
-			test('should add other Vec4 to itself', () => {
-				const a = new Vec4(4, 5, 6, 7);
-				const b = new Vec4(0, 1, 2, 3);
-				expectVec4Equal(a.add(b), [4, 6, 8, 10]);
-				expectVec4Equal(a, [4, 6, 8, 10]);
 			});
 		});
 
@@ -308,15 +423,6 @@ describe('(Vec) Vector operations', () => {
 					expect(diff).toHaveLength(2);
 					expect(diff).toEqual([3, 3]);
 				});
-			});
-		});
-
-		describe('sub(v)', () => {
-			test('should subtract other vector from itself', () => {
-				const a = new Vec2(4, 5);
-				const b = new Vec2(0, 1);
-				expectVec2Equal(a.sub(b), [4, 4]);
-				expectVec2Equal(a, [4, 4]);
 			});
 		});
 
@@ -547,6 +653,7 @@ describe('Vector type narrowing', () => {
 	const v2 = [0, 1] as V2_T;
 	const v3 = [0, 1, 2] as V3_T;
 	const v4 = [0, 1, 2, 3] as V4_T;
+
 	const vec2 = new Vec2(0, 1);
 	const vec3 = new Vec3(0, 1, 2);
 	const vec4 = new Vec4(0, 1, 2);

@@ -1,6 +1,6 @@
 import {
 	addPos,
-	FuncReduceVector,
+	type FuncReduceVector,
 	posEqual,
 	scalePos,
 	subPos,
@@ -105,28 +105,27 @@ export class Vec2 extends Array<number> {
 		return new Vec2(...this);
 	}
 
-	// TYPE(bret): `b: Vector`?
-	static add = (a: Vec2, b: Vec2): Vec2 => addPos(a, b);
-	add(v: Vec2): this {
-		this.x += v.x;
-		this.y += v.y;
+	static add = (a: Vec2, b: Vector): Vec2 => addPos(a, b);
+	add(v: Vector): this {
+		this.x += v[X];
+		this.y += v[Y];
 		return this;
 	}
 
-	static plus = (a: Vec2, b: Vec2): Vec2 => Vec2.add(a, b);
-	plus(v: Vec2): this {
+	static plus = (a: Vec2, b: Vector): Vec2 => Vec2.add(a, b);
+	plus(v: Vector): this {
 		return this.add(v);
 	}
 
-	static sub = (a: Vec2, b: Vec2): Vec2 => subPos(a, b);
-	sub(v: Vec2): this {
-		this.x -= v.x;
-		this.y -= v.y;
+	static sub = (a: Vec2, b: Vector): Vec2 => subPos(a, b);
+	sub(v: Vector): this {
+		this.x -= v[X];
+		this.y -= v[Y];
 		return this;
 	}
 
-	static minus = (a: Vec2, b: Vec2): Vec2 => Vec2.sub(a, b);
-	minus(v: Vec2): this {
+	static minus = (a: Vec2, b: Vector): Vec2 => Vec2.sub(a, b);
+	minus(v: Vector): this {
 		return this.sub(v);
 	}
 
@@ -145,13 +144,13 @@ export class Vec2 extends Array<number> {
 		return this;
 	}
 
-	static cross = (a: Vec2, b: Vec2): number => crossProduct2D(a, b);
-	cross(v: Vec2): number {
+	static cross = (a: Vec2, b: Vec2 | V2_T): number => crossProduct2D(a, b);
+	cross(v: Vec2 | V2_T): number {
 		return Vec2.cross(this, v);
 	}
 
-	static dot = (a: Vec2, b: Vec2): number => dotProduct2D(a, b);
-	dot(v: Vec2): number {
+	static dot = (a: Vec2, b: Vec2 | V2_T): number => dotProduct2D(a, b);
+	dot(v: Vec2 | V2_T): number {
 		return Vec2.dot(this, v);
 	}
 
@@ -160,8 +159,8 @@ export class Vec2 extends Array<number> {
 		return Vec2.rotate(this, angle);
 	}
 
-	static equal = (a: Vec2, b: Vec2): boolean => posEqual(a, b);
-	equal(v: Vec2): boolean {
+	static equal = (a: Vec2, b: Vec2 | V2_T): boolean => posEqual(a, b);
+	equal(v: Vec2 | V2_T): boolean {
 		return Vec2.equal(this, v);
 	}
 
@@ -181,9 +180,9 @@ export const rotate2D = (v: Vec2, angle: number): Vec2 => {
 	return new Vec2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
 };
 
-export const crossProduct2D: FuncReduceVector<V2_T | Vec2> = (a, b) =>
+export const crossProduct2D: FuncReduceVector<Vec2 | V2_T> = (a, b) =>
 	a[0] * b[1] - a[1] * b[0];
-export const dotProduct2D: FuncReduceVector<V2_T | Vec2> = (a, b) =>
+export const dotProduct2D: FuncReduceVector<Vec2 | V2_T> = (a, b) =>
 	a[0] * b[0] + a[1] * b[1];
 export const magnitude2D = (v: Vec2): number =>
 	Math.sqrt(v[X] ** 2 + v[Y] ** 2);

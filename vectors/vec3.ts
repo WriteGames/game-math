@@ -1,7 +1,7 @@
 import {
 	addPos,
-	FuncMapVector,
-	FuncReduceVector,
+	type FuncMapVector,
+	type FuncReduceVector,
 	posEqual,
 	scalePos,
 	subPos,
@@ -123,29 +123,29 @@ export class Vec3 extends Array<number> {
 		return new Vec3(...this);
 	}
 
-	static add = (a: Vec3, b: Vec3): Vec3 => addPos(a, b);
-	add(v: Vec3): this {
-		this.x += v.x;
-		this.y += v.y;
-		this.z += v.z;
+	static add = (a: Vec3, b: Vector): Vec3 => addPos(a, b);
+	add(v: Vector): this {
+		this.x += v[X];
+		this.y += v[Y];
+		this.z += v[Z] ?? 0;
 		return this;
 	}
 
-	static plus = (a: Vec3, b: Vec3): Vec3 => Vec3.add(a, b);
-	plus(v: Vec3): this {
+	static plus = (a: Vec3, b: Vector): Vec3 => Vec3.add(a, b);
+	plus(v: Vector): this {
 		return this.add(v);
 	}
 
-	static sub = (a: Vec3, b: Vec3): Vec3 => subPos(a, b);
-	sub(v: Vec3): this {
-		this.x -= v.x;
-		this.y -= v.y;
-		this.z -= v.z;
+	static sub = (a: Vec3, b: Vector): Vec3 => subPos(a, b);
+	sub(v: Vector): this {
+		this.x -= v[X];
+		this.y -= v[Y];
+		this.z -= v[Z] ?? 0;
 		return this;
 	}
 
-	static minus = (a: Vec3, b: Vec3): Vec3 => Vec3.sub(a, b);
-	minus(v: Vec3): this {
+	static minus = (a: Vec3, b: Vector): Vec3 => Vec3.sub(a, b);
+	minus(v: Vector): this {
 		return this.sub(v);
 	}
 
@@ -166,20 +166,20 @@ export class Vec3 extends Array<number> {
 		return this;
 	}
 
-	static cross = (a: Vec3, b: Vec3): Vec3 => crossProduct3D(a, b);
-	cross(v: Vec3): Vec3 {
+	static cross = (a: Vec3, b: Vec3 | V3_T): Vec3 => crossProduct3D(a, b);
+	cross(v: Vec3 | V3_T): Vec3 {
 		return Vec3.cross(this, v);
 	}
 
-	static dot = (a: Vec3, b: Vec3): number => dotProduct3D(a, b);
-	dot(v: Vec3): number {
+	static dot = (a: Vec3, b: Vec3 | V3_T): number => dotProduct3D(a, b);
+	dot(v: Vec3 | V3_T): number {
 		return Vec3.dot(this, v);
 	}
 
 	// TODO(bret): rotation
 
-	static equal = (a: Vec3, b: Vec3): boolean => posEqual(a, b);
-	equal(v: Vec3): boolean {
+	static equal = (a: Vec3, b: Vec3 | V3_T): boolean => posEqual(a, b);
+	equal(v: Vec3 | V3_T): boolean {
 		return Vec3.equal(this, v);
 	}
 
@@ -188,13 +188,13 @@ export class Vec3 extends Array<number> {
 	};
 }
 
-export const crossProduct3D: FuncMapVector<V3_T | Vec3> = (a, b) => {
+export const crossProduct3D: FuncMapVector<Vec3 | V3_T> = (a, b) => {
 	const c1 = a[Y] * b[Z] - a[Z] * b[Y];
 	const c2 = a[Z] * b[X] - a[X] * b[Z];
 	const c3 = a[X] * b[Y] - a[Y] * b[X];
 	return new Vec3(c1, c2, c3) as typeof a;
 };
-export const dotProduct3D: FuncReduceVector<V3_T | Vec3> = (a, b) =>
+export const dotProduct3D: FuncReduceVector<Vec3 | V3_T> = (a, b) =>
 	a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z];
 export const magnitude3D = (v: Vec3): number =>
 	Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2);
