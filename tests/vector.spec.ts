@@ -7,7 +7,7 @@ import {
 	equal,
 	Vec2,
 	isVec2,
-} from './index.js';
+} from '../index.js';
 import { describe, expect, test } from 'vitest';
 
 // move to setupTests.ts using expect.extend
