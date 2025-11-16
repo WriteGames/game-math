@@ -72,10 +72,7 @@ export class Vec2 extends Array<number> {
 		return v.clone().invScale(v.magnitude);
 	};
 	normalize(): this {
-		const mag = this.magnitude;
-		this.x /= mag;
-		this.y /= mag;
-		return this;
+		return this.invScale(this.magnitude);
 	}
 
 	map<U>(
@@ -138,7 +135,7 @@ export class Vec2 extends Array<number> {
 
 	static invScale = (v: Vec2, s: number): Vec2 => scalePos(v, 1 / s);
 	invScale(s: number): this {
-		const iS = 1 / s;
+		const iS = s !== 0 ? 1 / s : 0;
 		this.x *= iS;
 		this.y *= iS;
 		return this;

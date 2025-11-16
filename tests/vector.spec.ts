@@ -6,6 +6,7 @@ import {
 	isVec2,
 	isVec3,
 	isVec4,
+	magnitude,
 	posEqual,
 	scalePos,
 	subPos,
@@ -36,7 +37,7 @@ import {
 
 const _expectVecEqual = (received: Vector, expected: Vector): void => {
 	expect(received).toHaveLength(expected.length);
-	expect([...received]).toEqual([...expected]);
+	expect(posEqual(received, expected)).toBeTruthy();
 };
 
 // TODO(bret): move to setupTests.ts using expect.extend
@@ -236,6 +237,20 @@ describe('(Vec) Vector operations', () => {
 			});
 		});
 
+		describe('normalize', () => {
+			test('Vec3 with length zero should normalize to itself', () => {
+				expectVec3Equal(new Vec3().normalize(), Vec3.zero);
+			});
+
+			test('should normalize the vector', () => {
+				const vec = new Vec3(1, -2, 3).normalize();
+				expect(magnitude(vec)).toBeCloseTo(1);
+				expect(vec.x).toBeGreaterThan(0);
+				expect(vec.y).toBeLessThan(0);
+				expect(vec.z).toBeGreaterThan(0);
+			});
+		});
+
 		test('clone', () => {
 			const a = new Vec3(5, 7, 9);
 			const b = a.clone();
@@ -357,6 +372,21 @@ describe('(Vec) Vector operations', () => {
 
 			test('Vec4.one should be a Vec4 with all properties set to 0', () => {
 				expectVec4Equal(Vec4.one, [1, 1, 1, 1]);
+			});
+		});
+
+		describe('normalize', () => {
+			test('Vec4 with length zero should normalize to itself', () => {
+				expectVec4Equal(new Vec4().normalize(), Vec4.zero);
+			});
+
+			test('should normalize the vector', () => {
+				const vec = new Vec4(1, -2, 3, -1).normalize();
+				expect(magnitude(vec)).toBeCloseTo(1);
+				expect(vec.x).toBeGreaterThan(0);
+				expect(vec.y).toBeLessThan(0);
+				expect(vec.z).toBeGreaterThan(0);
+				expect(vec.w).toBeLessThan(0);
 			});
 		});
 
