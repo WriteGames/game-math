@@ -53,3 +53,23 @@ export function remap(
 ): number {
 	return toMin + ((value - fromMin) / (fromMax - fromMin)) * (toMax - toMin);
 }
+
+/**
+ * Remaps a number from one range to another, clamping the new value within the destination range.
+ * @param value Input value
+ * @param fromMin Source range start
+ * @param fromMax Source range end
+ * @param toMin Destination range start
+ * @param toMax Destination range end
+ * @returns New value remapped from source range to destination range, clamped to the destination range
+ */
+export function remapClamp(
+	value: number,
+	fromMin: number,
+	fromMax: number,
+	toMin: number,
+	toMax: number,
+): number {
+	const raw = remap(value, fromMin, fromMax, toMin, toMax);
+	return clamp(raw, Math.min(toMin, toMax), Math.max(toMin, toMax));
+}

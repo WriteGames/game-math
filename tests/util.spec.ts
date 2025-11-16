@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { clamp, lerp, lerpClamp, remap, type V4_T } from '..';
+import { clamp, lerp, lerpClamp, remap, remapClamp, type V4_T } from '..';
 
 interface Test<T extends any[], E extends any> {
 	name: string;
@@ -172,6 +172,81 @@ describe('remap()', () => {
 
 			runTests(tests, (...args: [number]): number => {
 				return remap(...args, ...scaleArgs);
+			});
+		});
+	});
+});
+
+describe('remapClamp()', () => {
+	const ascFrom = [5, 10] as const;
+	const ascTo = [20, 50] as const;
+	const descFrom = [10, 5] as const;
+	const descTo = [50, 20] as const;
+	interface Context {
+		name: string;
+		scaleArgs: V4_T;
+		between: number;
+	}
+	const contexts: Context[] = [
+		{
+			name: 'asc -> asc',
+			scaleArgs: [...ascFrom, ...ascTo],
+			between: 27.5,
+		},
+		{
+			name: 'asc -> desc',
+			scaleArgs: [...ascFrom, ...descTo],
+			between: 42.5,
+		},
+		{
+			name: 'desc -> desc',
+			scaleArgs: [...descFrom, ...descTo],
+			between: 42.5,
+		},
+		{
+			name: 'desc -> asc',
+			scaleArgs: [...descFrom, ...ascTo],
+			between: 27.5,
+		},
+	];
+	contexts.forEach(({ name, scaleArgs, between }) => {
+		describe(name, () => {
+			const [fromMin, fromMax, toMin, toMax] = scaleArgs;
+			const fromLower = Math.min(fromMin, fromMax);
+			const fromUpper = Math.max(fromMin, fromMax);
+			const toLower = fromLower === fromMin ? toMin : toMax;
+			const toUpper = fromUpper === fromMin ? toMin : toMax;
+			const fourth = (fromMin + (fromMax + fromMin) / 2) / 2;
+			const tests = [
+				createTest(
+					'should clamp and remap when value is below range',
+					[fromLower - 5],
+					toLower,
+				),
+				createTest(
+					'should remap when value is fromMin',
+					[fromMin],
+					toMin,
+				),
+				createTest(
+					'should remap when value is between fromMin and fromMax',
+					[fourth],
+					between,
+				),
+				createTest(
+					'should remap when value is fromMax',
+					[fromMax],
+					toMax,
+				),
+				createTest(
+					'should clamp and remap when value is above range',
+					[fromUpper + 5],
+					toUpper,
+				),
+			];
+
+			runTests(tests, (...args: [number]): number => {
+				return remapClamp(...args, ...scaleArgs);
 			});
 		});
 	});
