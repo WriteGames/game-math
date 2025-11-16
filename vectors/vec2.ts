@@ -1,6 +1,14 @@
-import type { Vector } from './common';
+import {
+	addPos,
+	FuncReduceVector,
+	posEqual,
+	scalePos,
+	subPos,
+	type V2_T,
+	type Vector,
+} from './common';
 
-export const isVec2 = (vec: Vector | Vec2): vec is Vec2 => {
+export const isVec2 = (vec: Vector): vec is Vec2 => {
 	return vec instanceof Vec2;
 };
 
@@ -161,56 +169,6 @@ export class Vec2 extends Array<number> {
 	};
 }
 
-// TYPE(bret): Find a home for these
-// type V2 = [number, number];
-// type V3 = [number, number, number];
-// type V4 = [number, number, number, number];
-// type Vector = V2 | V3 | V4;
-
-type FuncMapVector = <T extends Vector | Vec2, A extends T, B extends T>(
-	a: A,
-	b: B,
-) => A;
-// type FuncMapVectorByScalar = <P extends Vector>(
-type FuncMapVectorByScalar = <T extends Vec2 | Vector>(p: T, s: number) => T;
-
-// type FuncReduceVector = <A extends Vector, B extends Vector>(
-type FuncReduceVector = (a: Vec2, b: Vec2) => number;
-
-type FuncCompare<T> = (a: T, b: T) => boolean;
-
-export const hashPos = (pos: Vector | Vec2): string => pos.join(',');
-
-export const addPos: FuncMapVector = (a, b) => {
-	return a.map((v, i) => v + (b[i] ?? 0)) as typeof a;
-};
-
-export const subPos: FuncMapVector = (a, b) => {
-	return a.map((v, i) => v - (b[i] ?? 0)) as typeof a;
-};
-
-export const addScalar: FuncMapVectorByScalar = (p, s) => {
-	const sums = p.map((v) => v + s);
-	if (isVec2(p)) return new Vec2(...sums) as typeof p;
-	return sums as typeof p;
-};
-
-export const scalePos: FuncMapVectorByScalar = (p, s) => {
-	const scaled = p.map((v) => v * s);
-	if (isVec2(p)) return new Vec2(...scaled) as typeof p;
-	return scaled as typeof p;
-};
-
-export const posEqual = (a: Vector | Vec2, b: Vector | Vec2): boolean => {
-	const aa = [...a];
-	const bb = [...b];
-	return aa.length === bb.length && aa.every((v, i) => equal(v, bb[i]));
-};
-
-export const equal: FuncCompare<number> = (a, b) => {
-	return Math.abs(a - b) < Number.EPSILON;
-};
-
 export const indexToPos = (index: number, stride: number): Vec2 =>
 	new Vec2(index % stride, Math.floor(index / stride));
 export const posToIndex = ([x, y]: Vec2, stride: number): number =>
@@ -222,8 +180,9 @@ export const rotate2D = (v: Vec2, angle: number): Vec2 => {
 	return new Vec2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
 };
 
-export const crossProduct2D: FuncReduceVector = (a, b) =>
+export const crossProduct2D: FuncReduceVector<V2_T | Vec2> = (a, b) =>
 	a[0] * b[1] - a[1] * b[0];
-export const dotProduct2D: FuncReduceVector = (a, b) =>
+export const dotProduct2D: FuncReduceVector<V2_T | Vec2> = (a, b) =>
 	a[0] * b[0] + a[1] * b[1];
-export const magnitude2D = (v: Vec2): number => Math.sqrt(v.x ** 2 + v.y ** 2);
+export const magnitude2D = (v: Vec2): number =>
+	Math.sqrt(v[X] ** 2 + v[Y] ** 2);
