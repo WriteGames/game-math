@@ -1,6 +1,6 @@
-import { isVec2, Vec2 } from './vec2';
-import { isVec3, Vec3 } from './vec3';
-import { isVec4, Vec4 } from './vec4';
+import { isVec2, Vec2 } from './vec2.js';
+import { isVec3, Vec3 } from './vec3.js';
+import { isVec4, Vec4 } from './vec4.js';
 
 // TYPE(bret): Find a home for these
 export type V2_T = [x: number, y: number];

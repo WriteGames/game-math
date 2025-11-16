@@ -7,7 +7,7 @@ import {
 	subPos,
 	type V3_T,
 	type Vector,
-} from './common';
+} from './common.js';
 
 export const isVec3 = (vec: Vector): vec is Vec3 => {
 	return vec instanceof Vec3;
