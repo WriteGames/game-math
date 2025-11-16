@@ -1,18 +1,25 @@
 {
 	"name": "@writegames.com/game-math",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"license": "MIT",
 	"description": "A library of useful math classes & functions for game development, involving linear algebra, angles, and more.",
-	"main": "index.js",
+	"main": "bin/index.js",
+	"types": "bin/index.d.ts",
 	"scripts": {
 		"build": "tsc --p tsconfig.build.json",
 		"postbuild": "echo \"postbuild\"",
+		"install": "npm build",
 		"test": "vitest --pool=forks",
 		"lint": "eslint .",
 		"watch": "tsc-watch --p tsconfig.build.json --onSuccess \"pnpm postbuild\""
 	},
 	"type": "module",
-	"exports": {},
+	"exports": {
+		".": {
+			"import": "./bin/index.js",
+			"types": "./bin/index.d.ts"
+		}
+	},
 	"packageManager": "pnpm@9.8.0",
 	"engines": {
 		"node": "^22",
