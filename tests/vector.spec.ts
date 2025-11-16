@@ -7,6 +7,10 @@ import {
 	equal,
 	Vec2,
 	isVec2,
+	Vec3,
+	isVec3,
+	type V2_T,
+	type V3_T,
 } from '../index.js';
 import { describe, expect, test } from 'vitest';
 
@@ -59,7 +63,7 @@ describe('(Vec) Vector operations', () => {
 	describe('Vector & Vector', () => {
 		describe('addPos(a, b)', () => {
 			describe('when a & b are both the same length', () => {
-				test('V2 + V2 should result in a V2 sum', () => {
+				test('Vec2 + Vec2 should result in a Vec2 sum', () => {
 					const a = new Vec2(4, 5);
 					const b = new Vec2(0, 1);
 					expectVec2Equal(addPos(a, b), [4, 6]);
@@ -107,7 +111,7 @@ describe('(Vec) Vector operations', () => {
 
 		describe('subPos(a, b)', () => {
 			describe('when a & b are both the same length', () => {
-				test('V2 - V2 should result in a V2 difference', () => {
+				test('Vec2 - Vec2 should result in a Vec2 difference', () => {
 					const a = new Vec2(4, 5);
 					const b = new Vec2(0, 1);
 					expectVec2Equal(subPos(a, b), [4, 4]);
@@ -396,14 +400,30 @@ describe('Scalar operations', () => {
 });
 
 describe('Vector type narrowing', () => {
-	const v2 = [0, 1] as const;
+	const v2 = [0, 1] as V2_T;
+	const v3 = [0, 1, 2] as V3_T;
 	const vec2 = new Vec2(0, 1);
+	const vec3 = new Vec3(0, 1, 2);
 
-	test('V2 should not pass isVec2()', () => {
-		expect(isVec2(v2)).toBeFalsy();
-	});
+	const funcs = [isVec2, isVec3];
 
-	test('Vec2 should not pass isVec2()', () => {
-		expect(isVec2(vec2)).toBeTruthy();
+	funcs.forEach((func, i) => {
+		describe(`${func.name}()`, () => {
+			[v2, v3].forEach((v, i) => {
+				test(`V${2 + i} <${v.join(', ')}> should not pass ${
+					func.name
+				}()`, () => {
+					expect(func(v)).toBeFalsy();
+				});
+			});
+
+			[vec2, vec3].forEach((v, j) => {
+				const shouldPass = i === j;
+				const passStr = shouldPass ? 'should' : 'should not';
+				test(`Vec${2 + j} ${passStr} pass ${func.name}()`, () => {
+					expect(func(v)).toEqual(shouldPass);
+				});
+			});
+		});
 	});
 });
