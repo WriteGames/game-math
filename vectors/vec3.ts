@@ -15,7 +15,7 @@ export const isVec3 = (vec: Vector): vec is Vec3 => {
 
 const X = 0;
 const Y = 1;
-const Z = 1;
+const Z = 2;
 
 export class Vec3 extends Array<number> {
 	// length: 3 = 3 as const;
