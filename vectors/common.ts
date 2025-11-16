@@ -1,5 +1,6 @@
 import { isVec2, Vec2 } from './vec2';
 import { isVec3, Vec3 } from './vec3';
+import { isVec4, Vec4 } from './vec4';
 
 // TYPE(bret): Find a home for these
 export type V2_T = [x: number, y: number];
@@ -14,7 +15,7 @@ export type Vector_T =
 	| V4_T
 	| Readonly<V4_T>;
 
-export type Vector = Vector_T | Vec2 | Vec3;
+export type Vector = Vector_T | Vec2 | Vec3 | Vec4;
 
 export const V2 = Object.defineProperties(
 	{},
@@ -61,6 +62,7 @@ export const addScalar: FuncMapVectorByScalar = (p, s) => {
 	const sums = p.map((v) => v + s);
 	if (isVec2(p)) return new Vec2(...sums) as typeof p;
 	if (isVec3(p)) return new Vec3(...sums) as typeof p;
+	if (isVec4(p)) return new Vec4(...sums) as typeof p;
 	return sums as typeof p;
 };
 
@@ -68,6 +70,7 @@ export const scalePos: FuncMapVectorByScalar = (p, s) => {
 	const scaled = p.map((v) => v * s);
 	if (isVec2(p)) return new Vec2(...scaled) as typeof p;
 	if (isVec3(p)) return new Vec3(...scaled) as typeof p;
+	if (isVec4(p)) return new Vec4(...scaled) as typeof p;
 	return scaled as typeof p;
 };
 

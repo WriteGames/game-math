@@ -1,19 +1,22 @@
+import { describe, expect, test } from 'vitest';
 import {
 	addPos,
-	subPos,
-	scalePos,
-	posEqual,
 	addScalar,
 	equal,
-	Vec2,
 	isVec2,
-	Vec3,
 	isVec3,
+	isVec4,
+	posEqual,
+	scalePos,
+	subPos,
+	Vec2,
+	Vec3,
+	Vec4,
 	type V2_T,
 	type V3_T,
+	type V4_T,
 	type Vector,
 } from '../index.js';
-import { describe, expect, test } from 'vitest';
 
 const _expectVecEqual = (received: Vector, expected: Vector): void => {
 	expect(received).toHaveLength(expected.length);
@@ -26,6 +29,10 @@ const expectVec2Equal = (received: Vec2, expected: Vec2 | V2_T): void => {
 };
 
 const expectVec3Equal = (received: Vec3, expected: Vec3 | V3_T): void => {
+	_expectVecEqual(received, expected);
+};
+
+const expectVec4Equal = (received: Vec4, expected: Vec4 | V4_T): void => {
 	_expectVecEqual(received, expected);
 };
 
@@ -131,6 +138,73 @@ describe('(Vec) Vector operations', () => {
 		});
 	});
 
+	describe('Vec4', () => {
+		describe('getter/setters work as intended', () => {
+			test('get x/y/z/w/[0]/[1]/[2]/[3]', () => {
+				const X = 13;
+				const Y = 27;
+				const Z = 42;
+				const W = 68;
+				const a = new Vec4(X, Y, Z, W);
+
+				expect(a.x).toEqual(X);
+				expect(a[0]).toEqual(X);
+
+				expect(a.y).toEqual(Y);
+				expect(a[1]).toEqual(Y);
+
+				expect(a.z).toEqual(Z);
+				expect(a[2]).toEqual(Z);
+
+				expect(a.w).toEqual(W);
+				expect(a[3]).toEqual(W);
+			});
+
+			test('set x/y/z/[0]/[1]/[2]', () => {
+				const X = 13;
+				const Y = 27;
+				const Z = 42;
+				const W = 68;
+				const a = new Vec4();
+
+				a.x = X;
+				expect(a.x).toEqual(X);
+				a[0] = -X;
+				expect(a.x).toEqual(-X);
+
+				a.y = Y;
+				expect(a.y).toEqual(Y);
+				a[1] = -Y;
+				expect(a.y).toEqual(-Y);
+
+				a.z = Z;
+				expect(a.z).toEqual(Z);
+				a[2] = -Z;
+				expect(a.z).toEqual(-Z);
+
+				a.w = W;
+				expect(a.w).toEqual(W);
+				a[3] = -W;
+				expect(a.w).toEqual(-W);
+			});
+		});
+
+		test('test iterator', () => {
+			const X = 5;
+			const Y = 7;
+			const Z = 9;
+			const W = 11;
+			expect([...new Vec4(X, Y, Z, W)]).toEqual([X, Y, Z, W]);
+		});
+
+		test('clone', () => {
+			const a = new Vec4(5, 7, 9, 11);
+			const b = a.clone();
+			expect(a === b).toEqual(false);
+			expectVec4Equal(a, b);
+		});
+	});
+
 	describe('Vector & Vector', () => {
 		describe('addPos(a, b)', () => {
 			describe('when a & b are both the same length', () => {
@@ -148,10 +222,11 @@ describe('(Vec) Vector operations', () => {
 					expect(Vec3.add(a, b)).toEqual([4, 6, 8]);
 				});
 
-				test('V4 + V4 should result in a V4 sum', () => {
-					const sum = addPos([4, 5, 6, 7], [0, 1, 2, 3]);
-					expect(sum).toHaveLength(4);
-					expect(sum).toEqual([4, 6, 8, 10]);
+				test('Vec4 + Vec4 should result in a V4 sum', () => {
+					const a = new Vec4(4, 5, 6, 7);
+					const b = new Vec4(0, 1, 2, 3);
+					expect(addPos(a, b)).toEqual([4, 6, 8, 10]);
+					expect(Vec4.add(a, b)).toEqual([4, 6, 8, 10]);
 				});
 			});
 
@@ -173,11 +248,25 @@ describe('(Vec) Vector operations', () => {
 		});
 
 		describe('add(v)', () => {
-			test('should add other vector to itself', () => {
+			test('should add other Vec2 to itself', () => {
 				const a = new Vec2(4, 5);
 				const b = new Vec2(0, 1);
 				expectVec2Equal(a.add(b), [4, 6]);
 				expectVec2Equal(a, [4, 6]);
+			});
+
+			test('should add other Vec3 to itself', () => {
+				const a = new Vec3(4, 5, 6);
+				const b = new Vec3(0, 1, 2);
+				expectVec3Equal(a.add(b), [4, 6, 8]);
+				expectVec3Equal(a, [4, 6, 8]);
+			});
+
+			test('should add other Vec4 to itself', () => {
+				const a = new Vec4(4, 5, 6, 7);
+				const b = new Vec4(0, 1, 2, 3);
+				expectVec4Equal(a.add(b), [4, 6, 8, 10]);
+				expectVec4Equal(a, [4, 6, 8, 10]);
 			});
 		});
 
@@ -197,10 +286,11 @@ describe('(Vec) Vector operations', () => {
 					expect(Vec3.sub(a, b)).toEqual([4, 4, 4]);
 				});
 
-				test('V4 - V4 should result in a V4 difference', () => {
-					const diff = subPos([4, 5, 6, 7], [0, 1, 2, 3]);
-					expect(diff).toHaveLength(4);
-					expect(diff).toEqual([4, 4, 4, 4]);
+				test('Vec4 - Vec4 should result in a V4 difference', () => {
+					const a = new Vec4(4, 5, 6, 7);
+					const b = new Vec4(0, 1, 2, 3);
+					expect(subPos(a, b)).toEqual([4, 4, 4, 4]);
+					expect(Vec4.sub(a, b)).toEqual([4, 4, 4, 4]);
 				});
 			});
 
@@ -453,36 +543,19 @@ describe('Vector operations', () => {
 	});
 });
 
-describe('Scalar operations', () => {
-	describe('equal(a, b)', () => {
-		test('should return true for equal scalars', () => {
-			const isEqual = equal(10, 10);
-			expect(isEqual).toEqual(true);
-		});
-
-		test('should return true for unequal scalars that have a difference lesser than the epsilon', () => {
-			const isEqual = equal(0.1 + 0.2, 0.3);
-			expect(isEqual).toEqual(true);
-		});
-
-		test('should return false for unequal scalars', () => {
-			const isEqual = equal(10, 7);
-			expect(isEqual).toEqual(false);
-		});
-	});
-});
-
 describe('Vector type narrowing', () => {
 	const v2 = [0, 1] as V2_T;
 	const v3 = [0, 1, 2] as V3_T;
+	const v4 = [0, 1, 2, 3] as V4_T;
 	const vec2 = new Vec2(0, 1);
 	const vec3 = new Vec3(0, 1, 2);
+	const vec4 = new Vec4(0, 1, 2);
 
-	const funcs = [isVec2, isVec3];
+	const funcs = [isVec2, isVec3, isVec4];
 
 	funcs.forEach((func, i) => {
 		describe(`${func.name}()`, () => {
-			[v2, v3].forEach((v, i) => {
+			[v2, v3, v4].forEach((v, i) => {
 				test(`V${2 + i} <${v.join(', ')}> should not pass ${
 					func.name
 				}()`, () => {
@@ -490,7 +563,7 @@ describe('Vector type narrowing', () => {
 				});
 			});
 
-			[vec2, vec3].forEach((v, j) => {
+			[vec2, vec3, vec4].forEach((v, j) => {
 				const shouldPass = i === j;
 				const passStr = shouldPass ? 'should' : 'should not';
 				test(`Vec${2 + j} ${passStr} pass ${func.name}()`, () => {

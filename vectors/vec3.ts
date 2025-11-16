@@ -76,11 +76,13 @@ export class Vec3 extends Array<number> {
 	set(v: Vec3): void {
 		this.x = v.x;
 		this.y = v.y;
+		this.z = v.z;
 	}
 
-	setXY(x: number, y: number): void {
+	setXYZ(x: number, y: number, z: number): void {
 		this.x = x;
 		this.y = y;
+		this.z = z;
 	}
 
 	static normalize = (v: Vec3): Vec3 => {
@@ -90,6 +92,7 @@ export class Vec3 extends Array<number> {
 		const mag = this.magnitude;
 		this.x /= mag;
 		this.y /= mag;
+		this.z /= mag;
 		return this;
 	}
 
@@ -124,6 +127,7 @@ export class Vec3 extends Array<number> {
 	add(v: Vec3): this {
 		this.x += v.x;
 		this.y += v.y;
+		this.z += v.z;
 		return this;
 	}
 
@@ -136,6 +140,7 @@ export class Vec3 extends Array<number> {
 	sub(v: Vec3): this {
 		this.x -= v.x;
 		this.y -= v.y;
+		this.z -= v.z;
 		return this;
 	}
 
@@ -148,6 +153,7 @@ export class Vec3 extends Array<number> {
 	scale(s: number): this {
 		this.x *= s;
 		this.y *= s;
+		this.z *= s;
 		return this;
 	}
 
@@ -156,6 +162,7 @@ export class Vec3 extends Array<number> {
 		const iS = 1 / s;
 		this.x *= iS;
 		this.y *= iS;
+		this.z *= iS;
 		return this;
 	}
 

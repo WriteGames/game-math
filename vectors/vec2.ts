@@ -105,6 +105,7 @@ export class Vec2 extends Array<number> {
 		return new Vec2(...this);
 	}
 
+	// TYPE(bret): `b: Vector`?
 	static add = (a: Vec2, b: Vec2): Vec2 => addPos(a, b);
 	add(v: Vec2): this {
 		this.x += v.x;
