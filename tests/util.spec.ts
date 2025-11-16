@@ -1,5 +1,14 @@
 import { describe, expect, test } from 'vitest';
-import { clamp, lerp, lerpClamp, remap, remapClamp, type V4_T } from '..';
+import {
+	clamp,
+	lerp,
+	lerpAngle,
+	lerpClamp,
+	remap,
+	remapClamp,
+	type V4_T,
+} from '..';
+import { angleDifference } from '../util';
 
 interface Test<T extends any[], E extends any> {
 	name: string;
@@ -249,5 +258,44 @@ describe('remapClamp()', () => {
 				return remapClamp(...args, ...scaleArgs);
 			});
 		});
+	});
+});
+
+describe('angleDifference()', () => {
+	test('should return correct delta between angles', () => {
+		expect(angleDifference(-45, -45)).toEqual(0);
+		expect(angleDifference(90, 90)).toEqual(0);
+		expect(angleDifference(777, 777)).toEqual(0);
+
+		for (let i = -720; i <= 720; i += 30) {
+			let dest = i;
+			while (dest < -180) dest += 360;
+			while (dest >= 180) dest -= 360;
+			expect(angleDifference(-45, -45 + i)).toEqual(dest);
+		}
+	});
+});
+
+describe('lerpAngle()', () => {
+	test('should correctly interpolate between the two angles', () => {
+		expect(lerpAngle(0, 10, 0)).toEqual(0);
+		expect(lerpAngle(0, 10, 0.5)).toEqual(5);
+		expect(lerpAngle(0, 10, 1)).toEqual(10);
+
+		expect(lerpAngle(0, 370, 0)).toEqual(0);
+		expect(lerpAngle(0, 370, 0.5)).toEqual(5);
+		expect(lerpAngle(0, 370, 1)).toEqual(10);
+
+		expect(lerpAngle(0, 730, 0)).toEqual(0);
+		expect(lerpAngle(0, 730, 0.5)).toEqual(5);
+		expect(lerpAngle(0, 730, 1)).toEqual(10);
+
+		expect(lerpAngle(0, -350, 0)).toEqual(0);
+		expect(lerpAngle(0, -350, 0.5)).toEqual(5);
+		expect(lerpAngle(0, -350, 1)).toEqual(10);
+
+		expect(lerpAngle(0, -710, 0)).toEqual(0);
+		expect(lerpAngle(0, -710, 0.5)).toEqual(5);
+		expect(lerpAngle(0, -710, 1)).toEqual(10);
 	});
 });

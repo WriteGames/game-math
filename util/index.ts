@@ -1,6 +1,16 @@
 export const EPSILON = 0.000001;
 
 /**
+ * Calculates the angle between two given angles.
+ * @param a Angle a
+ * @param b Angle b
+ * @returns The angle (in degrees) between the two angles
+ */
+export function angleDifference(a: number, b: number): number {
+	return ((((b - a) % 360) + 540) % 360) - 180;
+}
+
+/**
  * Clamps a value within a range.
  * @param val Input value
  * @param min Lower bound
@@ -22,6 +32,18 @@ export function clamp(val: number, min: number, max: number): number {
  */
 export function lerp(a: number, b: number, t: number): number {
 	return t * (b - a) + a;
+}
+
+/**
+ * Linear interpolation between two angles, ensuring the shortest path is taken.
+ * @param a Start angle
+ * @param b End angle
+ * @param t Fractional value to interpolate between and b
+ * @returns Interpolated angle
+ */
+export function lerpAngle(a: number, b: number, t: number): number {
+	const diff = angleDifference(a, b);
+	return t * diff + a;
 }
 
 /**
