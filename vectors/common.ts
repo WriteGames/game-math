@@ -5,6 +5,7 @@ import type {
 	FuncReduceVector,
 } from '../util/index.js';
 import { distance, distanceSq, equal } from '../util/index.js';
+import { type Mat2 } from './mat2.js';
 import { isVec2, Vec2 } from './vec2.js';
 import { isVec3, Vec3 } from './vec3.js';
 import { isVec4, Vec4 } from './vec4.js';
@@ -23,6 +24,14 @@ export type Vector_T =
 	| Readonly<V4_T>;
 
 export type Vector = Vector_T | Vec2 | Vec3 | Vec4;
+
+// DECIDE(bret): Internally, Mat2 uses column-major; however, its constructor
+// takes row-major. This makes the array-based version and the Mat2 version
+// have different interfaces. Will need to think about this
+export type M2_T = [m00: number, m10: number, m01: number, m11: number];
+
+export type Matrix_T = M2_T;
+export type Matrix = Matrix_T | Mat2;
 
 export const V2 = Object.defineProperties(
 	{},
@@ -67,7 +76,7 @@ export const subPos: FuncMapVector = (a, b) => {
 	return a.map((v, i) => v - (b[i] ?? 0)) as typeof a;
 };
 
-export const posEqual: FuncCompare<Vector> = (a, b) => {
+export const posEqual: FuncCompare<Vector | number[]> = (a, b) => {
 	const aa = [...a];
 	const bb = [...b];
 	return aa.length === bb.length && aa.every((v, i) => equal(v, bb[i]));
