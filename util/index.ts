@@ -1,5 +1,28 @@
 export const EPSILON = 0.000001;
 
+/** Tau, approx equivalent to 6.283185. Equals two times Pi */
+export const TAU = Math.PI * 2;
+
+/** Ratio to multiply to convert radians to degrees */
+export const RAD_TO_DEG = 180 / Math.PI;
+
+/**
+ * Converts angle in radians to degrees.
+ * @param rad Radian to convert
+ * @returns Angle in degrees
+ */
+export const radToDeg = (rad: number): number => rad * RAD_TO_DEG;
+
+/** Ratio to multiply to convert degrees to radians */
+export const DEG_TO_RAD = Math.PI / 180;
+
+/**
+ * Converts angle in degrees to radians.
+ * @param deg Degree to convert
+ * @returns Angle in radians
+ */
+export const degToRad = (deg: number): number => deg * DEG_TO_RAD;
+
 /**
  * Calculates the angle between two given angles.
  * @param a Angle a
