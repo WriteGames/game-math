@@ -30,11 +30,19 @@ export class Vec2 extends Array<number> {
 		return new Vec2(1, 1);
 	}
 
+	static get left(): Vec2 {
+		return new Vec2(-1, 0);
+	}
+
 	static get right(): Vec2 {
 		return new Vec2(1, 0);
 	}
 
 	static get up(): Vec2 {
+		return new Vec2(0, -1);
+	}
+
+	static get down(): Vec2 {
 		return new Vec2(0, 1);
 	}
 
@@ -81,13 +89,6 @@ export class Vec2 extends Array<number> {
 		thisArg?: unknown,
 	): [U, U] {
 		return super.map(callbackfn, thisArg) as [U, U];
-	}
-
-	every<S extends number>(
-		predicate: (value: number, index: number, array: number[]) => boolean,
-		thisArg?: unknown,
-	): this is S[] {
-		return super.every(predicate, thisArg);
 	}
 
 	join(separator?: string): string {

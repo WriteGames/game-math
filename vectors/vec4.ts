@@ -97,13 +97,6 @@ export class Vec4 extends Array<number> {
 		return super.map(callbackfn, thisArg) as [U, U];
 	}
 
-	every<S extends number>(
-		predicate: (value: number, index: number, array: number[]) => boolean,
-		thisArg?: unknown,
-	): this is S[] {
-		return super.every(predicate, thisArg);
-	}
-
 	join(separator?: string): string {
 		return super.join(separator);
 	}

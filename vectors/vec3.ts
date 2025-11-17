@@ -31,12 +31,24 @@ export class Vec3 extends Array<number> {
 		return new Vec3(1, 1, 1);
 	}
 
+	static get left(): Vec3 {
+		return new Vec3(-1, 0, 0);
+	}
+
 	static get right(): Vec3 {
 		return new Vec3(1, 0, 0);
 	}
 
+	static get down(): Vec3 {
+		return new Vec3(0, -1, 0);
+	}
+
 	static get up(): Vec3 {
 		return new Vec3(0, 1, 0);
+	}
+
+	static get back(): Vec3 {
+		return new Vec3(0, 0, -1);
 	}
 
 	static get forward(): Vec3 {
@@ -97,13 +109,6 @@ export class Vec3 extends Array<number> {
 		thisArg?: unknown,
 	): [U, U] {
 		return super.map(callbackfn, thisArg) as [U, U];
-	}
-
-	every<S extends number>(
-		predicate: (value: number, index: number, array: number[]) => boolean,
-		thisArg?: unknown,
-	): this is S[] {
-		return super.every(predicate, thisArg);
 	}
 
 	join(separator?: string): string {

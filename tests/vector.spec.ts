@@ -85,12 +85,20 @@ describe('(Vec) Vector operations', () => {
 				expect(Vec2.one).toEqualVec2([1, 1]);
 			});
 
-			test('Vec2.right should be a Vec2 with all properties set to 0', () => {
+			test('Vec2.left should be a Vec2 set to <-1, 0>', () => {
+				expect(Vec2.left).toEqualVec2([-1, 0]);
+			});
+
+			test('Vec2.right should be a Vec2 set to <1, 0>', () => {
 				expect(Vec2.right).toEqualVec2([1, 0]);
 			});
 
-			test('Vec2.up should be a Vec2 with all properties set to 0', () => {
-				expect(Vec2.up).toEqualVec2([0, 1]);
+			test('Vec2.up should be a Vec2 set to <0, -1>', () => {
+				expect(Vec2.up).toEqualVec2([0, -1]);
+			});
+
+			test('Vec2.down should be a Vec2 set to <0, 1>', () => {
+				expect(Vec2.down).toEqualVec2([0, 1]);
 			});
 		});
 
@@ -205,15 +213,27 @@ describe('(Vec) Vector operations', () => {
 				expect(Vec3.one).toEqualVec3([1, 1, 1]);
 			});
 
-			test('Vec3.right should be a Vec3 with all properties set to 0', () => {
+			test('Vec3.left should be a Vec3 set to <-1, 0, 0>', () => {
+				expect(Vec3.left).toEqualVec3([-1, 0, 0]);
+			});
+
+			test('Vec3.right should be a Vec3 set to <1, 0, 0>', () => {
 				expect(Vec3.right).toEqualVec3([1, 0, 0]);
 			});
 
-			test('Vec3.up should be a Vec3 with all properties set to 0', () => {
+			test('Vec3.down should be a Vec3 set to <0, -1, 0>', () => {
+				expect(Vec3.down).toEqualVec3([0, -1, 0]);
+			});
+
+			test('Vec3.up should be a Vec3 set to <0, 1, 0>', () => {
 				expect(Vec3.up).toEqualVec3([0, 1, 0]);
 			});
 
-			test('Vec3.forward should be a Vec3 with all properties set to 0', () => {
+			test('Vec3.back should be a Vec3 set to <0, 0, -1>', () => {
+				expect(Vec3.back).toEqualVec3([0, 0, -1]);
+			});
+
+			test('Vec3.forward should be a Vec3 set to <0, 0, 1>', () => {
 				expect(Vec3.forward).toEqualVec3([0, 0, 1]);
 			});
 		});
