@@ -1,6 +1,6 @@
+import type { FuncReduceVector } from '../util/functional.js';
 import {
 	addPos,
-	type FuncReduceVector,
 	posEqual,
 	scalePos,
 	subPos,

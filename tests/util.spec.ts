@@ -1,14 +1,17 @@
 import { describe, expect, test } from 'vitest';
 import {
 	clamp,
+	distance,
+	distanceSq,
 	lerp,
 	lerpAngle,
+	lerpAngleDeg,
 	lerpClamp,
 	remap,
 	remapClamp,
 	type V4_T,
 } from '..';
-import { angleDifference } from '../util';
+import { DEG_TO_RAD } from '../util/trig';
 
 interface Test<T extends any[], E extends any> {
 	name: string;
@@ -261,41 +264,89 @@ describe('remapClamp()', () => {
 	});
 });
 
-describe('angleDifference()', () => {
-	test('should return correct delta between angles', () => {
-		expect(angleDifference(-45, -45)).toEqual(0);
-		expect(angleDifference(90, 90)).toEqual(0);
-		expect(angleDifference(777, 777)).toEqual(0);
+describe('lerpAngle()', () => {
+	test('should correctly interpolate between the two angles', () => {
+		expect(lerpAngle(0, DEG_TO_RAD * 10, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * 10, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
+		expect(lerpAngle(0, DEG_TO_RAD * 10, 1)).toBeCloseTo(DEG_TO_RAD * 10);
 
-		for (let i = -720; i <= 720; i += 30) {
-			let dest = i;
-			while (dest < -180) dest += 360;
-			while (dest >= 180) dest -= 360;
-			expect(angleDifference(-45, -45 + i)).toEqual(dest);
-		}
+		expect(lerpAngle(0, DEG_TO_RAD * 370, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * 370, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
+		expect(lerpAngle(0, DEG_TO_RAD * 370, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+
+		expect(lerpAngle(0, DEG_TO_RAD * 730, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * 730, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
+		expect(lerpAngle(0, DEG_TO_RAD * 730, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+
+		expect(lerpAngle(0, DEG_TO_RAD * -350, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * -350, 0.5)).toBeCloseTo(
+			DEG_TO_RAD * 5,
+		);
+		expect(lerpAngle(0, DEG_TO_RAD * -350, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+
+		expect(lerpAngle(0, DEG_TO_RAD * -710, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * -710, 0.5)).toBeCloseTo(
+			DEG_TO_RAD * 5,
+		);
+		expect(lerpAngle(0, DEG_TO_RAD * -710, 1)).toBeCloseTo(DEG_TO_RAD * 10);
 	});
 });
 
-describe('lerpAngle()', () => {
+describe('lerpAngleDeg()', () => {
 	test('should correctly interpolate between the two angles', () => {
-		expect(lerpAngle(0, 10, 0)).toEqual(0);
-		expect(lerpAngle(0, 10, 0.5)).toEqual(5);
-		expect(lerpAngle(0, 10, 1)).toEqual(10);
+		expect(lerpAngleDeg(0, 10, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, 10, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, 10, 1)).toEqual(10);
 
-		expect(lerpAngle(0, 370, 0)).toEqual(0);
-		expect(lerpAngle(0, 370, 0.5)).toEqual(5);
-		expect(lerpAngle(0, 370, 1)).toEqual(10);
+		expect(lerpAngleDeg(0, 370, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, 370, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, 370, 1)).toEqual(10);
 
-		expect(lerpAngle(0, 730, 0)).toEqual(0);
-		expect(lerpAngle(0, 730, 0.5)).toEqual(5);
-		expect(lerpAngle(0, 730, 1)).toEqual(10);
+		expect(lerpAngleDeg(0, 730, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, 730, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, 730, 1)).toEqual(10);
 
-		expect(lerpAngle(0, -350, 0)).toEqual(0);
-		expect(lerpAngle(0, -350, 0.5)).toEqual(5);
-		expect(lerpAngle(0, -350, 1)).toEqual(10);
+		expect(lerpAngleDeg(0, -350, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, -350, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, -350, 1)).toEqual(10);
 
-		expect(lerpAngle(0, -710, 0)).toEqual(0);
-		expect(lerpAngle(0, -710, 0.5)).toEqual(5);
-		expect(lerpAngle(0, -710, 1)).toEqual(10);
+		expect(lerpAngleDeg(0, -710, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, -710, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, -710, 1)).toEqual(10);
+	});
+});
+
+describe('distanceSq()', () => {
+	test('should return squared distance of vector', () => {
+		expect(distanceSq([10])).toEqual(100);
+		expect(distanceSq([-10])).toEqual(100);
+
+		expect(distanceSq([3, 4])).toEqual(25);
+		expect(distanceSq([-3, 4])).toEqual(25);
+		expect(distanceSq([-3, -4])).toEqual(25);
+		expect(distanceSq([3, -4])).toEqual(25);
+
+		expect(distanceSq([3, 4, 5])).toEqual(50);
+		expect(distanceSq([-3, 4, -5])).toEqual(50);
+		expect(distanceSq([-3, -4, -5])).toEqual(50);
+		expect(distanceSq([3, -4, 5])).toEqual(50);
+	});
+});
+
+describe('distanceSq()', () => {
+	test('should return distance of vector', () => {
+		expect(distance([10])).toEqual(10);
+		expect(distance([-10])).toEqual(10);
+
+		expect(distance([3, 4])).toEqual(5);
+		expect(distance([-3, 4])).toEqual(5);
+		expect(distance([-3, -4])).toEqual(5);
+		expect(distance([3, -4])).toEqual(5);
+
+		const sqrt50 = Math.sqrt(50);
+		expect(distance([3, 4, 5])).toEqual(sqrt50);
+		expect(distance([-3, 4, -5])).toEqual(sqrt50);
+		expect(distance([-3, -4, -5])).toEqual(sqrt50);
+		expect(distance([3, -4, 5])).toEqual(sqrt50);
 	});
 });

@@ -1,7 +1,6 @@
+import type { FuncMapVector, FuncReduceVector } from '../util/functional.js';
 import {
 	addPos,
-	type FuncMapVector,
-	type FuncReduceVector,
 	posEqual,
 	scalePos,
 	subPos,

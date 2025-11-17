@@ -1,37 +1,8 @@
-export const EPSILON = 0.000001;
+import { FuncCompare, reduceSum } from './functional.js';
+import { angleDifference, angleDifferenceDeg } from './trig.js';
 
-/** Tau, approx equivalent to 6.283185. Equals two times Pi */
-export const TAU = Math.PI * 2;
-
-/** Ratio to multiply to convert radians to degrees */
-export const RAD_TO_DEG = 180 / Math.PI;
-
-/**
- * Converts angle in radians to degrees.
- * @param rad Radian to convert
- * @returns Angle in degrees
- */
-export const radToDeg = (rad: number): number => rad * RAD_TO_DEG;
-
-/** Ratio to multiply to convert degrees to radians */
-export const DEG_TO_RAD = Math.PI / 180;
-
-/**
- * Converts angle in degrees to radians.
- * @param deg Degree to convert
- * @returns Angle in radians
- */
-export const degToRad = (deg: number): number => deg * DEG_TO_RAD;
-
-/**
- * Calculates the angle between two given angles.
- * @param a Angle a
- * @param b Angle b
- * @returns The angle (in degrees) between the two angles
- */
-export function angleDifference(a: number, b: number): number {
-	return ((((b - a) % 360) + 540) % 360) - 180;
-}
+export * from './functional.js';
+export * from './trig.js';
 
 /**
  * Clamps a value within a range.
@@ -47,6 +18,34 @@ export function clamp(val: number, min: number, max: number): number {
 }
 
 /**
+ * Calculates the distance of a given vector, squared
+ * @param dimensions A vector of any length of dimensions
+ * @returns The squared distance of the vector
+ */
+export function distanceSq(dimensions: number[]): number {
+	return Math.abs(dimensions.map((d) => d ** 2).reduce(reduceSum, 0));
+}
+
+/**
+ * Calculates the distance of a given vector
+ * @param dimensions A vector of any length of dimensions
+ * @returns The distance of the vector
+ */
+export function distance(dimensions: number[]): number {
+	return Math.sqrt(distanceSq(dimensions));
+}
+
+/**
+ * Checks if two values are approximately equal, using an epsilon to account for floating point errors.
+ * @param a Value a
+ * @param b Value b
+ * @returns Whether or not they're about equal
+ */
+export const equal: FuncCompare<number> = (a, b) => {
+	return Math.abs(a - b) < Number.EPSILON;
+};
+
+/**
  * Linear interpolation between two values.
  * @param a Start value
  * @param b End value
@@ -58,7 +57,7 @@ export function lerp(a: number, b: number, t: number): number {
 }
 
 /**
- * Linear interpolation between two angles, ensuring the shortest path is taken.
+ * Linear interpolation between two angles (in radians), ensuring the shortest path is taken.
  * @param a Start angle
  * @param b End angle
  * @param t Fractional value to interpolate between and b
@@ -66,6 +65,18 @@ export function lerp(a: number, b: number, t: number): number {
  */
 export function lerpAngle(a: number, b: number, t: number): number {
 	const diff = angleDifference(a, b);
+	return t * diff + a;
+}
+
+/**
+ * Linear interpolation between two angles (in degrees), ensuring the shortest path is taken.
+ * @param a Start angle
+ * @param b End angle
+ * @param t Fractional value to interpolate between and b
+ * @returns Interpolated angle
+ */
+export function lerpAngleDeg(a: number, b: number, t: number): number {
+	const diff = angleDifferenceDeg(a, b);
 	return t * diff + a;
 }
 

@@ -1,3 +1,10 @@
+import type {
+	FuncCompare,
+	FuncMapVector,
+	FuncMapVectorByScalar,
+	FuncReduceVector,
+} from '../util/index.js';
+import { distance, distanceSq, equal } from '../util/index.js';
 import { isVec2, Vec2 } from './vec2.js';
 import { isVec3, Vec3 } from './vec3.js';
 import { isVec4, Vec4 } from './vec4.js';
@@ -34,21 +41,6 @@ export const V2 = Object.defineProperties(
 	one: V2_T;
 };
 
-export type FuncMapVector<
-	T extends Vector = Vector,
-	AT extends T = T,
-	BT extends T = T,
-> = <A extends AT, B extends BT>(a: A, b: B) => A;
-
-export type FuncCompare<T> = (a: T, b: T) => boolean;
-
-export type FuncMapVectorByScalar = <T extends Vector>(p: T, s: number) => T;
-
-export type FuncReduceVector<T extends Vector = Vector> = (
-	a: T,
-	b: T,
-) => number;
-
 export const hashPos = (pos: Vector): string => pos.join(',');
 
 export const addPos: FuncMapVector = (a, b) => {
@@ -75,10 +67,6 @@ export const subPos: FuncMapVector = (a, b) => {
 	return a.map((v, i) => v - (b[i] ?? 0)) as typeof a;
 };
 
-export const equal: FuncCompare<number> = (a, b) => {
-	return Math.abs(a - b) < Number.EPSILON;
-};
-
 export const posEqual: FuncCompare<Vector> = (a, b) => {
 	const aa = [...a];
 	const bb = [...b];
@@ -91,3 +79,8 @@ export const lengthSq = (a: Vector): number => {
 export const length = (a: Vector): number => {
 	return Math.sqrt(lengthSq(a));
 };
+
+export const posDistance: FuncReduceVector = (a, b) =>
+	distance(subPos(b, a) as number[]);
+export const posDistanceSq: FuncReduceVector = (a, b) =>
+	distanceSq(subPos(b, a) as number[]);
