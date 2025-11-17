@@ -84,3 +84,31 @@ export const posDistance: FuncReduceVector = (a, b) =>
 	distance(subPos(b, a) as number[]);
 export const posDistanceSq: FuncReduceVector = (a, b) =>
 	distanceSq(subPos(b, a) as number[]);
+
+/**
+ * Checks whether a point lies on a line.
+ * @param p The point to test
+ * @param start The start of the line
+ * @param end The end of the line
+ */
+export const isPointOnLine = <T extends Vector>(
+	point: T,
+	a: T,
+	b: T,
+): boolean =>
+	Math.abs(
+		posDistance(a, point) + posDistance(point, b) - posDistance(a, b),
+	) < Number.EPSILON;
+
+/**
+ * Checks whether a point is within bounds. Start is inclusive, end is exclusive.
+ * @param p The point to test
+ * @param start The upper left of the bounds rect
+ * @param end The lower right of the bounds rect
+ */
+export const isWithinBounds = <T extends Vector>(
+	p: T,
+	start: T,
+	end: T,
+): boolean =>
+	p.every((x: number, i: number) => x >= start[i] && x < end[i]) as boolean;

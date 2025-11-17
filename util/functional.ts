@@ -1,4 +1,4 @@
-import type { Vector } from '../vectors';
+import type { Vector } from '../vectors/index.js';
 
 export type FuncReduceNumber = (acc: number, v: number) => number;
 export type FuncMapVector<

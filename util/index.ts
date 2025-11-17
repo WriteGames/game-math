@@ -1,6 +1,7 @@
 import { FuncCompare, reduceSum } from './functional.js';
 import { angleDifference, angleDifferenceDeg } from './trig.js';
 
+export * from './directions.js';
 export * from './functional.js';
 export * from './trig.js';
 
