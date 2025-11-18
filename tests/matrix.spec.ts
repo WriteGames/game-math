@@ -31,11 +31,13 @@ describe('Matrix operations', () => {
 
 		describe('getters', () => {
 			test('get mXX/[x]', () => {
-				const M00 = 1;
-				const M01 = 2;
-				const M11 = 2;
-				const M10 = 2;
-				const a = new Mat2(M00, M01, M10, M11);
+				const [M00, M01] = [1, 2];
+				const [M11, M10] = [3, 4];
+				// prettier-ignore
+				const a = new Mat2(
+					M00, M01,
+					M10, M11,
+				);
 
 				expect(a.m00).toEqual(M00);
 				expect(a[M2_00]).toEqual(M00);
@@ -53,31 +55,29 @@ describe('Matrix operations', () => {
 
 		describe('setters', () => {
 			test('set mXX/[x]', () => {
-				const M00 = 1;
-				const M01 = 2;
-				const M11 = 2;
-				const M10 = 2;
+				const [M00, M01] = [1, 2];
+				const [M11, M10] = [3, 4];
 				const a = new Mat2();
 
 				a.m00 = M00;
 				expect(a.m00).toEqual(M00);
-				a[M2_00] = M00;
-				expect(a.m00).toEqual(M00);
+				a[M2_00] = -M00;
+				expect(a.m00).toEqual(-M00);
 
 				a.m10 = M01;
 				expect(a.m10).toEqual(M01);
-				a[M2_01] = M01;
-				expect(a.m10).toEqual(M01);
+				a[M2_01] = -M01;
+				expect(a.m10).toEqual(-M01);
 
 				a.m01 = M10;
 				expect(a.m01).toEqual(M10);
-				a[M2_10] = M10;
-				expect(a.m01).toEqual(M10);
+				a[M2_10] = -M10;
+				expect(a.m01).toEqual(-M10);
 
 				a.m11 = M11;
 				expect(a.m11).toEqual(M11);
-				a[M2_11] = M11;
-				expect(a.m11).toEqual(M11);
+				a[M2_11] = -M11;
+				expect(a.m11).toEqual(-M11);
 			});
 		});
 
@@ -132,7 +132,7 @@ describe('Matrix operations', () => {
 		});
 
 		describe('.prototype', () => {
-			test(`.${Mat2.prototype.clone.name}() should return an identical 2z2 matrix`, () => {
+			test(`.${Mat2.prototype.clone.name}() should return an identical 2x2 matrix`, () => {
 				const a = new Mat2(1, 2, 3, 4);
 				const b = a.clone();
 				expect(a).not.toBe(b);
@@ -150,7 +150,6 @@ describe('Matrix operations', () => {
 
 			test(`.${Mat2.prototype.transpose.name}() should transpose the matrix in-place`, () => {
 				const a = new Mat2(1, 2, 3, 4);
-				// TODO(bret): make an expect(a).toChain((v) => v.transpose()) matcher?
 				expect(a).toChain((v) => v.transpose());
 				expect(a).toEqual(new Mat2(1, 3, 2, 4));
 			});

@@ -1,19 +1,26 @@
-import { posEqual } from './common.js';
 import type { M2_T, Matrix, V2_T } from './common.js';
+import { posEqual } from './common.js';
 import { Vec2 } from './vec2.js';
 
-export const isMat2 = (vec: Matrix): vec is Mat2 => {
-	return vec instanceof Mat2;
+export const isMat2 = (mat: Matrix): mat is Mat2 => {
+	return mat instanceof Mat2;
 };
 
+// prettier-ignore
+const INDICES = [
+	0, 2,
+	1, 3,
+]
+
 /** Column 0, Row 0 index */
-const M00 = 0;
+const M00 = INDICES[0];
 /** Column 1, Row 0 index */
-const M10 = 2;
+const M10 = INDICES[1];
+
 /** Column 0, Row 1 index */
-const M01 = 1;
+const M01 = INDICES[2];
 /** Column 1, Row 1 index */
-const M11 = 3;
+const M11 = INDICES[3];
 
 /**
  * A 2x2 matrix. While it is initialized/set as row-major, internally,
@@ -145,10 +152,15 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Returns a 2x2 scale matrix.
-	 * @param x X-scale factor
-	 * @param y Y-scale factor, defaults to X-scale if omitted
-	 * @returns
+	 * @param scale Scale factor
 	 */
+	static scale(scale: number): Mat2;
+	/**
+	 * Returns a 2x2 scale matrix.
+	 * @param x X-scale factor
+	 * @param y Y-scale factor
+	 */
+	static scale(x: number, y: number): Mat2;
 	static scale(x: number, y = x): Mat2 {
 		// prettier-ignore
 		return new Mat2(
