@@ -16,7 +16,6 @@ import {
 	type V2_T,
 	type V3_T,
 	type V4_T,
-	type Vector,
 } from '../index.js';
 import {
 	CROSS3D_A,
@@ -36,7 +35,7 @@ import {
 	VEC4_SUM,
 	VEC_A_W,
 	VEC_A_Z,
-} from './mock-data.js';
+} from './data.mock.js';
 
 describe('(Vec) Vector operations', () => {
 	describe('Vec2', () => {
