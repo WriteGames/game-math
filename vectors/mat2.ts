@@ -130,6 +130,34 @@ export class Mat2 extends Array<number> {
 	}
 
 	/**
+	 * Returns a 2x2 rotation matrix.
+	 * @param angle Angle of rotation
+	 */
+	static rotate(angle: number): Mat2 {
+		const cos = Math.cos(angle);
+		const sin = Math.sin(angle);
+		// prettier-ignore
+		return new Mat2(
+			cos, -sin,
+			sin, cos,
+		);
+	}
+
+	/**
+	 * Returns a 2x2 scale matrix.
+	 * @param x X-scale factor
+	 * @param y Y-scale factor, defaults to X-scale if omitted
+	 * @returns
+	 */
+	static scale(x: number, y = x): Mat2 {
+		// prettier-ignore
+		return new Mat2(
+			x, 0,
+			0, y,
+		);
+	}
+
+	/**
 	 * Returns the determinant of a matrix
 	 * @param m Input matrix
 	 * @returns Determinant

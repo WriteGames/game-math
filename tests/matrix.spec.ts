@@ -88,13 +88,51 @@ describe('Matrix operations', () => {
 		});
 
 		describe('static properties', () => {
-			test('.identity should return the 2x2 identity matrix', () => {
+			test(`.identity should return the 2x2 identity matrix`, () => {
 				expect(Mat2.identity).toEqual([1, 0, 0, 1]);
+			});
+
+			test(`.${Mat2.rotate.name}() should return a 2x2 rotation matrix`, () => {
+				const a = Mat2.rotate(0);
+				expect(a).toEqualMat2([1, 0, -0, 1]);
+
+				const b = Mat2.rotate(Math.PI / 2);
+				expect(b).toEqualMat2([0, 1, -1, 0]);
+
+				const c = Mat2.rotate(Math.PI);
+				expect(c).toEqualMat2([-1, 0, 0, -1]);
+
+				const d = Mat2.rotate((3 * Math.PI) / 2);
+				expect(d).toEqualMat2([0, -1, 1, 0]);
+			});
+
+			describe(`.${Mat2.scale.name}`, () => {
+				test(`should return a 2x2 scale matrix (one arg)`, () => {
+					const a = Mat2.scale(0);
+					expect(a).toEqualMat2([0, 0, 0, 0]);
+
+					const b = Mat2.scale(1);
+					expect(b).toEqualMat2([1, 0, 0, 1]);
+
+					const c = Mat2.scale(7.7);
+					expect(c).toEqualMat2([7.7, 0, 0, 7.7]);
+				});
+
+				test(`should return a 2x2 scale matrix (two args)`, () => {
+					const a = Mat2.scale(0, 0);
+					expect(a).toEqualMat2([0, 0, 0, 0]);
+
+					const b = Mat2.scale(1, 1);
+					expect(b).toEqualMat2([1, 0, 0, 1]);
+
+					const c = Mat2.scale(6.7, 8.9);
+					expect(c).toEqualMat2([6.7, 0, 0, 8.9]);
+				});
 			});
 		});
 
 		describe('.prototype', () => {
-			test(`.${Mat2.prototype.clone.name}() should return an identical matrix`, () => {
+			test(`.${Mat2.prototype.clone.name}() should return an identical 2z2 matrix`, () => {
 				const a = new Mat2(1, 2, 3, 4);
 				const b = a.clone();
 				expect(a).not.toBe(b);
