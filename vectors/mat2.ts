@@ -1,6 +1,6 @@
-import { posEqual } from './common';
-import type { M2_T, Matrix, V2_T } from './common';
-import { Vec2 } from './vec2';
+import { posEqual } from './common.js';
+import type { M2_T, Matrix, V2_T } from './common.js';
+import { Vec2 } from './vec2.js';
 
 export const isMat2 = (vec: Matrix): vec is Mat2 => {
 	return vec instanceof Mat2;
