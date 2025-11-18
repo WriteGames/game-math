@@ -1,15 +1,34 @@
 import { posEqual } from './common';
-import type { M2_T, V2_T } from './common';
+import type { M2_T, Matrix, V2_T } from './common';
 import { Vec2 } from './vec2';
 
-const M00 = 0; // Top Left
-const M10 = 2; // Top Right
-const M01 = 1; // Bottom Left
-const M11 = 3; // Bottom Right
+export const isMat2 = (vec: Matrix): vec is Mat2 => {
+	return vec instanceof Mat2;
+};
 
+/** Column 0, Row 0 index */
+const M00 = 0;
+/** Column 1, Row 0 index */
+const M10 = 2;
+/** Column 0, Row 1 index */
+const M01 = 1;
+/** Column 1, Row 1 index */
+const M11 = 3;
+
+/**
+ * A 2x2 matrix. While it is initialized/set as row-major, internally,
+ * it represents itself as column-major
+ */
 export class Mat2 extends Array<number> {
 	// length: 4 = 4 as const;
 
+	/**
+	 * Uninitialized values defaults to the 2x2 identity matrix.
+	 * @param m00 Element at column 0, row 0
+	 * @param m10 Element at column 1, row 0
+	 * @param m01 Element at column 0, row 1
+	 * @param m11 Element at column 1, row 1
+	 */
 	constructor(m00 = 1, m10 = 0, m01 = 0, m11 = 1) {
 		// prettier-ignore
 		super(
@@ -18,10 +37,14 @@ export class Mat2 extends Array<number> {
 		);
 	}
 
+	/**
+	 * Creates an instance of the 2x2 identity matrix.
+	 */
 	static get identity(): Mat2 {
 		return new Mat2(1, 0, 0, 1);
 	}
 
+	/** Element at column 0, row 0 */
 	get m00(): number {
 		return this[M00];
 	}
@@ -29,6 +52,7 @@ export class Mat2 extends Array<number> {
 		this[M00] = value;
 	}
 
+	/** Element at column 1, row 0 */
 	get m10(): number {
 		return this[M10];
 	}
@@ -36,6 +60,7 @@ export class Mat2 extends Array<number> {
 		this[M10] = value;
 	}
 
+	/** Element at column 0, row 1 */
 	get m01(): number {
 		return this[M01];
 	}
@@ -43,6 +68,7 @@ export class Mat2 extends Array<number> {
 		this[M01] = value;
 	}
 
+	/** Element at column 1, row 1 */
 	get m11(): number {
 		return this[M11];
 	}
@@ -50,6 +76,10 @@ export class Mat2 extends Array<number> {
 		this[M11] = value;
 	}
 
+	/**
+	 * Creates a clone of the matrix.
+	 * @returns A new matrix
+	 */
 	clone(): Mat2 {
 		// prettier-ignore
 		return new Mat2(
@@ -58,6 +88,10 @@ export class Mat2 extends Array<number> {
 		);
 	}
 
+	/**
+	 * Sets the matrix to the 2x2 identity matrix
+	 * @returns this
+	 */
 	setIdentity(): this {
 		this[M00] = 1;
 		this[M01] = 0;
@@ -66,6 +100,14 @@ export class Mat2 extends Array<number> {
 		return this;
 	}
 
+	/**
+	 * Sets the matrix to new values
+	 * @param m00 Element at column 0, row 0
+	 * @param m10 Element at column 1, row 0
+	 * @param m01 Element at column 0, row 1
+	 * @param m11 Element at column 1, row 1
+	 * @returns this
+	 */
 	set(m00: number, m01: number, m10: number, m11: number): this {
 		this[M00] = m00;
 		this[M01] = m10;
@@ -74,33 +116,87 @@ export class Mat2 extends Array<number> {
 		return this;
 	}
 
-	static determinant = (m: Mat2 | M2_T): number => determinant2D(m);
+	/**
+	 * Sets this matrix to the values of another matrix.
+	 * @param m New values
+	 * @returns this
+	 */
+	setMat2(m: Mat2 | M2_T): this {
+		this[M00] = m[M00];
+		this[M01] = m[M01];
+		this[M10] = m[M10];
+		this[M11] = m[M11];
+		return this;
+	}
+
+	/**
+	 * Returns the determinant of a matrix
+	 * @param m Input matrix
+	 * @returns Determinant
+	 */
+	static determinant = (m: Mat2 | M2_T): number => determinantM2(m);
+	/**
+	 * Returns the matrix's determinant
+	 * @returns Determinant
+	 */
 	determinant(): number {
 		return Mat2.determinant(this);
 	}
 
+	/**
+	 * Transposes a matrix
+	 * @param m Input matrix
+	 * @returns New, transposed matrix
+	 */
 	static transpose = <T extends Mat2 | M2_T>(m: T): T => transpose2D(m);
+	/**
+	 * Transposes the matrix in-place
+	 * @returns this
+	 */
 	transpose(): this {
-		return Mat2.transpose(this);
+		return this.setMat2(Mat2.transpose(this));
 	}
 
-	// DECIDE(bret): how do we want to do the static method for multiply, since it's going to return a new value? Does Mat2.map() return a new Mat2 instance or just a generic array? Does a static method even make sense here?
+	/**
+	 * Multiplies the matrices (left x right) left to right.
+	 * @param left Matrix a
+	 * @param right Matrix b
+	 * @returns The product of the two matrices
+	 */
+	static multiply = <T extends Mat2 | M2_T>(left: T, right: Mat2 | M2_T): T =>
+		multiplyM2M2(left, right);
 
-	static multiply = (left: Mat2 | M2_T, right: Mat2 | M2_T): Mat2 =>
-		multiply2D(left, right);
-	#multiply(left: Mat2 | M2_T, right: Mat2 | M2_T): this {
-		const result = Mat2.multiply(left, right);
-		this[M00] = result[M00];
-		this[M10] = result[M10];
-		this[M01] = result[M01];
-		this[M11] = result[M11];
-		return this;
+	/**
+	 * Multiplies the matrices (this x other) left to right.
+	 * @param other
+	 * @returns The product of the two matrices
+	 */
+	multiply(other: Mat2 | M2_T): this {
+		return this.setMat2(Mat2.multiply([...this], other));
 	}
 
-	multiply(m: Mat2 | M2_T): this {
-		return this.#multiply([...this], m);
+	/**
+	 * Multiplies the matrices (this x other) right to left.
+	 * @param other
+	 * @returns The product of the two matrices
+	 */
+	multiplyRTL(other: Mat2 | M2_T): this {
+		return this.setMat2(Mat2.multiply(other, [...this]));
 	}
 
+	/**
+	 * Alias for multiplyRTL. Multiplies the matrices (this x other) right to left.
+	 * @param other
+	 * @returns The product of the two matrices
+	 */
+	postMultiply(m: Mat2 | M2_T): this {
+		return this.multiplyRTL(m);
+	}
+
+	/**
+	 * Inverts the matrix in-place.
+	 * @returns this
+	 */
 	invert(): this {
 		const invDeterminant = 1 / this.determinant();
 		const temp = this[M00];
@@ -111,45 +207,89 @@ export class Mat2 extends Array<number> {
 		return this;
 	}
 
+	/**
+	 * Check if two matrices are equal to one another.
+	 * @param a Matrix a
+	 * @param b Matrix b
+	 * @returns Equality result
+	 */
 	static equal = (a: Mat2, b: Mat2 | M2_T): boolean => posEqual(a, b);
-	equal(v: Mat2 | M2_T): boolean {
-		return Mat2.equal(this, v);
+	/**
+	 * Check if this matrix is equal to another.
+	 * @param m Other matrix
+	 * @returns Equality result
+	 */
+	equal(m: Mat2 | M2_T): boolean {
+		return Mat2.equal(this, m);
 	}
 }
 
+/**
+ * Transposes a matrix
+ * @param m Input matrix
+ * @returns New, transposed matrix
+ */
 export const transpose2D = <T extends Mat2 | M2_T>(m: T): T => {
 	if (m.length !== 4) throw new Error('not a valid 2x2 matrix');
-	let temp = m[M10];
-	m[M10] = m[M01];
-	m[M01] = temp;
-	return m;
+	const result = (isMat2(m) ? m.clone() : [...m]) as typeof m;
+	const temp = result[M01];
+	result[M01] = result[M10];
+	result[M10] = temp;
+	return result;
 };
 
+/**
+ * Throws an error if input is not a 2x2 matrix.
+ * @param m Input matrix
+ */
 const assertMat2 = (m: Mat2 | M2_T): void => {
 	if (m.length !== 4) throw new Error('not a valid 2x2 matrix');
 };
 
-const assertVec2 = (m: Vec2 | V2_T): void => {
-	if (m.length !== 2) throw new Error('not a valid 2D vector');
+/**
+ * Throws an error if input is not a 2D array
+ * @param m Input matrix
+ */
+const assertVec2 = (v: Vec2 | V2_T): void => {
+	if (v.length !== 2) throw new Error('not a valid 2D vector');
 };
 
-export const determinant2D = (m: Mat2 | M2_T): number => {
+/**
+ * Computes the determinant of a matrix.
+ * @param m Input matrix
+ * @returns Determinant
+ */
+export const determinantM2 = (m: Mat2 | M2_T): number => {
 	assertMat2(m);
 	return m[M00] * m[M11] - m[M10] * m[M01];
 };
 
-// DECIDE(bret): do we want to return a Mat2 or M2_T? Do it conditionally?
-export const multiply2D = (left: Mat2 | M2_T, right: Mat2 | M2_T): Mat2 => {
+/**
+ * Multiplies the matrices (left x right) left to right.
+ * @param left Matrix a
+ * @param right Matrix b
+ * @returns The product of the two matrices
+ */
+export const multiplyM2M2 = <T extends Mat2 | M2_T>(
+	left: T,
+	right: Mat2 | M2_T,
+): T => {
 	assertMat2(left);
 	assertMat2(right);
-	const result = new Mat2();
+	const result = (isMat2(left) ? new Mat2() : [1, 0, 0, 1]) as typeof left;
 	result[M00] = left[M00] * right[M00] + left[M10] * right[M01];
-	result[M10] = left[M00] * right[M10] + left[M10] * right[M11];
 	result[M01] = left[M01] * right[M00] + left[M11] * right[M01];
+	result[M10] = left[M00] * right[M10] + left[M10] * right[M11];
 	result[M11] = left[M01] * right[M10] + left[M11] * right[M11];
 	return result;
 };
 
+/**
+ * Multiplies a 2x2 matrix by a 2D vector
+ * @param m Matrix
+ * @param v Vector
+ * @returns Product (2D Vector)
+ */
 export const multiplyM2V2 = (m: Mat2 | M2_T, v: Vec2 | V2_T): Vec2 => {
 	assertMat2(m);
 	assertVec2(v);
