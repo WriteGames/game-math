@@ -7,6 +7,7 @@ import type {
 import { distance, distanceSq, equal } from '../util/index.js';
 import { type Mat2 } from './mat2.js';
 import { type Mat3 } from './mat3.js';
+import { type Mat4 } from './mat4.js';
 import { isVec2, Vec2 } from './vec2.js';
 import { isVec3, Vec3 } from './vec3.js';
 import { isVec4, Vec4 } from './vec4.js';
@@ -41,9 +42,16 @@ export type M3_T = [
 	m01: number, m11: number, m21: number,
 	m02: number, m12: number, m22: number,
 ];
+// prettier-ignore
+export type M4_T = [
+	m00: number, m10: number, m20: number, m30: number,
+	m01: number, m11: number, m21: number, m31: number,
+	m02: number, m12: number, m22: number, m32: number,
+	m03: number, m13: number, m23: number, m33: number,
+];
 
-export type Matrix_T = M2_T | M3_T;
-export type Matrix = Matrix_T | Mat2 | Mat3;
+export type Matrix_T = M2_T | M3_T | M4_T;
+export type Matrix = Matrix_T | Mat2 | Mat3 | Mat4;
 
 export const V2 = Object.defineProperties(
 	{},
