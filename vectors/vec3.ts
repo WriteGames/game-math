@@ -196,5 +196,5 @@ export const crossProduct3D: FuncMapVector<Vec3 | V3_T> = (a, b) => {
 };
 export const dotProduct3D: FuncReduceVector<Vec3 | V3_T> = (a, b) =>
 	a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z];
-export const magnitude3D = (v: Vec3): number =>
+export const magnitude3D = (v: Vec3 | V3_T): number =>
 	Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2);

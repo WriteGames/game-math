@@ -2,6 +2,10 @@ import type { M2_T, Matrix, V2_T } from './common.js';
 import { posEqual } from './common.js';
 import { Vec2 } from './vec2.js';
 
+// TYPE(bret): Find a home for these
+type Mat2Like = Mat2 | M2_T;
+type Vec2Like = Vec2 | V2_T;
+
 export const isMat2 = (mat: Matrix): mat is Mat2 => {
 	return mat instanceof Mat2;
 };
@@ -10,7 +14,7 @@ export const isMat2 = (mat: Matrix): mat is Mat2 => {
 const INDICES = [
 	0, 2,
 	1, 3,
-]
+] as const;
 
 /** Column 0, Row 0 index */
 const M00 = INDICES[0];
@@ -128,7 +132,7 @@ export class Mat2 extends Array<number> {
 	 * @param m New values
 	 * @returns this
 	 */
-	setMat2(m: Mat2 | M2_T): this {
+	setMat2(m: Mat2Like): this {
 		this[M00] = m[M00];
 		this[M01] = m[M01];
 		this[M10] = m[M10];
@@ -174,7 +178,7 @@ export class Mat2 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns Determinant
 	 */
-	static determinant = (m: Mat2 | M2_T): number => determinantM2(m);
+	static determinant = (m: Mat2Like): number => determinantM2(m);
 	/**
 	 * Returns the matrix's determinant
 	 * @returns Determinant
@@ -188,7 +192,7 @@ export class Mat2 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns New, transposed matrix
 	 */
-	static transpose = <T extends Mat2 | M2_T>(m: T): T => transpose2D(m);
+	static transpose = <T extends Mat2Like>(m: T): T => transpose2D(m);
 	/**
 	 * Transposes the matrix in-place
 	 * @returns this
@@ -203,7 +207,7 @@ export class Mat2 extends Array<number> {
 	 * @param right Matrix b
 	 * @returns The product of the two matrices
 	 */
-	static multiply = <T extends Mat2 | M2_T>(left: T, right: Mat2 | M2_T): T =>
+	static multiply = <T extends Mat2Like>(left: T, right: Mat2Like): T =>
 		multiplyM2M2(left, right);
 
 	/**
@@ -211,7 +215,7 @@ export class Mat2 extends Array<number> {
 	 * @param other
 	 * @returns The product of the two matrices
 	 */
-	multiply(other: Mat2 | M2_T): this {
+	multiply(other: Mat2Like): this {
 		return this.setMat2(Mat2.multiply([...this], other));
 	}
 
@@ -220,7 +224,7 @@ export class Mat2 extends Array<number> {
 	 * @param other
 	 * @returns The product of the two matrices
 	 */
-	multiplyRTL(other: Mat2 | M2_T): this {
+	multiplyRTL(other: Mat2Like): this {
 		return this.setMat2(Mat2.multiply(other, [...this]));
 	}
 
@@ -229,7 +233,7 @@ export class Mat2 extends Array<number> {
 	 * @param other
 	 * @returns The product of the two matrices
 	 */
-	postMultiply(m: Mat2 | M2_T): this {
+	postMultiply(m: Mat2Like): this {
 		return this.multiplyRTL(m);
 	}
 
@@ -253,13 +257,13 @@ export class Mat2 extends Array<number> {
 	 * @param b Matrix b
 	 * @returns Equality result
 	 */
-	static equal = (a: Mat2, b: Mat2 | M2_T): boolean => posEqual(a, b);
+	static equal = (a: Mat2, b: Mat2Like): boolean => posEqual(a, b);
 	/**
 	 * Check if this matrix is equal to another.
 	 * @param m Other matrix
 	 * @returns Equality result
 	 */
-	equal(m: Mat2 | M2_T): boolean {
+	equal(m: Mat2Like): boolean {
 		return Mat2.equal(this, m);
 	}
 }
@@ -269,7 +273,7 @@ export class Mat2 extends Array<number> {
  * @param m Input matrix
  * @returns New, transposed matrix
  */
-export const transpose2D = <T extends Mat2 | M2_T>(m: T): T => {
+export const transpose2D = <T extends Mat2Like>(m: T): T => {
 	if (m.length !== 4) throw new Error('not a valid 2x2 matrix');
 	const result = (isMat2(m) ? m.clone() : [...m]) as typeof m;
 	const temp = result[M01];
@@ -282,7 +286,7 @@ export const transpose2D = <T extends Mat2 | M2_T>(m: T): T => {
  * Throws an error if input is not a 2x2 matrix.
  * @param m Input matrix
  */
-const assertMat2 = (m: Mat2 | M2_T): void => {
+const assertMat2 = (m: Mat2Like): void => {
 	if (m.length !== 4) throw new Error('not a valid 2x2 matrix');
 };
 
@@ -290,7 +294,7 @@ const assertMat2 = (m: Mat2 | M2_T): void => {
  * Throws an error if input is not a 2D array
  * @param m Input matrix
  */
-const assertVec2 = (v: Vec2 | V2_T): void => {
+const assertVec2 = (v: Vec2Like): void => {
 	if (v.length !== 2) throw new Error('not a valid 2D vector');
 };
 
@@ -299,7 +303,7 @@ const assertVec2 = (v: Vec2 | V2_T): void => {
  * @param m Input matrix
  * @returns Determinant
  */
-export const determinantM2 = (m: Mat2 | M2_T): number => {
+export const determinantM2 = (m: Mat2Like): number => {
 	assertMat2(m);
 	return m[M00] * m[M11] - m[M10] * m[M01];
 };
@@ -310,9 +314,9 @@ export const determinantM2 = (m: Mat2 | M2_T): number => {
  * @param right Matrix b
  * @returns The product of the two matrices
  */
-export const multiplyM2M2 = <T extends Mat2 | M2_T>(
+export const multiplyM2M2 = <T extends Mat2Like>(
 	left: T,
-	right: Mat2 | M2_T,
+	right: Mat2Like,
 ): T => {
 	assertMat2(left);
 	assertMat2(right);
@@ -330,7 +334,7 @@ export const multiplyM2M2 = <T extends Mat2 | M2_T>(
  * @param v Vector
  * @returns Product (2D Vector)
  */
-export const multiplyM2V2 = (m: Mat2 | M2_T, v: Vec2 | V2_T): Vec2 => {
+export const multiplyM2V2 = (m: Mat2Like, v: Vec2Like): Vec2 => {
 	assertMat2(m);
 	assertVec2(v);
 	const result = new Vec2();
