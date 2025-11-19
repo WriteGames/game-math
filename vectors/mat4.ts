@@ -1,12 +1,15 @@
-import type { M4_T, Matrix, V3_T, V4_T } from './common.js';
+import type {
+	M4_T,
+	Mat4Like,
+	Matrix,
+	V4_T,
+	Vec3Like,
+	Vec4Like,
+} from './common.js';
 import { posEqual } from './common.js';
-import { magnitude3D, type Vec3 } from './vec3.js';
+import { Mat3 } from './mat3.js';
+import { magnitude3D, Vec3 } from './vec3.js';
 import { Vec4 } from './vec4.js';
-
-// TYPE(bret): Find a home for these
-type Mat4Like = Mat4 | M4_T;
-type Vec3Like = Vec3 | V3_T;
-type Vec4Like = Vec4 | V4_T;
 
 export const isMat4 = (mat: Matrix): mat is Mat4 => {
 	return mat instanceof Mat4;
@@ -676,25 +679,6 @@ export class Mat4 extends Array<number> {
 	 * @returns this
 	 */
 	invert(): this {
-		function invertM4(m: Mat4) {
-			throw new Error('not yet implemented');
-			// const cross = new Mat4();
-
-			// cross.col0 = m.col1.cross(m.col2);
-			// cross.col1 = m.col2.cross(m.col0);
-			// cross.col2 = m.col0.cross(m.col1);
-
-			// const invDet = 1 / cross.col2.dot(m.col2);
-
-			// const result = new Mat4();
-
-			// result.col0 = cross.col0.scale(invDet);
-			// result.col1 = cross.col1.scale(invDet);
-			// result.col2 = cross.col2.scale(invDet);
-
-			// return result.transpose();
-		}
-
 		return this.setMat4(invertM4(this));
 	}
 
@@ -721,8 +705,7 @@ export class Mat4 extends Array<number> {
  * @returns New, transposed matrix
  */
 export const transpose4D = <T extends Mat4Like>(m: T): T => {
-	if (m.length !== 9) throw new Error('not a valid 4x4 matrix');
-	throw new Error('not yet implemented');
+	if (m.length !== 16) throw new Error('not a valid 4x4 matrix');
 
 	const result = (isMat4(m) ? m.clone() : [...m]) as typeof m;
 
@@ -734,9 +717,21 @@ export const transpose4D = <T extends Mat4Like>(m: T): T => {
 	result[M02] = result[M20];
 	result[M20] = temp;
 
+	temp = result[M03];
+	result[M03] = result[M30];
+	result[M30] = temp;
+
 	temp = result[M12];
 	result[M12] = result[M21];
 	result[M21] = temp;
+
+	temp = result[M13];
+	result[M13] = result[M31];
+	result[M31] = temp;
+
+	temp = result[M23];
+	result[M23] = result[M32];
+	result[M32] = temp;
 
 	return result;
 };
@@ -746,7 +741,7 @@ export const transpose4D = <T extends Mat4Like>(m: T): T => {
  * @param m Input matrix
  */
 const assertMat4 = (m: Mat4Like): void => {
-	if (m.length !== 9) throw new Error('not a valid 4x4 matrix');
+	if (m.length !== 16) throw new Error('not a valid 4x4 matrix');
 };
 
 /**
@@ -754,7 +749,7 @@ const assertMat4 = (m: Mat4Like): void => {
  * @param m Input matrix
  */
 const assertVec4 = (v: Vec4Like): void => {
-	if (v.length !== 3) throw new Error('not a valid 2D vector');
+	if (v.length !== 4) throw new Error('not a valid 4D vector');
 };
 
 /**
@@ -764,11 +759,36 @@ const assertVec4 = (v: Vec4Like): void => {
  */
 export const determinantM4 = (m: Mat4Like): number => {
 	assertMat4(m);
-	throw new Error('not yet implemented');
+
+	// prettier-ignore
+	const a0 = new Mat3(
+		m[M11], m[M21], m[M31],
+		m[M12], m[M22], m[M32],
+		m[M13], m[M23], m[M33],
+	);
+	// prettier-ignore
+	const a1 = new Mat3(
+		m[M01], m[M21], m[M31],
+		m[M02], m[M22], m[M32],
+		m[M03], m[M23], m[M33],
+	);
+	// prettier-ignore
+	const a2 = new Mat3(
+		m[M01], m[M11], m[M31],
+		m[M02], m[M12], m[M32],
+		m[M03], m[M13], m[M33],
+	);
+	// prettier-ignore
+	const a3 = new Mat3(
+		m[M01], m[M11], m[M21],
+		m[M02], m[M12], m[M22],
+		m[M03], m[M13], m[M23],
+	);
 	return (
-		m[M00] * (m[M22] * m[M11] - m[M12] * m[M21]) +
-		m[M01] * (m[M12] * m[M20] - m[M22] * m[M10]) +
-		m[M02] * (m[M21] * m[M10] - m[M11] * m[M20])
+		m[M00] * a0.determinant() -
+		m[M10] * a1.determinant() +
+		m[M20] * a2.determinant() -
+		m[M30] * a3.determinant()
 	);
 };
 
@@ -781,23 +801,51 @@ export const determinantM4 = (m: Mat4Like): number => {
 export const multiplyM4M4 = <T extends Mat4Like>(l: T, r: Mat4Like): T => {
 	assertMat4(l);
 	assertMat4(r);
-	throw new Error('not yet implemented');
 
-	const result = (
-		isMat4(l) ? new Mat4() : [1, 0, 0, 0, 1, 0, 0, 0, 1]
-	) as typeof l;
+	// prettier-ignore
+	const f = [
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1,
+	] satisfies M4_T;
+	const result = (isMat4(l) ? new Mat4() : f) as typeof l;
 
-	result[M00] = l[M00] * r[M00] + l[M10] * r[M01] + l[M20] * r[M02];
-	result[M01] = l[M01] * r[M00] + l[M11] * r[M01] + l[M21] * r[M02];
-	result[M02] = l[M02] * r[M00] + l[M12] * r[M01] + l[M22] * r[M02];
+	result[M00] =
+		l[M00] * r[M00] + l[M10] * r[M01] + l[M20] * r[M02] + l[M30] * r[M03];
+	result[M01] =
+		l[M01] * r[M00] + l[M11] * r[M01] + l[M21] * r[M02] + l[M31] * r[M03];
+	result[M02] =
+		l[M02] * r[M00] + l[M12] * r[M01] + l[M22] * r[M02] + l[M32] * r[M03];
+	result[M03] =
+		l[M03] * r[M00] + l[M13] * r[M01] + l[M23] * r[M02] + l[M33] * r[M03];
 
-	result[M10] = l[M00] * r[M10] + l[M10] * r[M11] + l[M20] * r[M12];
-	result[M11] = l[M01] * r[M10] + l[M11] * r[M11] + l[M21] * r[M12];
-	result[M12] = l[M02] * r[M10] + l[M12] * r[M11] + l[M22] * r[M12];
+	result[M10] =
+		l[M00] * r[M10] + l[M10] * r[M11] + l[M20] * r[M12] + l[M30] * r[M13];
+	result[M11] =
+		l[M01] * r[M10] + l[M11] * r[M11] + l[M21] * r[M12] + l[M31] * r[M13];
+	result[M12] =
+		l[M02] * r[M10] + l[M12] * r[M11] + l[M22] * r[M12] + l[M32] * r[M13];
+	result[M13] =
+		l[M03] * r[M10] + l[M13] * r[M11] + l[M23] * r[M12] + l[M33] * r[M13];
 
-	result[M20] = l[M00] * r[M20] + l[M10] * r[M21] + l[M20] * r[M22];
-	result[M21] = l[M01] * r[M20] + l[M11] * r[M21] + l[M21] * r[M22];
-	result[M22] = l[M02] * r[M20] + l[M12] * r[M21] + l[M22] * r[M22];
+	result[M20] =
+		l[M00] * r[M20] + l[M10] * r[M21] + l[M20] * r[M22] + l[M30] * r[M23];
+	result[M21] =
+		l[M01] * r[M20] + l[M11] * r[M21] + l[M21] * r[M22] + l[M31] * r[M23];
+	result[M22] =
+		l[M02] * r[M20] + l[M12] * r[M21] + l[M22] * r[M22] + l[M32] * r[M23];
+	result[M23] =
+		l[M03] * r[M20] + l[M13] * r[M21] + l[M23] * r[M22] + l[M33] * r[M23];
+
+	result[M30] =
+		l[M00] * r[M30] + l[M10] * r[M31] + l[M20] * r[M32] + l[M30] * r[M33];
+	result[M31] =
+		l[M01] * r[M30] + l[M11] * r[M31] + l[M21] * r[M32] + l[M31] * r[M33];
+	result[M32] =
+		l[M02] * r[M30] + l[M12] * r[M31] + l[M22] * r[M32] + l[M32] * r[M33];
+	result[M33] =
+		l[M03] * r[M30] + l[M13] * r[M31] + l[M23] * r[M32] + l[M33] * r[M33];
 
 	return result;
 };
@@ -811,10 +859,46 @@ export const multiplyM4M4 = <T extends Mat4Like>(l: T, r: Mat4Like): T => {
 export const multiplyM4V4 = (m: Mat4Like, v: Vec4Like): Vec4 => {
 	assertMat4(m);
 	assertVec4(v);
-	throw new Error('not yet implemented');
+
 	const result = new Vec4();
-	result[0] = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2];
-	result[1] = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2];
-	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2];
+	result[0] = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2] + m[M30] * v[3];
+	result[1] = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2] + m[M31] * v[3];
+	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2] + m[M32] * v[3];
+	result[3] = m[M03] * v[0] + m[M13] * v[1] + m[M23] * v[2] + m[M33] * v[3];
 	return result;
 };
+
+export function invertM4(m: Mat4): Mat4 {
+	const { col0, col1, col2, col3 } = m;
+
+	const C01 = col0.xyz.cross(col1.xyz);
+	const C23 = col2.xyz.cross(col3.xyz);
+	const B10 = col0.xyz.scale(col1.w).sub(col1.xyz.scale(col0.w));
+	const B32 = col2.xyz.scale(col3.w).sub(col3.xyz.scale(col2.w));
+
+	const invDeterminant = 1 / (C01.dot(B32) + C23.dot(B10));
+	C01.scale(invDeterminant);
+	C23.scale(invDeterminant);
+	B10.scale(invDeterminant);
+	B32.scale(invDeterminant);
+
+	const result = new Mat4(...Array.from({ length: 16 }, () => 99));
+	result.col0 = [
+		...col1.xyz.cross(B32).add(Vec3.scale(C23, col1.w)),
+		-col1.xyz.dot(C23),
+	] as V4_T;
+	result.col1 = [
+		...B32.cross(col0.xyz).sub(Vec3.scale(C23, col0.w)),
+		+col0.xyz.dot(C23),
+	] as V4_T;
+	result.col2 = [
+		...col3.xyz.cross(B10).add(Vec3.scale(C01, col3.w)),
+		-col3.xyz.dot(C01),
+	] as V4_T;
+	result.col3 = [
+		...B10.cross(col2.xyz).sub(Vec3.scale(C01, m.column2.w)),
+		+m.column2.xyz.dot(C01),
+	] as V4_T;
+
+	return result.transpose();
+}

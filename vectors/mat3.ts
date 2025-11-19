@@ -1,10 +1,6 @@
-import type { M3_T, Matrix, V3_T } from './common.js';
+import type { Mat3Like, Matrix, Vec3Like } from './common.js';
 import { posEqual } from './common.js';
 import { magnitude3D, Vec3 } from './vec3.js';
-
-// TYPE(bret): Find a home for these
-type Mat3Like = Mat3 | M3_T;
-type Vec3Like = Vec3 | V3_T;
 
 export const isMat3 = (mat: Matrix): mat is Mat3 => {
 	return mat instanceof Mat3;
@@ -525,24 +521,6 @@ export class Mat3 extends Array<number> {
 	 * @returns this
 	 */
 	invert(): this {
-		function invertM3(m: Mat3) {
-			const cross = new Mat3();
-
-			cross.col0 = m.col1.cross(m.col2);
-			cross.col1 = m.col2.cross(m.col0);
-			cross.col2 = m.col0.cross(m.col1);
-
-			const invDet = 1 / cross.col2.dot(m.col2);
-
-			const result = new Mat3();
-
-			result.col0 = cross.col0.scale(invDet);
-			result.col1 = cross.col1.scale(invDet);
-			result.col2 = cross.col2.scale(invDet);
-
-			return result.transpose();
-		}
-
 		return this.setMat3(invertM3(this));
 	}
 
@@ -600,7 +578,7 @@ const assertMat3 = (m: Mat3Like): void => {
  * @param m Input matrix
  */
 const assertVec3 = (v: Vec3Like): void => {
-	if (v.length !== 3) throw new Error('not a valid 2D vector');
+	if (v.length !== 3) throw new Error('not a valid 3D vector');
 };
 
 /**
@@ -661,3 +639,21 @@ export const multiplyM3V3 = (m: Mat3Like, v: Vec3Like): Vec3 => {
 	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2];
 	return result;
 };
+
+export function invertM3(m: Mat3): Mat3 {
+	const cross = new Mat3();
+
+	cross.col0 = m.col1.cross(m.col2);
+	cross.col1 = m.col2.cross(m.col0);
+	cross.col2 = m.col0.cross(m.col1);
+
+	const invDet = 1 / cross.col2.dot(m.col2);
+
+	const result = new Mat3();
+
+	result.col0 = cross.col0.scale(invDet);
+	result.col1 = cross.col1.scale(invDet);
+	result.col2 = cross.col2.scale(invDet);
+
+	return result.transpose();
+}

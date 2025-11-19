@@ -40,12 +40,12 @@ const M4_33 = INDICES[15];
 describe('Matrix operations', () => {
 	// prettier-ignore
 	const mat4DeterminantValues = [
-		2, 1, 3, 4,
-		0, -1, 2, 1,
-		3, 2, 0, 5,
-		-1, 3, 2, 1,
+		2, 1, 0, 3,
+		4, -1, 2, 0,
+		-3, 2, 1, 5,
+		1, 0, -2, 3,
 	] as M4_T;
-	const mat4DeterminantResult = 35;
+	const mat4DeterminantResult = -85;
 
 	describe('class Mat4', () => {
 		describe('constructor', () => {
@@ -57,9 +57,9 @@ describe('Matrix operations', () => {
 			test('should set internal values to column-major', () => {
 				// prettier-ignore
 				const mat4 = new Mat4(
-					1, 2, 3, 4,
-					5, 6, 7, 8,
-					9, 10, 11, 12,
+					 1,  2,  3,  4,
+					 5,  6,  7,  8,
+					 9, 10, 11, 12,
 					13, 14, 15, 16,
 				);
 				// prettier-ignore
@@ -667,26 +667,25 @@ describe('Matrix operations', () => {
 				expect(a.equal(c)).toBeFalsy();
 			});
 
-			test.todo(
-				`.${Mat4.prototype.transpose.name}() should transpose the matrix in-place`,
-				() => {
-					// prettier-ignore
-					const a = new Mat4(
-					1, 2, 3,
-							4, 5, 6,
-							7, 8, 9,
-						);
-					// prettier-ignore
-					const expected = new Mat4(
-					1, 4, 7,
-					2, 5, 8,
-					3, 6, 9,
+			test(`.${Mat4.prototype.transpose.name}() should transpose the matrix in-place`, () => {
+				// prettier-ignore
+				const a = new Mat4(
+					 1,  2,  3,  4,
+					 5,  6,  7,  8,
+					 9, 10, 11, 12,
+					13, 14, 15, 16,
+				);
+				// prettier-ignore
+				const expected = new Mat4(
+					1, 5,  9, 13,
+					2, 6, 10, 14,
+					3, 7, 11, 15,
+					4, 8, 12, 16,
 				);
 
-					expect(a).toChain((v) => v.transpose());
-					expect(a).toEqualMat4(expected);
-				},
-			);
+				expect(a).toChain((v) => v.transpose());
+				expect(a).toEqualMat4(expected);
+			});
 
 			test(`.${Mat4.prototype.setIdentity.name}() should set the matrix to the 4x4 identity matrix`, () => {
 				const a = new Mat4(...Array.from({ length: 16 }, () => 5));
@@ -694,86 +693,104 @@ describe('Matrix operations', () => {
 				expect(a).toEqualMat4(Mat4.identity);
 			});
 
-			test.todo(
-				`.${Mat4.prototype.determinant.name}() should return the determinant`,
-				() => {
-					const a = new Mat4(...mat4DeterminantValues);
-					expect(a.determinant()).toEqual(mat4DeterminantResult);
-				},
-			);
+			test(`.${Mat4.prototype.determinant.name}() should return the determinant`, () => {
+				const a = new Mat4(...mat4DeterminantValues);
+				expect(a.determinant()).toEqual(mat4DeterminantResult);
+			});
 
-			test.todo(
-				`.${Mat4.prototype.invert.name}() should invert the matrix in-place`,
-				() => {
-					const a = new Mat4(...mat4DeterminantValues);
-					const b = a.clone();
-					expect(b).toChain((m) => m.invert());
-					a.multiply(b);
-					expect(a).toEqualMat4(Mat4.identity);
-				},
-			);
+			test(`.${Mat4.prototype.invert.name}() should invert the matrix in-place`, () => {
+				const a = new Mat4(...mat4DeterminantValues);
+				const b = a.clone();
+				expect(b).toChain((m) => m.invert());
+				a.multiply(b);
+				expect(a).toEqualMat4(Mat4.identity);
+			});
 
-			test.todo(
-				`.${Mat4.prototype.multiply.name}() should pre-multiply the matrix by the passed matrix`,
-				() => {
-					const a = new Mat4(1, 2, 3, 4, 5, 6, 7, 8, 9);
-					const b = new Mat4(9, 8, 7, 6, 5, 4, 3, 2, 1);
-					expect(a).toChain((v) => v.multiply(b));
-					// prettier-ignore
-					const expected = new Mat4(
-						30,  24, 18,
-							 84,  69, 54,
-							138, 114, 90,
-						);
-					expect(a).toEqualMat4(expected);
-				},
-			);
+			test(`.${Mat4.prototype.multiply.name}() should pre-multiply the matrix by the passed matrix`, () => {
+				// prettier-ignore
+				const a = new Mat4(
+					 1,  2,  3,  4,
+					 5,  6,  7,  8,
+					 9, 10, 11, 12,
+					13, 14, 15, 16,
+				);
+				// prettier-ignore
+				const b = new Mat4(
+					16, 15, 14, 13,
+					12, 11, 10,  9,
+					 8,  7,  6,  5,
+					 4,  3,  2,  1,
+				);
+				expect(a).toChain((v) => v.multiply(b));
+				// prettier-ignore
+				const expected = [
+					80, 240, 400, 560,
+					70, 214, 358, 502,
+					60, 188, 316, 444,
+					50, 162, 274, 386,
+				] as M4_T;
+				expect(a).toEqualMat4(expected);
+			});
 
 			const multiplyRTLFuncs = ['multiplyRTL', 'postMultiply'] as const;
 			multiplyRTLFuncs.forEach((funcName) => {
-				test.todo(
-					`.${Mat4.prototype[funcName].name}() should post-multiply the matrix by the passed matrix`,
-					() => {
-						const a = new Mat4(1, 2, 3, 4, 5, 6, 7, 8, 9);
-						const b = new Mat4(9, 8, 7, 6, 5, 4, 3, 2, 1);
-						expect(b).toChain((v) => v[funcName](a));
-						// prettier-ignore
-						const expected = new Mat4(
-						30,  24, 18,
-								84,  69, 54,
-								138, 114, 90,
-							);
-						expect(b).toEqualMat4(expected);
-					},
-				);
+				test(`.${Mat4.prototype[funcName].name}() should post-multiply the matrix by the passed matrix`, () => {
+					// prettier-ignore
+					const a = new Mat4(
+						 1,  2,  3,  4,
+						 5,  6,  7,  8,
+						 9, 10, 11, 12,
+						13, 14, 15, 16,
+					);
+					// prettier-ignore
+					const b = new Mat4(
+						16, 15, 14, 13,
+						12, 11, 10,  9,
+						 8,  7,  6,  5,
+						 4,  3,  2,  1,
+					);
+					expect(b).toChain((v) => v[funcName](a));
+					// prettier-ignore
+					const expected = [
+						80, 240, 400, 560,
+						70, 214, 358, 502,
+						60, 188, 316, 444,
+						50, 162, 274, 386,
+					] as M4_T;
+					expect(b).toEqualMat4(expected);
+				});
 			});
 		});
 	});
 
 	describe('Mat4 helper functions', () => {
 		describe(`${transpose4D.name}()`, () => {
+			// prettier-ignore
 			const elements = [
-				1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+				 1,  2,  3,  4,
+				 5,  6,  7,  8,
+				 9, 10, 11, 12,
+				13, 14, 15, 16,
 			] as M4_T;
 			// prettier-ignore
 			const elementsTransposed = [
-						1, 5, 9, 13,
-						2, 6, 10, 14,
-						3, 7, 11, 15,
-						4, 8, 12, 16,
-					] as M4_T;
+				1, 5,  9, 13,
+				2, 6, 10, 14,
+				3, 7, 11, 15,
+				4, 8, 12, 16,
+			] as M4_T;
 
-			test.todo('should transpose a Mat4', () => {
+			test('should transpose a Mat4', () => {
 				expect(transpose4D(new Mat4(...elements))).toEqualMat4(
 					new Mat4(...elementsTransposed),
 				);
 			});
 
-			test.todo('should transpose an array of length 4', () => {
+			test('should transpose an array of length 4', () => {
 				expect(transpose4D(elementsTransposed)).toEqual(elements);
 			});
 
-			test.todo('arrays of invalid length should throw error', () => {
+			test('arrays of invalid length should throw error', () => {
 				expect(() => {
 					transpose4D([0] as unknown as M4_T);
 				}).toThrowError();
@@ -789,20 +806,17 @@ describe('Matrix operations', () => {
 		});
 
 		describe(`${determinantM4.name}()`, () => {
-			test.todo('should return the determinant a Mat4', () => {
+			test('should return the determinant of a Mat4', () => {
 				const a = new Mat4(...mat4DeterminantValues);
 				expect(determinantM4(a)).toEqual(mat4DeterminantResult);
 			});
 
-			test.todo(
-				'should return the determinant of an array of length 4',
-				() => {
-					const a = [...mat4DeterminantValues] as M4_T;
-					expect(determinantM4(a)).toEqual(mat4DeterminantResult);
-				},
-			);
+			test('should return the determinant of an array of length 4', () => {
+				const a = [...mat4DeterminantValues] as M4_T;
+				expect(determinantM4(a)).toEqual(mat4DeterminantResult);
+			});
 
-			test.todo('arrays of invalid length should throw error', () => {
+			test('arrays of invalid length should throw error', () => {
 				expect(() => {
 					determinantM4([0] as unknown as M4_T);
 				}).toThrowError();
@@ -813,100 +827,94 @@ describe('Matrix operations', () => {
 
 				expect(() => {
 					determinantM4([
-						0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+						Array.from({ length: 17 }, () => 0),
 					] as unknown as M4_T);
 				}).toThrowError();
 			});
 		});
 
 		describe(`${multiplyM4M4.name}()`, () => {
-			test.todo('should return the product of two 4x4 matrices', () => {
+			test('should return the product of two 4x4 matrices', () => {
+				// prettier-ignore
 				const a = [
-					1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+					1,  5,  9, 13,
+					2,  6, 10, 14,
+					3,  7, 11, 15,
+					4,  8, 12, 16,
 				] as M4_T;
+				// prettier-ignore
 				const b = [
-					16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1,
+					16, 12, 8, 4,
+					15, 11, 7, 3,
+					14, 10, 6, 2,
+					13,  9, 5, 1,
 				] as M4_T;
 				// prettier-ignore
 				const expected = [
-							90, 114, 138, 0,
-							54,  69,  84, 0,
-							18,  24,  30, 0,
-							0, 0, 0, 0,
-						] as M4_T;
+					80, 240, 400, 560,
+					70, 214, 358, 502,
+					60, 188, 316, 444,
+					50, 162, 274, 386,
+				] as M4_T;
 				expect(multiplyM4M4(a, b)).toEqual(expected);
 			});
 		});
 
 		describe(`${multiplyM4V4.name}() `, () => {
-			test.todo('should return the product of a Mat4 and Vec4', () => {
+			test('should return the product of a Mat4 and Vec4', () => {
 				// prettier-ignore
 				const a = new Mat4(
-						3,  5,  6,
-						7,  8,  9,
-					12, 15, 12,
+					 1,  2,  3,  4,
+					 5,  6,  7,  8,
+					 9, 10, 11, 12,
+					13, 14, 15, 16,
 				);
-				const b = new Vec4(1, 4, 7, 9);
-				expect(multiplyM4V4(a, b)).toEqualVec4([65, 102, 156, 0]);
+				const b = new Vec4(1, 2, 3, 4);
+				expect(multiplyM4V4(a, b)).toEqualVec4([30, 70, 110, 150]);
 			});
 
-			test.todo(
-				'should return the product of an array of length 16 and an array of length 4',
-				() => {
-					// prettier-ignore
-					const a = [
-							3, 7, 12, 0,
-							5, 8, 15, 0,
-							6, 9, 12, 0,
-							0, 0, 0, 0,
-						] as M4_T;
-					const b = [1, 4, 7, 0] as V4_T;
-					expect(multiplyM4V4(a, b)).toEqualVec4([65, 102, 156, 0]);
-				},
-			);
+			test('should return the product of an array of length 16 and an array of length 4', () => {
+				// prettier-ignore
+				const a = [
+					1, 5,  9, 13,
+					2, 6, 10, 14,
+					3, 7, 11, 15,
+					4, 8, 12, 16,
+				] as M4_T;
+				const b = [1, 2, 3, 4] as V4_T;
+				expect(multiplyM4V4(a, b)).toEqualVec4([30, 70, 110, 150]);
+			});
 
-			test.todo(
-				'arguments should throw error if they are not the correct lengths',
-				() => {
-					expect(() => {
-						multiplyM4V4([0] as unknown as M4_T, [6, 7, 8, 9]);
-					}).toThrowError();
+			test('arguments should throw error if they are not the correct lengths', () => {
+				expect(() => {
+					multiplyM4V4([0] as unknown as M4_T, [6, 7, 8, 9]);
+				}).toThrowError();
 
-					expect(() => {
-						multiplyM4V4(
-							[0, 1, 2] as unknown as M4_T,
-							[6, 7, 8, 9],
-						);
-					}).toThrowError();
+				expect(() => {
+					multiplyM4V4([0, 1, 2] as unknown as M4_T, [6, 7, 8, 9]);
+				}).toThrowError();
 
-					expect(() => {
-						multiplyM4V4(
-							[0, 1, 2, 3, 4] as unknown as M4_T,
-							[6, 7, 8, 9],
-						);
-					}).toThrowError();
+				expect(() => {
+					multiplyM4V4(
+						[0, 1, 2, 3, 4] as unknown as M4_T,
+						[6, 7, 8, 9],
+					);
+				}).toThrowError();
 
-					expect(() => {
-						multiplyM4V4(
-							[
-								1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-								15, 16,
-							],
-							[7] as unknown as V4_T,
-						);
-					}).toThrowError();
+				expect(() => {
+					multiplyM4V4(
+						Array.from({ length: 16 }, () => 1) as M4_T,
+						[7] as unknown as V4_T,
+					);
+				}).toThrowError();
 
-					expect(() => {
-						multiplyM4V4(
-							[
-								1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-								15, 16,
-							],
-							[7, 8, 9, 10] as unknown as V4_T,
-						);
-					}).toThrowError();
-				},
-			);
+				expect(() => {
+					multiplyM4V4(
+						Array.from({ length: 16 }, () => 1) as M4_T,
+						[7, 8, 9, 10, 11] as unknown as V4_T,
+					);
+				}).toThrowError();
+			});
 		});
 	});
 });

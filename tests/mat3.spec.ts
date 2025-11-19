@@ -584,7 +584,7 @@ describe('Matrix operations', () => {
 		});
 
 		describe(`${determinantM3.name}()`, () => {
-			test('should return the determinant a Mat3', () => {
+			test('should return the determinant of a Mat3', () => {
 				const a = new Mat3(...mat3DeterminantValues);
 				expect(determinantM3(a)).toEqual(mat3DeterminantResult);
 			});

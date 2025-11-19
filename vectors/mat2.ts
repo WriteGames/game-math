@@ -1,10 +1,6 @@
-import type { M2_T, Matrix, V2_T } from './common.js';
+import type { Mat2Like, Matrix, Vec2Like } from './common.js';
 import { posEqual } from './common.js';
 import { Vec2 } from './vec2.js';
-
-// TYPE(bret): Find a home for these
-type Mat2Like = Mat2 | M2_T;
-type Vec2Like = Vec2 | V2_T;
 
 export const isMat2 = (mat: Matrix): mat is Mat2 => {
 	return mat instanceof Mat2;

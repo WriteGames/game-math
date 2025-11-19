@@ -343,7 +343,7 @@ describe('Matrix operations', () => {
 		});
 
 		describe(`${determinantM2.name}()`, () => {
-			test('should return the determinant a Mat2', () => {
+			test('should return the determinant of a Mat2', () => {
 				const a = new Mat2(...mat2DeterminantValues);
 				expect(determinantM2(a)).toEqual(mat2DeterminantResult);
 			});

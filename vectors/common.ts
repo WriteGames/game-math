@@ -53,6 +53,15 @@ export type M4_T = [
 export type Matrix_T = M2_T | M3_T | M4_T;
 export type Matrix = Matrix_T | Mat2 | Mat3 | Mat4;
 
+export type Mat2Like = Mat2 | M2_T;
+export type Vec2Like = Vec2 | V2_T;
+
+export type Mat3Like = Mat3 | M3_T;
+export type Vec3Like = Vec3 | V3_T;
+
+export type Mat4Like = Mat4 | M4_T;
+export type Vec4Like = Vec4 | V4_T;
+
 export const V2 = Object.defineProperties(
 	{},
 	{
