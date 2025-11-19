@@ -87,6 +87,87 @@ export class Mat2 extends Array<number> {
 		this[M11] = value;
 	}
 
+	/** Returns row 0 as a Vec2 */
+	get row0(): Vec2 {
+		return new Vec2(this[M00], this[M10]);
+	}
+	set row0(v: Vec2Like) {
+		this[M00] = v[0];
+		this[M10] = v[1];
+	}
+	/** Returns row 1 as a Vec2 */
+	get row1(): Vec2 {
+		return new Vec2(this[M01], this[M11]);
+	}
+	set row1(v: Vec2Like) {
+		this[M01] = v[0];
+		this[M11] = v[1];
+	}
+	/** Returns all rows as an array of Vec2s */
+	get rows(): [Vec2, Vec2] {
+		return [this.row0, this.row1];
+	}
+	set rows(v: [Vec2Like, Vec2Like]) {
+		this.row0 = v[0];
+		this.row1 = v[1];
+	}
+
+	/** Returns column 0 as a Vec2 */
+	get column0(): Vec2 {
+		return new Vec2(this[M00], this[M01]);
+	}
+	set column0(v: Vec2Like) {
+		this[M00] = v[0];
+		this[M01] = v[1];
+	}
+	/** Returns column 1 as a Vec2 */
+	get column1(): Vec2 {
+		return new Vec2(this[M10], this[M11]);
+	}
+	set column1(v: Vec2Like) {
+		this[M10] = v[0];
+		this[M11] = v[1];
+	}
+	/** Returns all columns as an array of Vec2s */
+	get columns(): [Vec2, Vec2] {
+		return [this.col0, this.col1];
+	}
+	set columns(v: [Vec2Like, Vec2Like]) {
+		this.column0 = v[0];
+		this.column1 = v[1];
+	}
+
+	/**
+	 * Alias for column0
+	 * @alias Mat2#column0
+	 */
+	get col0(): Vec2 {
+		return this.column0;
+	}
+	set col0(v: Vec2Like) {
+		this.column0 = v;
+	}
+	/**
+	 * Alias for column1
+	 * @alias Mat2#column1
+	 */
+	get col1(): Vec2 {
+		return this.column1;
+	}
+	set col1(v: Vec2Like) {
+		this.column1 = v;
+	}
+	/**
+	 * Alias for columns
+	 * @alias Mat2#columns
+	 */
+	get cols(): [Vec2, Vec2] {
+		return this.columns;
+	}
+	set cols(v: [Vec2Like, Vec2Like]) {
+		this.columns = v;
+	}
+
 	/**
 	 * Creates a clone of the matrix.
 	 * @returns A new matrix
