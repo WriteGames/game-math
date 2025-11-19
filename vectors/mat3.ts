@@ -1,6 +1,10 @@
 import type { M3_T, Matrix, V3_T } from './common.js';
 import { posEqual } from './common.js';
-import { Vec3 } from './vec3.js';
+import { magnitude3D, Vec3 } from './vec3.js';
+
+// TYPE(bret): Find a home for these
+type Mat3Like = Mat3 | M3_T;
+type Vec3Like = Vec3 | V3_T;
 
 export const isMat3 = (mat: Matrix): mat is Mat3 => {
 	return mat instanceof Mat3;
@@ -151,6 +155,121 @@ export class Mat3 extends Array<number> {
 		this[M22] = value;
 	}
 
+	/** Returns row 0 as a Vec3 */
+	get row0(): Vec3 {
+		return new Vec3(this[M00], this[M10], this[M20]);
+	}
+	set row0(v: Vec3Like) {
+		this[M00] = v[0];
+		this[M10] = v[1];
+		this[M20] = v[2];
+	}
+	/** Returns row 1 as a Vec3 */
+	get row1(): Vec3 {
+		return new Vec3(this[M01], this[M11], this[M21]);
+	}
+	set row1(v: Vec3Like) {
+		this[M01] = v[0];
+		this[M11] = v[1];
+		this[M21] = v[2];
+	}
+	/** Returns row 2 as a Vec3 */
+	get row2(): Vec3 {
+		return new Vec3(this[M02], this[M12], this[M22]);
+	}
+	set row2(v: Vec3Like) {
+		this[M02] = v[0];
+		this[M12] = v[1];
+		this[M22] = v[2];
+	}
+	/** Returns all rows as an array of Vec3s */
+	get rows(): [Vec3, Vec3, Vec3] {
+		return [this.row0, this.row1, this.row2];
+	}
+	set rows(v: [Vec3Like, Vec3Like, Vec3Like]) {
+		this.row0 = v[0];
+		this.row1 = v[1];
+		this.row2 = v[2];
+	}
+
+	/** Returns column 0 as a Vec3 */
+	get column0(): Vec3 {
+		return new Vec3(this[M00], this[M01], this[M02]);
+	}
+	set column0(v: Vec3Like) {
+		this[M00] = v[0];
+		this[M01] = v[1];
+		this[M02] = v[2];
+	}
+	/** Returns column 1 as a Vec3 */
+	get column1(): Vec3 {
+		return new Vec3(this[M10], this[M11], this[M12]);
+	}
+	set column1(v: Vec3Like) {
+		this[M10] = v[0];
+		this[M11] = v[1];
+		this[M12] = v[2];
+	}
+	/** Returns column 2 as a Vec3 */
+	get column2(): Vec3 {
+		return new Vec3(this[M20], this[M21], this[M22]);
+	}
+	set column2(v: Vec3Like) {
+		this[M20] = v[0];
+		this[M21] = v[1];
+		this[M22] = v[2];
+	}
+	/** Returns all columns as an array of Vec3s */
+	get columns(): [Vec3, Vec3, Vec3] {
+		return [this.column0, this.column1, this.column2];
+	}
+	set columns(v: [Vec3Like, Vec3Like, Vec3Like]) {
+		this.column0 = v[0];
+		this.column1 = v[1];
+		this.column2 = v[2];
+	}
+
+	/**
+	 * Alias for column0
+	 * @alias Mat3#column0
+	 */
+	get col0(): Vec3 {
+		return this.column0;
+	}
+	set col0(v: Vec3Like) {
+		this.column0 = v;
+	}
+	/**
+	 * Alias for column1
+	 * @alias Mat3#column1
+	 */
+	get col1(): Vec3 {
+		return this.column1;
+	}
+	set col1(v: Vec3Like) {
+		this.column1 = v;
+	}
+	/**
+	 * Alias for column2
+	 * @alias Mat3#column1
+	 */
+	get col2(): Vec3 {
+		return this.column2;
+	}
+	set col2(v: Vec3Like) {
+		this.column2 = v;
+	}
+	/**
+	 * Alias for columns
+	 * @alias Mat3#columns
+	 */
+	get cols(): [Vec3, Vec3, Vec3] {
+		return this.columns;
+	}
+	set cols(v: [Vec3Like, Vec3Like, Vec3Like]) {
+		this.columns = v;
+	}
+
 	/**
 	 * Creates a clone of the matrix.
 	 * @returns A new matrix
@@ -222,7 +341,7 @@ export class Mat3 extends Array<number> {
 	 * @param m New values
 	 * @returns this
 	 */
-	setMat3(m: Mat3 | M3_T): this {
+	setMat3(m: Mat3Like): this {
 		this[M00] = m[M00];
 		this[M01] = m[M01];
 		this[M02] = m[M02];
@@ -239,18 +358,36 @@ export class Mat3 extends Array<number> {
 	}
 
 	/**
-	 * Returns a 3x3 rotation matrix.
+	 * Returns a 3x3 rotation matrix around an axis.
+	 * @param axis Axis to rotate around
 	 * @param angle Angle of rotation
 	 */
-	static rotate(angle: number): Mat3 {
-		throw new Error('implement');
-		const cos = Math.cos(angle);
-		const sin = Math.sin(angle);
-		// prettier-ignore
-		return new Mat3(
-			cos, -sin,
-			sin, cos,
-		);
+	static rotate(axis: Vec3Like, angle: number): Mat3 {
+		const result = new Mat3();
+
+		let [x, y, z] = axis;
+		const invLen = 1 / magnitude3D(axis);
+		x *= invLen;
+		y *= invLen;
+		z *= invLen;
+
+		const c = Math.cos(angle);
+		const s = Math.sin(angle);
+		const o = 1 - c;
+
+		result[M00] = x * x * o + c;
+		result[M01] = x * y * o + z * s;
+		result[M02] = x * z * o - y * s;
+
+		result[M10] = y * x * o - z * s;
+		result[M11] = y * y * o + c;
+		result[M12] = y * z * o + x * s;
+
+		result[M20] = z * x * o + y * s;
+		result[M21] = z * y * o - x * s;
+		result[M22] = z * z * o + c;
+
+		return result;
 	}
 
 	/**
@@ -324,7 +461,7 @@ export class Mat3 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns Determinant
 	 */
-	static determinant = (m: Mat3 | M3_T): number => determinantM3(m);
+	static determinant = (m: Mat3Like): number => determinantM3(m);
 	/**
 	 * Returns the matrix's determinant
 	 * @returns Determinant
@@ -338,7 +475,7 @@ export class Mat3 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns New, transposed matrix
 	 */
-	static transpose = <T extends Mat3 | M3_T>(m: T): T => transpose3D(m);
+	static transpose = <T extends Mat3Like>(m: T): T => transpose3D(m);
 	/**
 	 * Transposes the matrix in-place
 	 * @returns this
@@ -353,7 +490,7 @@ export class Mat3 extends Array<number> {
 	 * @param right Matrix b
 	 * @returns The product of the two matrices
 	 */
-	static multiply = <T extends Mat3 | M3_T>(left: T, right: Mat3 | M3_T): T =>
+	static multiply = <T extends Mat3Like>(left: T, right: Mat3Like): T =>
 		multiplyM3M3(left, right);
 
 	/**
@@ -361,7 +498,7 @@ export class Mat3 extends Array<number> {
 	 * @param other
 	 * @returns The product of the two matrices
 	 */
-	multiply(other: Mat3 | M3_T): this {
+	multiply(other: Mat3Like): this {
 		return this.setMat3(Mat3.multiply([...this], other));
 	}
 
@@ -370,7 +507,7 @@ export class Mat3 extends Array<number> {
 	 * @param other
 	 * @returns The product of the two matrices
 	 */
-	multiplyRTL(other: Mat3 | M3_T): this {
+	multiplyRTL(other: Mat3Like): this {
 		return this.setMat3(Mat3.multiply(other, [...this]));
 	}
 
@@ -379,7 +516,7 @@ export class Mat3 extends Array<number> {
 	 * @param other
 	 * @returns The product of the two matrices
 	 */
-	postMultiply(m: Mat3 | M3_T): this {
+	postMultiply(m: Mat3Like): this {
 		return this.multiplyRTL(m);
 	}
 
@@ -388,8 +525,25 @@ export class Mat3 extends Array<number> {
 	 * @returns this
 	 */
 	invert(): this {
-		// TODO(bret): Let's implement the cross-product first
-		throw new Error('not yet implemented');
+		function invertM3(m: Mat3) {
+			const cross = new Mat3();
+
+			cross.col0 = m.col1.cross(m.col2);
+			cross.col1 = m.col2.cross(m.col0);
+			cross.col2 = m.col0.cross(m.col1);
+
+			const invDet = 1 / cross.col2.dot(m.col2);
+
+			const result = new Mat3();
+
+			result.col0 = cross.col0.scale(invDet);
+			result.col1 = cross.col1.scale(invDet);
+			result.col2 = cross.col2.scale(invDet);
+
+			return result.transpose();
+		}
+
+		return this.setMat3(invertM3(this));
 	}
 
 	/**
@@ -398,13 +552,13 @@ export class Mat3 extends Array<number> {
 	 * @param b Matrix b
 	 * @returns Equality result
 	 */
-	static equal = (a: Mat3, b: Mat3 | M3_T): boolean => posEqual(a, b);
+	static equal = (a: Mat3, b: Mat3Like): boolean => posEqual(a, b);
 	/**
 	 * Check if this matrix is equal to another.
 	 * @param m Other matrix
 	 * @returns Equality result
 	 */
-	equal(m: Mat3 | M3_T): boolean {
+	equal(m: Mat3Like): boolean {
 		return Mat3.equal(this, m);
 	}
 }
@@ -414,7 +568,7 @@ export class Mat3 extends Array<number> {
  * @param m Input matrix
  * @returns New, transposed matrix
  */
-export const transpose3D = <T extends Mat3 | M3_T>(m: T): T => {
+export const transpose3D = <T extends Mat3Like>(m: T): T => {
 	if (m.length !== 9) throw new Error('not a valid 3x3 matrix');
 	const result = (isMat3(m) ? m.clone() : [...m]) as typeof m;
 
@@ -437,7 +591,7 @@ export const transpose3D = <T extends Mat3 | M3_T>(m: T): T => {
  * Throws an error if input is not a 3x3 matrix.
  * @param m Input matrix
  */
-const assertMat3 = (m: Mat3 | M3_T): void => {
+const assertMat3 = (m: Mat3Like): void => {
 	if (m.length !== 9) throw new Error('not a valid 3x3 matrix');
 };
 
@@ -445,7 +599,7 @@ const assertMat3 = (m: Mat3 | M3_T): void => {
  * Throws an error if input is not a 2D array
  * @param m Input matrix
  */
-const assertVec3 = (v: Vec3 | V3_T): void => {
+const assertVec3 = (v: Vec3Like): void => {
 	if (v.length !== 3) throw new Error('not a valid 2D vector');
 };
 
@@ -454,7 +608,7 @@ const assertVec3 = (v: Vec3 | V3_T): void => {
  * @param m Input matrix
  * @returns Determinant
  */
-export const determinantM3 = (m: Mat3 | M3_T): number => {
+export const determinantM3 = (m: Mat3Like): number => {
 	assertMat3(m);
 	return (
 		m[M00] * (m[M22] * m[M11] - m[M12] * m[M21]) +
@@ -469,10 +623,7 @@ export const determinantM3 = (m: Mat3 | M3_T): number => {
  * @param r Right matrix
  * @returns The product of the two matrices
  */
-export const multiplyM3M3 = <T extends Mat3 | M3_T>(
-	l: T,
-	r: Mat3 | M3_T,
-): T => {
+export const multiplyM3M3 = <T extends Mat3Like>(l: T, r: Mat3Like): T => {
 	assertMat3(l);
 	assertMat3(r);
 
@@ -501,12 +652,12 @@ export const multiplyM3M3 = <T extends Mat3 | M3_T>(
  * @param v Vector
  * @returns Product (2D Vector)
  */
-export const multiplyM3V3 = (m: Mat3 | M3_T, v: Vec3 | V3_T): Vec3 => {
+export const multiplyM3V3 = (m: Mat3Like, v: Vec3Like): Vec3 => {
 	assertMat3(m);
 	assertVec3(v);
-	throw new Error('implement');
 	const result = new Vec3();
-	result[0] = m[M00] * v[0] + m[M10] * v[1];
-	result[1] = m[M01] * v[0] + m[M11] * v[1];
+	result[0] = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2];
+	result[1] = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2];
+	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2];
 	return result;
 };
