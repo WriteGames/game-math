@@ -5,6 +5,9 @@ export * from './directions.js';
 export * from './functional.js';
 export * from './trig.js';
 
+/** A more permissive epsilon than Number.EPSILON */
+export const EPSILON = 0.000001 as const;
+
 /**
  * Clamps a value within a range.
  * @param val Input value
@@ -43,7 +46,7 @@ export function distance(dimensions: number[]): number {
  * @returns Whether or not they're about equal
  */
 export const equal: FuncCompare<number> = (a, b) => {
-	return Math.abs(a - b) < Number.EPSILON;
+	return Math.abs(a - b) < EPSILON;
 };
 
 /**
