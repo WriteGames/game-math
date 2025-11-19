@@ -12,7 +12,7 @@ import {
 const INDICES = [
 	0, 2,
 	1, 3,
-] as const;
+] as const satisfies M2_T;
 
 const M2_00 = INDICES[0];
 const M2_10 = INDICES[1];
@@ -396,7 +396,7 @@ describe('Matrix operations', () => {
 
 				expect(() => {
 					multiplyM2V2([0, 1, 2] as unknown as M2_T, [7, 8]);
-				}).toThrowError();
+				}).toThrowError;
 
 				expect(() => {
 					multiplyM2V2([0, 1, 2, 3, 4] as unknown as M2_T, [7, 8]);

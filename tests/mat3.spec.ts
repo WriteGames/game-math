@@ -9,17 +9,24 @@ import {
 	transpose3D,
 } from '../vectors/mat3.js';
 
-const M2_00 = 0;
-const M2_10 = 1;
-const M2_20 = 2;
+// prettier-ignore
+const INDICES = [
+	0, 3, 6,
+	1, 4, 7,
+	2, 5, 8,
+] as const satisfies M3_T;
 
-const M2_01 = 3;
-const M2_11 = 4;
-const M2_21 = 5;
+const M3_00 = INDICES[0];
+const M3_10 = INDICES[1];
+const M3_20 = INDICES[2];
 
-const M2_02 = 6;
-const M2_12 = 7;
-const M2_22 = 8;
+const M3_01 = INDICES[3];
+const M3_11 = INDICES[4];
+const M3_21 = INDICES[5];
+
+const M3_02 = INDICES[6];
+const M3_12 = INDICES[7];
+const M3_22 = INDICES[8];
 
 describe('Matrix operations', () => {
 	// prettier-ignore
@@ -54,52 +61,52 @@ describe('Matrix operations', () => {
 		});
 
 		describe('getters', () => {
-			const [M00, M01, M02] = [1, 2, 3];
-			const [M10, M11, M12] = [4, 5, 6];
-			const [M20, M21, M22] = [7, 8, 9];
+			const [M00, M10, M20] = [1, 2, 3];
+			const [M01, M11, M21] = [4, 5, 6];
+			const [M02, M12, M22] = [7, 8, 9];
 
 			// prettier-ignore
 			const a = new Mat3(
-				M00, M01, M02,
-				M10, M11, M12,
-				M20, M21, M22,
+				M00, M10, M20,
+				M01, M11, M21,
+				M02, M12, M22,
 			);
 
-			const col0: V3_T = [M00, M10, M20];
-			const col1: V3_T = [M01, M11, M21];
-			const col2: V3_T = [M02, M12, M22];
+			const row0: V3_T = [M00, M10, M20];
+			const row1: V3_T = [M01, M11, M21];
+			const row2: V3_T = [M02, M12, M22];
 
-			const row0: V3_T = [M00, M01, M02];
-			const row1: V3_T = [M10, M11, M12];
-			const row2: V3_T = [M20, M21, M22];
+			const col0: V3_T = [M00, M01, M02];
+			const col1: V3_T = [M10, M11, M12];
+			const col2: V3_T = [M20, M21, M22];
 
 			test('get mXX/[x]', () => {
 				expect(a.m00).toEqual(M00);
-				expect(a[M2_00]).toEqual(M00);
+				expect(a[M3_00]).toEqual(M00);
 
-				expect(a.m10).toEqual(M01);
-				expect(a[M2_01]).toEqual(M01);
+				expect(a.m01).toEqual(M01);
+				expect(a[M3_01]).toEqual(M01);
 
-				expect(a.m20).toEqual(M02);
-				expect(a[M2_02]).toEqual(M02);
+				expect(a.m02).toEqual(M02);
+				expect(a[M3_02]).toEqual(M02);
 
-				expect(a.m01).toEqual(M10);
-				expect(a[M2_10]).toEqual(M10);
+				expect(a.m10).toEqual(M10);
+				expect(a[M3_10]).toEqual(M10);
 
 				expect(a.m11).toEqual(M11);
-				expect(a[M2_11]).toEqual(M11);
+				expect(a[M3_11]).toEqual(M11);
 
-				expect(a.m21).toEqual(M12);
-				expect(a[M2_12]).toEqual(M12);
+				expect(a.m12).toEqual(M12);
+				expect(a[M3_12]).toEqual(M12);
 
-				expect(a.m02).toEqual(M20);
-				expect(a[M2_20]).toEqual(M20);
+				expect(a.m20).toEqual(M20);
+				expect(a[M3_20]).toEqual(M20);
 
-				expect(a.m12).toEqual(M21);
-				expect(a[M2_21]).toEqual(M21);
+				expect(a.m21).toEqual(M21);
+				expect(a[M3_21]).toEqual(M21);
 
 				expect(a.m22).toEqual(M22);
-				expect(a[M2_22]).toEqual(M22);
+				expect(a[M3_22]).toEqual(M22);
 			});
 
 			test('get rows', () => {
@@ -148,47 +155,47 @@ describe('Matrix operations', () => {
 
 				a.m00 = M00;
 				expect(a.m00).toEqual(M00);
-				a[M2_00] = -M00;
+				a[M3_00] = -M00;
 				expect(a.m00).toEqual(-M00);
 
-				a.m10 = M01;
-				expect(a.m10).toEqual(M01);
-				a[M2_01] = -M01;
-				expect(a.m10).toEqual(-M01);
+				a.m01 = M01;
+				expect(a.m01).toEqual(M01);
+				a[M3_01] = -M01;
+				expect(a.m01).toEqual(-M01);
 
-				a.m20 = M02;
-				expect(a.m20).toEqual(M02);
-				a[M2_02] = -M02;
-				expect(a.m20).toEqual(-M02);
+				a.m02 = M02;
+				expect(a.m02).toEqual(M02);
+				a[M3_02] = -M02;
+				expect(a.m02).toEqual(-M02);
 
-				a.m01 = M10;
-				expect(a.m01).toEqual(M10);
-				a[M2_10] = -M10;
-				expect(a.m01).toEqual(-M10);
+				a.m10 = M10;
+				expect(a.m10).toEqual(M10);
+				a[M3_10] = -M10;
+				expect(a.m10).toEqual(-M10);
 
 				a.m11 = M11;
 				expect(a.m11).toEqual(M11);
-				a[M2_11] = -M11;
+				a[M3_11] = -M11;
 				expect(a.m11).toEqual(-M11);
 
-				a.m21 = M12;
-				expect(a.m21).toEqual(M12);
-				a[M2_12] = -M12;
-				expect(a.m21).toEqual(-M12);
+				a.m12 = M12;
+				expect(a.m12).toEqual(M12);
+				a[M3_12] = -M12;
+				expect(a.m12).toEqual(-M12);
 
-				a.m02 = M20;
-				expect(a.m02).toEqual(M20);
-				a[M2_20] = -M20;
-				expect(a.m02).toEqual(-M20);
+				a.m20 = M20;
+				expect(a.m20).toEqual(M20);
+				a[M3_20] = -M20;
+				expect(a.m20).toEqual(-M20);
 
-				a.m12 = M21;
-				expect(a.m12).toEqual(M21);
-				a[M2_21] = -M21;
-				expect(a.m12).toEqual(-M21);
+				a.m21 = M21;
+				expect(a.m21).toEqual(M21);
+				a[M3_21] = -M21;
+				expect(a.m21).toEqual(-M21);
 
 				a.m22 = M22;
 				expect(a.m22).toEqual(M22);
-				a[M2_22] = -M22;
+				a[M3_22] = -M22;
 				expect(a.m22).toEqual(-M22);
 			});
 
@@ -240,7 +247,7 @@ describe('Matrix operations', () => {
 		});
 
 		describe('iterator', () => {
-			test('should return an ArrayIterator consisting of four numbers', () => {
+			test('should return an ArrayIterator consisting of nine numbers', () => {
 				// prettier-ignore
 				expect([...new Mat3(
 					1, 2, 3,
