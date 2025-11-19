@@ -1,5 +1,5 @@
-import { posEqual } from '../../../bin';
-import type { Matrix } from '../../../bin';
+import { posEqual } from '../../../.';
+import type { Matrix } from '../../../.';
 
 export const toEqualMatrix = (actual: Matrix, expected: Matrix) => {
 	const pass = posEqual(actual, expected);
