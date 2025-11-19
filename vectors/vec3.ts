@@ -5,8 +5,10 @@ import {
 	scalePos,
 	subPos,
 	type V3_T,
+	type Vec2Like,
 	type Vector,
 } from './common.js';
+import { Vec2 } from './vec2.js';
 
 export const isVec3 = (vec: Vector): vec is Vec3 => {
 	return vec instanceof Vec3;
@@ -78,6 +80,14 @@ export class Vec3 extends Array<number> {
 
 	set z(value: number) {
 		this[Z] = value;
+	}
+
+	get xy(): Vec2 {
+		return new Vec2(this.x, this.y);
+	}
+	set xy(v: Vec2Like) {
+		this.x = v[X];
+		this.y = v[Y];
 	}
 
 	get magnitude(): number {

@@ -4,9 +4,13 @@ import {
 	posEqual,
 	scalePos,
 	subPos,
-	V4_T,
+	type V4_T,
+	type Vec2Like,
+	type Vec3Like,
 	type Vector,
 } from './common.js';
+import { Vec2 } from './vec2.js';
+import { Vec3 } from './vec3.js';
 
 export const isVec4 = (vec: Vector): vec is Vec4 => {
 	return vec instanceof Vec4;
@@ -62,6 +66,23 @@ export class Vec4 extends Array<number> {
 
 	set w(value: number) {
 		this[W] = value;
+	}
+
+	get xy(): Vec2 {
+		return new Vec2(this.x, this.y);
+	}
+	set xy(v: Vec2Like) {
+		this.x = v[X];
+		this.y = v[Y];
+	}
+
+	get xyz(): Vec3 {
+		return new Vec3(this.x, this.y, this.z);
+	}
+	set xyz(v: Vec3Like) {
+		this.x = v[X];
+		this.y = v[Y];
+		this.z = v[Z];
 	}
 
 	get magnitude(): number {
