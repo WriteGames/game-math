@@ -4,5 +4,5 @@
 		"outDir": "bin",
 		"declaration": true
 	},
-	"exclude": ["bin/*", "tests/*"]
+	"exclude": ["bin/*", "tests/*", "**/*.config.ts"]
 }
