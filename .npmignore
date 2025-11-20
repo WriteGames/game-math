@@ -1,0 +1,16 @@
+**/node_modules
+.DS_Store
+npm-debug.log*
+.pnpm-debug.log*
+tsconfig.tsbuildinfo
+tsconfig*.tsbuildinfo
+*.map
+
+.editorconfig
+.eslintrc.cjs
+.prettierignore
+.prettierrc.json
+*.ts
+tsconfig*json
+.vscode/**
+tests/**
