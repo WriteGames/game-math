@@ -6,4 +6,8 @@ tsconfig.tsbuildinfo
 tsconfig*.tsbuildinfo
 *.map
 
+# output
 bin/*
+
+# npm pack
+*.tgz

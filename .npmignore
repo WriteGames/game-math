@@ -6,11 +6,24 @@ tsconfig.tsbuildinfo
 tsconfig*.tsbuildinfo
 *.map
 
+# config files
+.node-version
 .editorconfig
 .eslintrc.cjs
 .prettierignore
 .prettierrc.json
-*.ts
 tsconfig*json
 .vscode/**
+
+# TypeScript files
+*.ts
+!*.d.ts
+
+# tests
 tests/**
+
+# output
+bin/*
+
+# npm pack
+*.tgz
