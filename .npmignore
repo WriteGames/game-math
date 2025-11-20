@@ -17,8 +17,8 @@ tsconfig*json
 .vscode/**
 
 # TypeScript files
-*.ts
-!*.d.ts
+# *.ts
+# !*.d.ts
 
 # tests
 tests/**
