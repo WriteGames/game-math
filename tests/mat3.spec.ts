@@ -271,6 +271,18 @@ describe('Matrix operations', () => {
 				]);
 			});
 
+			describe(`.${Mat3.translate.name}`, () => {
+				test(`should return a 3x3 translation matrix (one arg)`, () => {
+					const a = Mat3.translate(2, 3);
+					// prettier-ignore
+					expect(a).toEqualMat3(new Mat3(
+						1, 0, 2,
+						0, 1, 3,
+						0, 0, 1,
+					));
+				});
+			});
+
 			test(`.${Mat3.rotate.name}() should return a 3x3 rotation matrix around an arbitrary axis`, () => {
 				const a = Mat3.rotate([1, 0, 0], Math.PI / 2);
 				// prettier-ignore

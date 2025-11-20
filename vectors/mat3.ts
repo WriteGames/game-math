@@ -354,6 +354,18 @@ export class Mat3 extends Array<number> {
 	}
 
 	/**
+	 * Returns a 3x3 translation matrix around an axis.
+	 * @param x X factor
+	 * @param y Y factor
+	 */
+	static translate(x: number, y: number): Mat3 {
+		const result = new Mat3();
+		result[M20] = x;
+		result[M21] = y;
+		return result;
+	}
+
+	/**
 	 * Returns a 3x3 rotation matrix around an axis.
 	 * @param axis Axis to rotate around
 	 * @param angle Angle of rotation

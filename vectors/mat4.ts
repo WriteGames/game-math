@@ -500,6 +500,20 @@ export class Mat4 extends Array<number> {
 	}
 
 	/**
+	 * Returns a 4x4 translation matrix around an axis.
+	 * @param x X factor
+	 * @param y Y factor
+	 * @param z Y factor
+	 */
+	static translate(x: number, y: number, z: number): Mat4 {
+		const result = new Mat4();
+		result[M30] = x;
+		result[M31] = y;
+		result[M32] = z;
+		return result;
+	}
+
+	/**
 	 * Returns a 4x4 rotation matrix around an axis.
 	 * @param axis Axis to rotate around
 	 * @param angle Angle of rotation
