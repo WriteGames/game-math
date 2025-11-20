@@ -22,8 +22,5 @@ tsconfig*json
 # tests
 tests/**
 
-# output
-bin/*
-
 # npm pack
 *.tgz
