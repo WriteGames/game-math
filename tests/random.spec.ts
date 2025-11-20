@@ -1,0 +1,360 @@
+import { describe, expect, test } from 'vitest';
+// @ts-ignore -- chi-squared has no types
+import chiSquared from 'chi-squared';
+// @ts-ignore -- chi-squared has no types
+import pRank from 'permutation-rank';
+import { Random } from '../util/random';
+
+const sampleCount = 100000;
+
+function getXForChi(observed: number, expected: number): number {
+	return (observed - expected) ** 2 / expected;
+}
+
+function testRandom({
+	samples,
+	bCount,
+	expected = Array.from({ length: bCount }, () => samples / bCount),
+	callback,
+}: {
+	samples: number;
+	bCount: number;
+	expected?: number[];
+	callback: (bCount: number) => [number, number];
+}) {
+	const buckets = Array.from({ length: bCount }, () => 0);
+	let values: number[] = [];
+	for (let i = 0; i < samples; ++i) {
+		const [value, bIndex] = callback(bCount);
+		values.push(value);
+		++buckets[bIndex];
+	}
+
+	let xx = 0;
+	for (let i = 0; i < bCount; ++i) {
+		xx += getXForChi(buckets[i], expected[i]);
+	}
+	const pValue = 1 - chiSquared.cdf(xx, bCount - 1);
+
+	if (values.every((v) => typeof v === 'number')) {
+		const min = Math.min(...values);
+		const max = Math.max(...values);
+
+		const sum = values.reduce((a, v) => a + v);
+		const mean = sum / values.length;
+		return { min, max, mean, pValue };
+	}
+	return { pValue };
+}
+
+describe('class Random', () => {
+	describe('constructor', () => {
+		test('should default seed to current time when no argument is passed', () => {
+			const { seed } = new Random();
+			expect(seed).toBeGreaterThan(Date.now() - 10);
+			expect(seed).toBeLessThan(Date.now() + 10);
+		});
+
+		test('should default seed to first argument', () => {
+			const { seed } = new Random(100);
+			expect(seed).toEqual(100);
+		});
+	});
+
+	describe('.prototype', () => {
+		const random = new Random();
+
+		describe(`${Random.prototype.float.name}()`, () => {
+			test('should return a random float between [0, 1) when no argument is passed', () => {
+				const samples = sampleCount;
+				const bCount = 10;
+
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount,
+					callback: (bCount: number) => {
+						const value = random.float();
+						return [value, Math.floor(value * bCount)];
+					},
+				});
+
+				expect(min).toBeGreaterThanOrEqual(0);
+				expect(min).toBeLessThan(0.1);
+				expect(max).toBeGreaterThan(0.9);
+				expect(max).toBeLessThan(1);
+
+				expect(mean).approximately(0.5, 0.045);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+
+			test('should return a random float between [0, n) when an argument is passed', () => {
+				const samples = sampleCount;
+				const bCount = 10;
+
+				const n = 10;
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount,
+					callback: (bCount: number) => {
+						const value = random.float(n);
+						return [value, Math.floor((value / n) * bCount)];
+					},
+				});
+
+				expect(min).toBeGreaterThanOrEqual(0);
+				expect(min).toBeLessThan(0.1);
+				expect(max).toBeGreaterThan(n - 0.1);
+				expect(max).toBeLessThan(n);
+
+				expect(mean).approximately(5, 0.25);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.chance.name}()`, () => {
+			test('should return a boolean for chance', () => {
+				const value = random.chance(1, 10);
+				expect(value).toBeTypeOf('boolean');
+			});
+
+			test('should have even distribution', () => {
+				const chances = 5;
+				for (let n = 1; n < chances; ++n) {
+					const samples = sampleCount;
+					const { mean, pValue } = testRandom({
+						samples,
+						bCount: 2,
+						expected: [
+							((chances - n) / chances) * samples,
+							(n / chances) * samples,
+						],
+						callback: () => {
+							const value = random.chance(n, chances);
+							return [+value, +value];
+						},
+					});
+
+					expect(mean).approximately(n / chances, 0.045);
+					expect(pValue).toBeGreaterThanOrEqual(0.045);
+				}
+			});
+
+			test('should not error on division by zero', () => {
+				expect(random.chance(1, 0)).toBeFalsy();
+			});
+
+			test('should not ever return true for 0 / n chance', () => {
+				for (let i = 0; i < 100; ++i) {
+					expect(random.chance(0, 5)).toBeFalsy();
+				}
+			});
+
+			test('should always return true for n / n chance', () => {
+				for (let i = 0; i < 100; ++i) {
+					expect(random.chance(5, 5)).toBeTruthy();
+				}
+			});
+		});
+
+		describe(`${Random.prototype.int.name}()`, () => {
+			test('should return a random int between [0, n)', () => {
+				const samples = sampleCount;
+				const n = 13;
+
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount: n,
+					callback: () => {
+						const value = random.int(n);
+
+						return [value, value];
+					},
+				});
+
+				expect(min).toEqual(0);
+				expect(max).toEqual(n - 1);
+
+				expect(mean).approximately(6, 0.3);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.range.name}()`, () => {
+			test('should return a random float between [a, b)', () => {
+				const samples = sampleCount;
+				const bCount = 10;
+
+				const a = -3;
+				const b = 7;
+				const n = Math.abs(b - a);
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount,
+					callback: (bCount: number) => {
+						const value = random.range(a, b);
+
+						return [value, Math.floor(((value - a) / n) * bCount)];
+					},
+				});
+
+				expect(min).toBeGreaterThanOrEqual(a);
+				expect(min).toBeLessThan(a + 0.1);
+				expect(max).toBeGreaterThan(b - 0.1);
+				expect(max).toBeLessThan(b);
+
+				expect(mean).approximately(2, 0.25);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.bool.name}()`, () => {
+			test('should return either true or false', () => {
+				const samples = sampleCount;
+				const { mean, pValue } = testRandom({
+					samples,
+					bCount: 2,
+					callback: () => {
+						const value = random.bool();
+						return [+value, +value];
+					},
+				});
+
+				expect(mean).approximately(0.5, 0.045);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.sign.name}()`, () => {
+			test('should only return either 1 or -1', () => {
+				for (let i = 0; i < 100; ++i) {
+					const value = random.sign();
+					expect(Math.abs(value)).toEqual(1);
+				}
+			});
+
+			test('should have even distribution', () => {
+				const samples = sampleCount;
+				const { min, max, mean, pValue } = testRandom({
+					samples,
+					bCount: 2,
+					callback: () => {
+						const value = random.sign();
+						return [value, (value + 1) / 2];
+					},
+				});
+
+				expect(min).toEqual(-1);
+				expect(max).toEqual(1);
+
+				expect(mean).approximately(0, 0.1);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.angle.name}()`, () => {
+			test('should return an angle between [0, 360)', () => {
+				const samples = sampleCount;
+				const bCount = 360;
+
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount,
+					callback: (bCount: number) => {
+						const value = random.angle();
+						return [value, Math.floor((value / 360) * bCount)];
+					},
+				});
+
+				expect(min).toBeGreaterThanOrEqual(0);
+				expect(min).toBeLessThan(5);
+				expect(max).toBeGreaterThan(360 - 5);
+				expect(max).toBeLessThan(360);
+
+				expect(mean).approximately(180, 5);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.choose.name}()`, () => {
+			test('should choose a random item from input array of numbers', () => {
+				const samples = sampleCount;
+				const bCount = 4;
+
+				const choices = [0, 1, 2, 3];
+
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount,
+					callback: () => {
+						const value = random.choose(choices);
+						return [value, value];
+					},
+				});
+
+				expect(min).toEqual(0);
+				expect(max).toEqual(3);
+
+				expect(mean).approximately(1.5, 0.1);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+
+			test('should choose a random item from input array of any type', () => {
+				const samples = sampleCount;
+				const bCount = 4;
+
+				const choices = ['boo', true, null, 30];
+
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount,
+					callback: () => {
+						const value = random.choose(choices);
+						const index = choices.indexOf(value);
+						return [index, index];
+					},
+				});
+
+				expect(min).toEqual(0);
+				expect(max).toEqual(3);
+
+				expect(mean).approximately(1.5, 0.1);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.shuffle.name}()`, () => {
+			test('should return the passed array', () => {
+				const arr = [0, 1];
+				expect(random.shuffle(arr)).toBe(arr);
+			});
+
+			test('should handle an array of length zero', () => {
+				const arr: number[] = [];
+				expect(random.shuffle(arr)).toEqual([]);
+			});
+
+			test('should shuffle array', () => {
+				const samples = sampleCount;
+				const arr = [0, 1, 2, 3];
+				const nPermutations = 24;
+
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount: nPermutations,
+					callback: () => {
+						const a = [...arr];
+						random.shuffle(a);
+						const rank = pRank.rank(a);
+						return [rank, rank];
+					},
+				});
+
+				expect(min).toEqual(0);
+				expect(max).toEqual(23);
+
+				expect(mean).approximately(11.5, 0.5);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+	});
+});
