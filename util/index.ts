@@ -4,6 +4,7 @@ import { angleDifference, angleDifferenceDeg } from './trig.js';
 export * from './directions.js';
 export * from './functional.js';
 export * from './trig.js';
+export * from './random.js';
 
 /** A more permissive epsilon than Number.EPSILON */
 export const EPSILON = 0.000001 as const;
