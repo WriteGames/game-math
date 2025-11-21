@@ -1,4 +1,5 @@
 import type { FuncReduceVector } from '../util/functional.js';
+import { Random } from '../util/random.js';
 import {
 	addPos,
 	posEqual,
@@ -153,8 +154,11 @@ export class Vec2 extends Array<number> {
 	}
 
 	static rotate = (v: Vec2, angle: number): Vec2 => rotate2D(v, angle);
-	rotate(angle: number): Vec2 {
-		return Vec2.rotate(this, angle);
+	rotate(angle: number): this {
+		const v = Vec2.rotate(this, angle);
+		this.x = v.x;
+		this.y = v.y;
+		return this;
 	}
 
 	static equal = (a: Vec2, b: Vec2 | V2_T): boolean => posEqual(a, b);
@@ -164,6 +168,10 @@ export class Vec2 extends Array<number> {
 
 	static lerp = (a: Vec2, b: Vec2, t: number): Vec2 => {
 		return Vec2.sub(b, a).scale(t).add(a);
+	};
+
+	static random = (scale = 1): Vec2 => {
+		return Random.vec2(scale);
 	};
 }
 

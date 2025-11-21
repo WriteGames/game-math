@@ -4,6 +4,8 @@ import chiSquared from 'chi-squared';
 // @ts-ignore -- chi-squared has no types
 import pRank from 'permutation-rank';
 import { Random } from '../util/random';
+import { Vec2 } from '../vectors';
+import { RAD_TO_DEG } from '../util';
 
 const sampleCount = 1000;
 
@@ -380,6 +382,46 @@ describe('class Random', () => {
 				expect(max).toEqual(23);
 
 				expect(mean).approximately(11.5, 0.5);
+				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe.only(`${Random.prototype.vec2.name}()`, () => {
+			test('should return a Vec2', () => {
+				expect(random.vec2()).toBeInstanceOf(Vec2);
+			});
+
+			test('should return a Vec2 of length 1 when no argument is provided', () => {
+				expect(random.vec2().magnitude).toBeCloseTo(1);
+			});
+
+			test('should return a Vec2 of the passed scale', () => {
+				const scale = 7.7;
+				expect(random.vec2(scale).magnitude).toBeCloseTo(scale);
+			});
+
+			test('should return a random Vec2', () => {
+				const samples = sampleCount;
+				const bCount = 36;
+
+				const { pValue, min, max, mean } = testRandom({
+					samples,
+					bCount,
+					callback: () => {
+						const v = random.vec2();
+						const rad = Math.atan2(v.y, v.x);
+						const angle = Math.floor(rad * RAD_TO_DEG);
+						return [
+							angle,
+							Math.floor(angle / (360 / bCount)) + bCount / 2,
+						];
+					},
+				});
+
+				expect(min).toEqual(-180);
+				expect(max).toEqual(179);
+
+				expect(mean).approximately(0, 3);
 				expect(pValue).toBeGreaterThanOrEqual(0.045);
 			});
 		});

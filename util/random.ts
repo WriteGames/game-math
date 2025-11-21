@@ -1,3 +1,5 @@
+import { Vec2 } from '../vectors';
+
 const xorShift32 = (random: Random): number => {
 	let x = random.seed;
 	x ^= x << 13;
@@ -78,5 +80,10 @@ export class Random {
 		}
 
 		return arr;
+	}
+
+	static vec2 = (scale = 1): Vec2 => Random.staticRandom.vec2(scale);
+	vec2(scale = 1): Vec2 {
+		return new Vec2(scale, 0).rotate(this.float(Math.PI * 2));
 	}
 }
