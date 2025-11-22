@@ -4,7 +4,7 @@ import chiSquared from 'chi-squared';
 // @ts-ignore -- chi-squared has no types
 import pRank from 'permutation-rank';
 import { Random } from '../util/random';
-import { Vec2 } from '../vectors';
+import { Vec2, Vec3 } from '../vectors';
 import { RAD_TO_DEG } from '../util';
 
 const sampleCount = 1000;
@@ -386,7 +386,7 @@ describe('class Random', () => {
 			});
 		});
 
-		describe.only(`${Random.prototype.vec2.name}()`, () => {
+		describe(`${Random.prototype.vec2.name}()`, () => {
 			test('should return a Vec2', () => {
 				expect(random.vec2()).toBeInstanceOf(Vec2);
 			});
@@ -400,7 +400,7 @@ describe('class Random', () => {
 				expect(random.vec2(scale).magnitude).toBeCloseTo(scale);
 			});
 
-			test('should return a random Vec2', () => {
+			test('should have a uniform sample distribution', () => {
 				const samples = sampleCount;
 				const bCount = 36;
 
@@ -423,6 +423,63 @@ describe('class Random', () => {
 
 				expect(mean).approximately(0, 3);
 				expect(pValue).toBeGreaterThanOrEqual(0.045);
+			});
+		});
+
+		describe(`${Random.prototype.vec3.name}()`, () => {
+			test('should return a Vec3', () => {
+				expect(random.vec3()).toBeInstanceOf(Vec3);
+			});
+
+			test('should return a Vec3 of length 1 when no argument is provided', () => {
+				expect(random.vec3().magnitude).toBeCloseTo(1);
+			});
+
+			test('should return a Vec3 of the passed scale', () => {
+				const scale = 7.7;
+				expect(random.vec3(scale).magnitude).toBeCloseTo(scale);
+			});
+
+			test('should have a uniform sample distribution', () => {
+				const samples = sampleCount * 3;
+
+				const points: Vec3[] = [];
+				for (let i = 0; i < samples; ++i) {
+					points.push(random.vec3());
+				}
+
+				(['x', 'y', 'z'] as const).forEach((prop) => {
+					const values = points.map((p) => p[prop]);
+					const min = Math.min(...values);
+					const max = Math.max(...values);
+					const mean = values.reduce((a, v) => a + v) / values.length;
+
+					expect(min).approximately(-1, 0.05);
+					expect(max).approximately(1, 0.05);
+					expect(mean).approximately(0, 0.05);
+				});
+
+				const neighbors = Array.from({ length: samples }, () => 0);
+				for (let i = 0; i < samples; ++i) {
+					const a = points[i];
+					for (let j = i + 1; j < samples; ++j) {
+						const b = points[j];
+						const d = Math.sqrt(
+							(a[0] - b[0]) ** 2 +
+								(a[1] - b[1]) ** 2 +
+								(a[2] - b[2]) ** 2,
+						);
+						if (d < 1) {
+							++neighbors[i];
+							++neighbors[j];
+						}
+					}
+				}
+
+				const mean =
+					neighbors.reduce((a, v) => a + v) / neighbors.length;
+
+				expect(mean).approximately(samples / 4, samples / 200);
 			});
 		});
 	});

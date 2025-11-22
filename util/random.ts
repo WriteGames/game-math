@@ -1,4 +1,4 @@
-import { Vec2 } from '../vectors';
+import { Vec2, Vec3 } from '../vectors';
 
 const xorShift32 = (random: Random): number => {
 	let x = random.seed;
@@ -85,5 +85,15 @@ export class Random {
 	static vec2 = (scale = 1): Vec2 => Random.staticRandom.vec2(scale);
 	vec2(scale = 1): Vec2 {
 		return new Vec2(scale, 0).rotate(this.float(Math.PI * 2));
+	}
+
+	static vec3 = (scale = 1): Vec3 => Random.staticRandom.vec3(scale);
+	vec3(scale = 1): Vec3 {
+		const v = new Vec3(
+			this.range(-1, 1),
+			this.range(-1, 1),
+			this.range(-1, 1),
+		);
+		return v.normalize().scale(scale);
 	}
 }
