@@ -125,9 +125,9 @@ export const posDistanceSq: FuncReduceVector = (a, b) =>
 
 /**
  * Checks whether a point lies on a line.
- * @param p The point to test
- * @param start The start of the line
- * @param end The end of the line
+ * @param point The point to test
+ * @param a The start of the line
+ * @param b The end of the line
  */
 export const isPointOnLine = <T extends Vector>(
 	point: T,

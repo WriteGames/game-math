@@ -310,8 +310,8 @@ export class Mat2 extends Array<number> {
 	 * @param other
 	 * @returns The product of the two matrices
 	 */
-	postMultiply(m: Mat2Like): this {
-		return this.multiplyRTL(m);
+	postMultiply(other: Mat2Like): this {
+		return this.multiplyRTL(other);
 	}
 
 	/**
