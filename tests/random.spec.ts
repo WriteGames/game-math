@@ -90,6 +90,75 @@ describe('class Random', () => {
 		});
 	});
 
+	describe('supplying custom generator function', () => {
+		const mockRandomFunc = (seed: number) => seed;
+
+		test.afterEach(() => {
+			Random.resetDefaultGenerator();
+		});
+
+		test(`.prototype.${Random.prototype.setGenerator.name}() should set the random generator's random function`, () => {
+			const seed = Date.now() >>> 0;
+			const random = new Random(seed);
+			random.setGenerator(mockRandomFunc);
+			for (let i = 0; i < 100; ++i) {
+				const v = random.float();
+				expect(v).toBeGreaterThanOrEqual(0);
+				expect(v).toBeLessThan(1);
+				expect(random.seed).toEqual(seed);
+			}
+		});
+
+		test(`.${Random.setDefaultGenerator.name}() should set the default random function`, () => {
+			const seed = Date.now() >>> 0;
+			Random.setDefaultGenerator(mockRandomFunc);
+			const random = new Random(seed);
+			for (let i = 0; i < 100; ++i) {
+				const v = random.float();
+				expect(v).toBeGreaterThanOrEqual(0);
+				expect(v).toBeLessThan(1);
+				expect(random.seed).toEqual(seed);
+			}
+		});
+
+		test(`.${Random.resetDefaultGenerator.name}() should reset the default random function`, () => {
+			const seed = Date.now() >>> 0;
+			Random.setDefaultGenerator(mockRandomFunc);
+			Random.resetDefaultGenerator();
+			const random = new Random(seed);
+			for (let i = 0; i < 100; ++i) {
+				const v = random.float();
+				expect(v).toBeGreaterThanOrEqual(0);
+				expect(v).toBeLessThan(1);
+				expect(random.seed).not.toEqual(seed);
+			}
+		});
+
+		test(`.${Random.setDefaultGenerator.name}() should set the global Random instance's random function`, () => {
+			const seed = Date.now() >>> 0;
+			Random.staticRandom.seed = seed;
+			Random.setDefaultGenerator(mockRandomFunc);
+			for (let i = 0; i < 100; ++i) {
+				const v = Random.float();
+				expect(v).toBeGreaterThanOrEqual(0);
+				expect(v).toBeLessThan(1);
+				expect(Random.staticRandom.seed).toEqual(seed);
+			}
+		});
+
+		test(`.${Random.setDefaultGenerator.name}() should not affect existing Random instances`, () => {
+			const seed = Date.now() >>> 0;
+			const random = new Random(seed);
+			Random.setDefaultGenerator(mockRandomFunc);
+			for (let i = 0; i < 100; ++i) {
+				const v = random.float();
+				expect(v).toBeGreaterThanOrEqual(0);
+				expect(v).toBeLessThan(1);
+				expect(random.seed).not.toEqual(seed);
+			}
+		});
+	});
+
 	describe('.prototype', () => {
 		const random = new Random();
 

@@ -1,26 +1,44 @@
 import { Vec2, Vec3 } from '../vectors';
 
-const xorShift32 = (random: Random): number => {
-	let x = random.seed;
+type RandomFunc = (seed: number) => number;
+
+const xorShift32: RandomFunc = (seed): number => {
+	let x = seed;
 	x ^= x << 13;
 	x ^= x >>> 17;
 	x ^= x << 5;
-	return (random.seed = x >>> 0);
+	return x >>> 0;
 };
 
 export interface Random {
 	seed: number;
 }
 
+let globalRandomFunc = xorShift32;
 export class Random {
 	static staticRandom = new Random();
 
+	#randomFunc = globalRandomFunc;
+
 	constructor(seed: number = Date.now()) {
 		this.seed = seed;
+		this.setGenerator(globalRandomFunc);
+	}
+
+	static setDefaultGenerator(randomFunc: RandomFunc) {
+		Random.staticRandom.setGenerator(randomFunc);
+		globalRandomFunc = randomFunc;
+	}
+	static resetDefaultGenerator() {
+		Random.setDefaultGenerator(xorShift32);
+	}
+	setGenerator(randomFunc: RandomFunc) {
+		this.#randomFunc = randomFunc;
 	}
 
 	#next(): number {
-		return Number(xorShift32(this) / 0xffffffff);
+		this.seed = this.#randomFunc(this.seed);
+		return Number(this.seed / 0xffffffff);
 	}
 
 	static float = (n = 1): number => Random.staticRandom.float(n);
