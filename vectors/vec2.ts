@@ -15,6 +15,8 @@ export const isVec2 = (vec: Vector): vec is Vec2 => {
 	return vec instanceof Vec2;
 };
 
+const error = 'Vec2';
+
 const X = 0;
 const Y = 1;
 
@@ -23,12 +25,12 @@ const Y = 1;
  * @category Linear Algebra
  */
 export class Vec2 extends Array<number> {
-	// length: 2 = 2 as const;
+	length: 2 = 2 as const;
 
 	/**
-	 * Uninitialized values default to <0, 0>
-	 * @param {number} x X position
-	 * @param {number} y Y position
+	 * Uninitialized values default to <0, 0>.
+	 * @param {number} x X value
+	 * @param {number} y Y value
 	 */
 	constructor(x = 0, y = 0) {
 		super(x, y);
@@ -148,6 +150,7 @@ export class Vec2 extends Array<number> {
 	static normalize = (v: Vec2): Vec2 => {
 		return v.clone().invScale(v.magnitude);
 	};
+
 	/**
 	 * Normalizes the vector, setting its magnitude to 1.
 	 * @returns {this} this
@@ -171,7 +174,7 @@ export class Vec2 extends Array<number> {
 	 * @group Static
 	 * @param {Vec2} a Vector a
 	 * @param {Vec2} b Vector b
-	 * @returns {Vec2} Vec2
+	 * @returns {Vec2} Sum
 	 */
 	static add = (a: Vec2, b: Vector): Vec2 => addPos(a, b);
 
@@ -193,14 +196,14 @@ export class Vec2 extends Array<number> {
 	 * @group Static
 	 * @param {Vec2} a Vector a
 	 * @param {Vec2} b Vector b
-	 * @returns {Vec2} Vec2
+	 * @returns {Vec2} Sum
 	 */
 	static plus = (a: Vec2, b: Vector): Vec2 => Vec2.add(a, b);
 
 	/**
 	 * An alias for {@link Vec2#add}.
 	 * @param {Vec2} v Vector to add
-	 * @returns {this} his
+	 * @returns {this} this
 	 */
 	plus(v: Vector): this {
 		return this.add(v);
@@ -342,6 +345,13 @@ export class Vec2 extends Array<number> {
 		return Vec2.sub(b, a).scale(t).add(a);
 	};
 
+	/**
+	 * Approaches a target {@link Vec2} by an amount without exceeding the target.
+	 * @param from Input vector
+	 * @param to Target vector
+	 * @param amount Amount to approach
+	 * @returns
+	 */
 	static approach = (
 		v: Vec2Like,
 		target: Vec2Like,
@@ -359,6 +369,49 @@ export class Vec2 extends Array<number> {
 	static random = (scale = 1): Vec2 => {
 		return Random.vec2(scale);
 	};
+
+	// #region overrides
+
+	/** @private */
+	pop(): number | undefined {
+		throw new Error(`[${error}] Cannot pop`);
+	}
+
+	/** @private */
+	push(..._items: number[]): number {
+		throw new Error(`[${error}] Cannot push`);
+	}
+
+	/** @private */
+	concat(..._items: unknown[]): number[] {
+		throw new Error(`[${error}] Cannot concat`);
+	}
+
+	/** @private */
+	shift(): number | undefined {
+		throw new Error(`[${error}] Cannot shift`);
+	}
+
+	/** @private */
+	splice(
+		_start: unknown,
+		_deleteCount?: unknown,
+		..._rest: unknown[]
+	): number[] {
+		throw new Error(`[${error}] Cannot splice`);
+	}
+
+	/** @private */
+	unshift(..._items: number[]): number {
+		throw new Error(`[${error}] Cannot shift`);
+	}
+
+	/** @private */
+	copyWithin(_target: number, _start: number, _end?: number): this {
+		throw new Error(`[${error}] Cannot copyWithin`);
+	}
+
+	// #endregion
 }
 
 export const indexToPos = (index: number, stride: number): Vec2 =>

@@ -102,7 +102,6 @@ describe(`${approachAngle.name}()/${approachAngleDeg.name}()`, () => {
 
 	describe('desc', () => {
 		const PI_4 = Math.PI / 4;
-		const PI_2 = Math.PI / 2;
 
 		test('should approach the target', () => {
 			expect(approachAngle(Math.PI, PI_4, PI_4)).toEqual(3 * PI_4);

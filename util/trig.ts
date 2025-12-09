@@ -80,6 +80,13 @@ export function angleDifferenceSignDeg(a: number, b: number): number {
 	return Math.sign(angleDifferenceDeg(a, b));
 }
 
+/**
+ * Approaches a target angle by an amount without exceeding the target.
+ * @param from Input angle (radians)
+ * @param to Target angle (radians)
+ * @param amount Amount (radians) to approach
+ * @returns
+ */
 export function approachAngle(from: number, to: number, rad: number) {
 	const diff = angleDifference(from, to);
 	const sign = Math.sign(diff);
@@ -87,6 +94,13 @@ export function approachAngle(from: number, to: number, rad: number) {
 	return from + moveBy * sign;
 }
 
+/**
+ * Approaches a target angle by an amount without exceeding the target.
+ * @param from Input angle (degrees)
+ * @param to Target angle (degrees)
+ * @param amount Amount (degrees) to approach
+ * @returns
+ */
 export function approachAngleDeg(from: number, to: number, deg: number) {
 	const diff = angleDifferenceDeg(from, to);
 	const sign = Math.sign(diff);

@@ -1,4 +1,4 @@
-import { Vec2, Vec3 } from '../vectors';
+import { Vec2, Vec3, Vec4 } from '../vectors';
 
 type RandomFunc = (seed: number) => number;
 
@@ -154,6 +154,20 @@ export class Random {
 	static vec3 = (scale = 1): Vec3 => Random.staticRandom.vec3(scale);
 	vec3(scale = 1): Vec3 {
 		const v = new Vec3(
+			this.range(-1, 1),
+			this.range(-1, 1),
+			this.range(-1, 1),
+		);
+		return v.normalize().scale(scale);
+	}
+
+	/**
+	 * @group Static
+	 */
+	static vec4 = (scale = 1): Vec4 => Random.staticRandom.vec4(scale);
+	vec4(scale = 1): Vec4 {
+		const v = new Vec4(
+			this.range(-1, 1),
 			this.range(-1, 1),
 			this.range(-1, 1),
 			this.range(-1, 1),

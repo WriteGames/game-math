@@ -35,10 +35,10 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Uninitialized values defaults to the 2x2 identity matrix.
-	 * @param m00 Element at column 0, row 0
-	 * @param m10 Element at column 1, row 0
-	 * @param m01 Element at column 0, row 1
-	 * @param m11 Element at column 1, row 1
+	 * @param {number} m00 Element at column 0, row 0
+	 * @param {number} m10 Element at column 1, row 0
+	 * @param {number} m01 Element at column 0, row 1
+	 * @param {number} m11 Element at column 1, row 1
 	 */
 	constructor(m00 = 1, m10 = 0, m01 = 0, m11 = 1) {
 		// prettier-ignore

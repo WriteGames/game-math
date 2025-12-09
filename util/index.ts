@@ -9,13 +9,21 @@ export * from './random.js';
 /**
  * A more permissive epsilon than Number.EPSILON
  * @default
+ * @category Utility
  */
 export const EPSILON = 0.000001 as const;
 
-export function approach(val: number, target: number, amount: number) {
-	return val > target
-		? Math.max(val - amount, target)
-		: Math.min(val + amount, target);
+/**
+ * Approaches a target value by an amount without exceeding the target.
+ * @param from Input value
+ * @param to Target value
+ * @param amount Amount to approach
+ * @returns
+ */
+export function approach(from: number, to: number, amount: number) {
+	return from > to
+		? Math.max(from - amount, to)
+		: Math.min(from + amount, to);
 }
 
 /**
