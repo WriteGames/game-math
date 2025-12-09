@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import {
+	approach,
 	clamp,
 	distance,
 	distanceSq,
@@ -37,7 +38,59 @@ function runTests<T extends any[], E extends any>(
 	});
 }
 
-describe('clamp()', () => {
+describe(`${approach.name}()`, () => {
+	describe('asc', () => {
+		const val = 5;
+		const target = 13;
+
+		const tests = [
+			createTest(
+				'should approach the target',
+				[val, target, 1 as number],
+				6,
+			),
+			createTest('should reach the target', [val, target, 8], target),
+			createTest(
+				'should not exceed the target',
+				[val, target, 9],
+				target,
+			),
+			createTest('should handle an amount of 0', [val, target, 0], val),
+			createTest('should handle a negative value', [val, target, -1], 4),
+		];
+
+		runTests(tests, (...args): number => {
+			return approach(...args);
+		});
+	});
+
+	describe('desc', () => {
+		const val = 13;
+		const target = 5;
+
+		const tests = [
+			createTest(
+				'should approach the target',
+				[val, target, 1 as number],
+				12,
+			),
+			createTest('should reach the target', [val, target, 8], target),
+			createTest(
+				'should not exceed the target',
+				[val, target, 9],
+				target,
+			),
+			createTest('should handle an amount of 0', [val, target, 0], val),
+			createTest('should handle a negative value', [val, target, -1], 14),
+		];
+
+		runTests(tests, (...args): number => {
+			return approach(...args);
+		});
+	});
+});
+
+describe(`${clamp.name}()`, () => {
 	const min = 0;
 	const max = 10;
 	const tests = [
@@ -63,12 +116,11 @@ describe('clamp()', () => {
 	});
 });
 
-describe('lerp()', () => {
+describe(`${lerp.name}()`, () => {
 	const from = 13;
 	const to = 23;
 
 	const tests = [
-		//
 		createTest('should interpolate the value', [0.5], 18),
 		createTest(
 			'should not clamp and return a value before the start when t < 0',
@@ -89,7 +141,7 @@ describe('lerp()', () => {
 	});
 });
 
-describe('lerpClamp()', () => {
+describe(`${lerpClamp.name}()`, () => {
 	const from = 13;
 	const to = 23;
 
@@ -106,7 +158,7 @@ describe('lerpClamp()', () => {
 	});
 });
 
-describe('remap()', () => {
+describe(`${remap.name}()`, () => {
 	const ascFrom = [5, 10] as const;
 	const ascTo = [20, 50] as const;
 	const descFrom = [10, 5] as const;
@@ -189,7 +241,7 @@ describe('remap()', () => {
 	});
 });
 
-describe('remapClamp()', () => {
+describe(`${remapClamp.name}()`, () => {
 	const ascFrom = [5, 10] as const;
 	const ascTo = [20, 50] as const;
 	const descFrom = [10, 5] as const;

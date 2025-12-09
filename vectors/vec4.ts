@@ -1,9 +1,11 @@
 import type { FuncReduceVector } from '../util/functional.js';
 import {
 	addPos,
+	approachVec,
 	posEqual,
 	scalePos,
 	subPos,
+	Vec4Like,
 	type V4_T,
 	type Vec2Like,
 	type Vec3Like,
@@ -194,6 +196,12 @@ export class Vec4 extends Array<number> {
 	static lerp = (a: Vec4, b: Vec4, t: number): Vec4 => {
 		return Vec4.sub(b, a).scale(t).add(a);
 	};
+
+	static approach = (
+		v: Vec4Like,
+		target: Vec4Like,
+		amount: Vec4Like,
+	): Vec4Like => approachVec(v, target, amount);
 }
 
 export const dotProduct4D: FuncReduceVector<Vec4 | V4_T> = (a, b) =>

@@ -3,8 +3,9 @@ import type {
 	FuncMapVector,
 	FuncMapVectorByScalar,
 	FuncReduceVector,
+	FuncTernaryVector,
 } from '../util/index.js';
-import { distance, distanceSq, equal } from '../util/index.js';
+import { approach, distance, distanceSq, equal } from '../util/index.js';
 import { type Mat2 } from './mat2.js';
 import { type Mat3 } from './mat3.js';
 import { type Mat4 } from './mat4.js';
@@ -128,6 +129,10 @@ export const V2 = Object.defineProperties(
 };
 
 export const hashPos = (pos: Vector): string => pos.join(',');
+
+export const approachVec: FuncTernaryVector = (a, b, c) => {
+	return a.map((v, i) => approach(v, b[i], c[i])) as typeof a;
+};
 
 export const addPos: FuncMapVector = (a, b) => {
 	return a.map((v, i) => v + (b[i] ?? 0)) as typeof a;

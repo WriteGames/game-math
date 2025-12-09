@@ -2,9 +2,11 @@ import type { FuncReduceVector } from '../util/functional.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,
+	approachVec,
 	posEqual,
 	scalePos,
 	subPos,
+	Vec2Like,
 	type V2_T,
 	type Vector,
 } from './common.js';
@@ -339,6 +341,12 @@ export class Vec2 extends Array<number> {
 	static lerp = (a: Vec2, b: Vec2, t: number): Vec2 => {
 		return Vec2.sub(b, a).scale(t).add(a);
 	};
+
+	static approach = (
+		v: Vec2Like,
+		target: Vec2Like,
+		amount: Vec2Like,
+	): Vec2Like => approachVec(v, target, amount);
 
 	/**
 	 * Returns a random {@link Vec2}, with a uniform sample distribution.

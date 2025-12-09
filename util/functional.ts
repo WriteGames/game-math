@@ -6,6 +6,12 @@ export type FuncMapVector<
 	AT extends T = T,
 	BT extends T = T,
 > = <A extends AT, B extends BT>(a: A, b: B) => A;
+export type FuncTernaryVector<
+	T extends Vector = Vector,
+	AT extends T = T,
+	BT extends T = T,
+	CT extends T = T,
+> = <A extends AT, B extends BT, C extends CT>(a: A, b: B, c: C) => A;
 
 export type FuncCompare<T> = (a: T, b: T) => boolean;
 

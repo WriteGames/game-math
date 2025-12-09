@@ -1,9 +1,12 @@
 import type { FuncMapVector, FuncReduceVector } from '../util/functional.js';
+import { Random } from '../util/random.js';
 import {
 	addPos,
+	approachVec,
 	posEqual,
 	scalePos,
 	subPos,
+	Vec3Like,
 	type V3_T,
 	type Vec2Like,
 	type Vector,
@@ -199,6 +202,24 @@ export class Vec3 extends Array<number> {
 
 	static lerp = (a: Vec3, b: Vec3, t: number): Vec3 => {
 		return Vec3.sub(b, a).scale(t).add(a);
+	};
+
+	static approach = (
+		v: Vec3Like,
+		target: Vec3Like,
+		amount: Vec3Like,
+	): Vec3Like => approachVec(v, target, amount);
+
+	/**
+	 * Returns a random {@link Vec3}, with a uniform sample distribution.
+	 * @memberof Vec3
+	 * @method
+	 * @group Static
+	 * @param {number} scale Magnitude of the vector, defaults to 1
+	 * @returns {Vec3} A random vector
+	 */
+	static random = (scale = 1): Vec3 => {
+		return Random.vec3(scale);
 	};
 }
 

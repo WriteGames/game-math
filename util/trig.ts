@@ -1,3 +1,5 @@
+import { equal } from '.';
+
 /** Tau, approx equivalent to 6.283185. Equals two times Pi */
 export const TAU = Math.PI * 2;
 
@@ -54,6 +56,42 @@ export function angleDifference(a: number, b: number): number {
  */
 export function angleDifferenceDeg(a: number, b: number): number {
 	return ((((b - a) % 360) + 540) % 360) - 180;
+}
+
+/**
+ * Calculates the angle between two given angles.
+ * @param a Angle a
+ * @param b Angle b
+ * @returns The angle (in radians) between the two angles
+ */
+export function angleDifferenceSign(a: number, b: number): number {
+	if (equal(a, b)) return 0;
+	return Math.sign(angleDifference(a, b));
+}
+
+/**
+ * Calculates the angle between two given angles.
+ * @param a Angle a
+ * @param b Angle b
+ * @returns The angle (in degrees) between the two angles
+ */
+export function angleDifferenceSignDeg(a: number, b: number): number {
+	if (equal(a, b)) return 0;
+	return Math.sign(angleDifferenceDeg(a, b));
+}
+
+export function approachAngle(from: number, to: number, rad: number) {
+	const diff = angleDifference(from, to);
+	const sign = Math.sign(diff);
+	const moveBy = Math.min(diff * sign, rad);
+	return from + moveBy * sign;
+}
+
+export function approachAngleDeg(from: number, to: number, deg: number) {
+	const diff = angleDifferenceDeg(from, to);
+	const sign = Math.sign(diff);
+	const moveBy = Math.min(diff * sign, deg);
+	return from + moveBy * sign;
 }
 
 /**

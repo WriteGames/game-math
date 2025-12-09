@@ -12,6 +12,12 @@ export * from './random.js';
  */
 export const EPSILON = 0.000001 as const;
 
+export function approach(val: number, target: number, amount: number) {
+	return val > target
+		? Math.max(val - amount, target)
+		: Math.min(val + amount, target);
+}
+
 /**
  * Clamps a value within a range.
  * @param val Input value
