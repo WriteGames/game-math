@@ -2,6 +2,8 @@
 
 A library of useful math classes & functions for game development, involving linear algebra, trigonometry, RNG, and more.
 
+[![npm version](https://badge.fury.io/js/@writegames.com%2Fgame-math.svg)](https://badge.fury.io/js/@writegames.com%2Fgame-math)
+
 ## Installation
 
 ```sh
