@@ -25,7 +25,7 @@ const Y = 1;
  * @category Linear Algebra
  */
 export class Vec2 extends Array<number> {
-	length: 2 = 2 as const;
+	// length: 2 = 2 as const;
 
 	/**
 	 * Uninitialized values default to <0, 0>.

@@ -31,7 +31,7 @@ const W = 3;
  * @category Linear Algebra
  */
 export class Vec4 extends Array<number> {
-	length: 4 = 4 as const;
+	// length: 4 = 4 as const;
 
 	/**
 	 * Uninitialized values default to <0, 0, 0, 0>.

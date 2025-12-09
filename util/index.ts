@@ -151,3 +151,13 @@ export function remapClamp(
 	const raw = remap(value, fromMin, fromMax, toMin, toMax);
 	return clamp(raw, Math.min(toMin, toMax), Math.max(toMin, toMax));
 }
+
+/**
+ * Snaps a value to the nearest grid-aligned value.
+ * @param value Input vlaue
+ * @param increment Grid size
+ * @param offset Offset to apply after the snap
+ */
+export function snapToGrid(value: number, increment: number, offset = 0) {
+	return offset + Math.floor(value / increment) * increment;
+}

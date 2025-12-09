@@ -5,9 +5,11 @@ import {
 	angleDifferenceSign,
 	angleDifferenceSignDeg,
 	approachAngle,
+	approachAngleDeg,
 	DEG_TO_RAD,
+	wrapAngleDeg,
 } from '../util/trig';
-import { approachAngleDeg } from '../bin';
+import { RAD_360, wrapAngle } from '../bin';
 
 describe(`${angleDifference.name}() / ${angleDifferenceDeg.name}()`, () => {
 	test('should return correct delta between angles', () => {
@@ -132,5 +134,26 @@ describe(`${approachAngle.name}()/${approachAngleDeg.name}()`, () => {
 
 			expect(approachAngleDeg(180, 45, -45)).toEqual(225);
 		});
+	});
+});
+
+describe(`${wrapAngle.name}()/${wrapAngleDeg.name}()`, () => {
+	test('should wrap an angle to [0, 360)', () => {
+		const start = -360 * 3;
+		for (let i = 0; i < 360 * 5; ++i) {
+			const expected = i % 360;
+			let result = wrapAngleDeg(start + i);
+			if (result === -0) result = 0;
+			expect(result).toEqual(expected);
+
+			const result2 = wrapAngle((start + i) * DEG_TO_RAD);
+			expect(result2).toBeCloseTo(expected * DEG_TO_RAD);
+		}
+
+		for (let i = -360; i <= 360; ++i) {
+			const result = wrapAngleDeg(i);
+			expect(result).toBeGreaterThanOrEqual(0);
+			expect(result).toBeLessThan(360);
+		}
 	});
 });

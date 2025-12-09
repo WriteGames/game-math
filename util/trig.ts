@@ -165,3 +165,11 @@ export function atanDeg(x: number): number {
 export function atan2Deg(y: number, x: number): number {
 	return Math.atan2(y, x) * RAD_TO_DEG;
 }
+
+export function wrapAngle(degree: number): number {
+	return ((degree % RAD_360) + RAD_360) % RAD_360;
+}
+
+export function wrapAngleDeg(degree: number): number {
+	return ((degree % 360) + 360) % 360;
+}

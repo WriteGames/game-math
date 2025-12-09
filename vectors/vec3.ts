@@ -28,7 +28,7 @@ const Z = 2;
  * @category Linear Algebra
  */
 export class Vec3 extends Array<number> {
-	length: 3 = 3 as const;
+	// length: 3 = 3 as const;
 
 	/**
 	 * Uninitialized values default to <0, 0, 0>.
