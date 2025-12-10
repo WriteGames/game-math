@@ -8,7 +8,7 @@ import {
 	approachAngleDeg,
 	DEG_TO_RAD,
 	wrapAngleDeg,
-} from '../util/trig';
+} from '../src/util/trig';
 import { RAD_360, wrapAngle } from '../bin';
 
 describe(`${angleDifference.name}() / ${angleDifferenceDeg.name}()`, () => {

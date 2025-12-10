@@ -1,4 +1,4 @@
-import { Vec2, Vec3, Vec4 } from '../vectors';
+import { Vec2, Vec3, Vec4 } from '../linear-algebra';
 
 type RandomFunc = (seed: number) => number;
 

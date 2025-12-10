@@ -1,4 +1,4 @@
-import type { Vector } from '../vectors/index.js';
+import type { Vector } from '../linear-algebra/index.js';
 
 export type FuncReduceNumber = (acc: number, v: number) => number;
 export type FuncMapVector<

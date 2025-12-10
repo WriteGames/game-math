@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'vitest';
-import { Vec3 } from '../index.js';
-import type { M3_T, V3_T } from '../index.js';
+import { Vec3 } from '../../index.js';
+import type { M3_T, V3_T } from '../../index.js';
 import {
 	determinantM3,
 	Mat3,
 	multiplyM3M3,
 	multiplyM3V3,
 	transpose3D,
-} from '../vectors/mat3.js';
+} from '../../src/linear-algebra/mat3.js';
 
 // prettier-ignore
 const INDICES = [

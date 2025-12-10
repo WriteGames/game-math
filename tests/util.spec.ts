@@ -12,7 +12,7 @@ import {
 	remapClamp,
 	type V4_T,
 } from '..';
-import { DEG_TO_RAD } from '../util/trig';
+import { DEG_TO_RAD } from '../src/util/trig';
 
 interface Test<T extends any[], E extends any> {
 	name: string;

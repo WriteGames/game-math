@@ -1,4 +1,4 @@
-import type { V2_T, V3_T, V4_T } from '../vectors';
+import type { V2_T, V3_T, V4_T } from '../src/linear-algebra';
 
 export const VEC_A_X = 4;
 export const VEC_A_Y = 5;

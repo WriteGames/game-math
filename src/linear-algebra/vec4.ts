@@ -1,4 +1,4 @@
-import type { FuncReduceVector } from '../util/functional';
+import type { FuncReduceVector } from '../util/functional.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,

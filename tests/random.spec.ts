@@ -3,9 +3,9 @@ import { describe, expect, test } from 'vitest';
 import chiSquared from 'chi-squared';
 // @ts-ignore -- chi-squared has no types
 import pRank from 'permutation-rank';
-import { Random } from '../util/random';
-import { Vec2, Vec3 } from '../vectors';
-import { RAD_TO_DEG } from '../util';
+import { Random } from '../src/util/random';
+import { Vec2, Vec3 } from '../src/linear-algebra';
+import { RAD_TO_DEG } from '../src/util';
 
 const sampleCount = 1000;
 

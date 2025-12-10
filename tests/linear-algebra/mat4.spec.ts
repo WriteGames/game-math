@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'vitest';
-import { Vec4 } from '../index.js';
-import type { M4_T, V4_T } from '../index.js';
+import { Vec4 } from '../../index.js';
+import type { M4_T, V4_T } from '../../index.js';
 import {
 	determinantM4,
 	Mat4,
 	multiplyM4M4,
 	multiplyM4V4,
 	transpose4D,
-} from '../vectors/mat4.js';
+} from '../../src/linear-algebra/mat4.js';
 
 // prettier-ignore
 const INDICES = [
