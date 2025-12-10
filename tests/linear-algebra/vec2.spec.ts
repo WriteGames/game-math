@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Vec2, Vec3, Vec4 } from '../../index.js';
+import { Vec2, Vec3, Vec4 } from '../../src/linear-algebra/index.js';
 import {
 	VEC2_A,
 	VEC2_B,

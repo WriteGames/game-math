@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Vec2, type M2_T, type V2_T } from '../../index.js';
+import { Vec2, type M2_T, type V2_T } from '../../src/linear-algebra/index.js';
 import {
 	determinantM2,
 	Mat2,

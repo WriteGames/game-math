@@ -2,11 +2,9 @@ import { describe, expect, test } from 'vitest';
 import {
 	addPos,
 	addScalar,
-	equal,
 	isVec2,
 	isVec3,
 	isVec4,
-	length,
 	posEqual,
 	scalePos,
 	subPos,
@@ -16,11 +14,9 @@ import {
 	type V2_T,
 	type V3_T,
 	type V4_T,
-} from '../../index.js';
+} from '../../src/linear-algebra/index.js';
+import { equal } from '../../src/util/index.js';
 import {
-	CROSS3D_A,
-	CROSS3D_B,
-	CROSS3D_RESULT,
 	VEC2_A,
 	VEC2_B,
 	VEC2_DIFF,
@@ -33,8 +29,6 @@ import {
 	VEC4_B,
 	VEC4_DIFF,
 	VEC4_SUM,
-	VEC_A_W,
-	VEC_A_Z,
 } from '../data.mock.js';
 
 describe('(Vec) Vector operations', () => {

@@ -1,5 +1,11 @@
 import { describe, expect, test } from 'vitest';
-import { length, Vec2, Vec3, Vec4, type V3_T } from '../../index.js';
+import {
+	length,
+	Vec2,
+	Vec3,
+	Vec4,
+	type V3_T,
+} from '../../src/linear-algebra/index.js';
 import {
 	CROSS3D_A,
 	CROSS3D_B,

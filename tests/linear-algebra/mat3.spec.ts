@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { Vec3 } from '../../index.js';
-import type { M3_T, V3_T } from '../../index.js';
+import type { M3_T, V3_T } from '../../src/linear-algebra/index.js';
+import { Vec3 } from '../../src/linear-algebra/index.js';
 import {
 	determinantM3,
 	Mat3,
