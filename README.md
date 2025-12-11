@@ -44,6 +44,10 @@ yarn add @writegames.com/game-math
 
 -   WIP
 
+### Notes
+
+While this is pre-1.0, [GameMaker](https://gamemaker.io) compatibility may be incomplete and/or broken.
+
 ## Credits
 
 &copy; 2025 WriteGames.com. MIT License
