@@ -1,8 +1,7 @@
 {
-	"tsconfig": "tsconfig.json",
+	"tsconfig": "tsconfig.build.json",
 	"entryPoints": ["src/index.ts"],
 	"entryPointStrategy": "resolve",
-	"exclude": ["bin/*", "docs/*", "tests/*", "**/*.config.ts", "**/*.d.ts"],
 	"out": "docs",
 	"plugin": ["typedoc-github-theme"]
 }
