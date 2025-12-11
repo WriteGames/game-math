@@ -1,5 +1,14 @@
 {
 	"name": "@writegames.com/game-math",
+	"keywords": [
+		"javascript",
+		"game development",
+		"linear algebra",
+		"rng",
+		"gamemaker",
+		"trigonometry",
+		"utility"
+	],
 	"version": "0.5.0",
 	"license": "MIT",
 	"description": "A library of useful math classes & functions for game development, involving linear algebra, angles, and more.",
