@@ -411,8 +411,8 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Approaches a target {@link Vec3} by an amount without exceeding the target.
-	 * @param from Input vector
-	 * @param to Target vector
+	 * @param v Input vector
+	 * @param target Target vector
 	 * @param amount Amount to approach
 	 * @returns
 	 */

@@ -88,7 +88,7 @@ export function angleDifferenceSignDeg(a: number, b: number): number {
  * Approaches a target angle by an amount without exceeding the target.
  * @param from Input angle (radians)
  * @param to Target angle (radians)
- * @param amount Amount (radians) to approach
+ * @param rad Amount (radians) to approach
  * @returns
  */
 export function approachAngle(from: number, to: number, rad: number): number {
@@ -102,7 +102,7 @@ export function approachAngle(from: number, to: number, rad: number): number {
  * Approaches a target angle by an amount without exceeding the target.
  * @param from Input angle (degrees)
  * @param to Target angle (degrees)
- * @param amount Amount (degrees) to approach
+ * @param deg Amount (degrees) to approach
  * @returns
  */
 export function approachAngleDeg(

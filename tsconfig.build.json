@@ -6,5 +6,5 @@
 		"declaration": true,
 		"declarationMap": true
 	},
-	"exclude": ["bin/*", "tests/*", "**/*.config.ts", "scripts/*"]
+	"exclude": ["bin/*", "tests/*", "**/*.config.ts", "scripts/*", "docs/*"]
 }
