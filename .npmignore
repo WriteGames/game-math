@@ -15,12 +15,16 @@ tsconfig*.tsbuildinfo
 tsconfig*json
 !tsconfig.build.json
 .vscode/**
+.github/**
 
 # TypeScript files
 # *.ts
 # !*.d.ts
 
 # tests
+tests/**
+
+# scripts
 tests/**
 
 # npm pack
