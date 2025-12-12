@@ -24,8 +24,11 @@ tsconfig*json
 # tests
 tests/**
 
-# scripts
+# other
 tests/**
+docs/**
+typedoc.json
+**/*.config.*
 
 # npm pack
 *.tgz
