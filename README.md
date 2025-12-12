@@ -17,12 +17,12 @@ yarn add @writegames.com/game-math
 
 ### Linear Algebra
 
--   [Vec2](vectors/vec2.ts), [Vec3](vectors/vec3.ts), [Vec4](vectors/vec4.ts), [Mat2](vectors/mat2.ts), [Mat3](vectors/mat3.ts), and [Mat4](vectors/mat4.ts) classes
+-   [Vec2](src/linear-algebra/vec2.ts), [Vec3](src/linear-algebra/vec3.ts), [Vec4](src/linear-algebra/vec4.ts), [Mat2](src/linear-algebra/mat2.ts), [Mat3](src/linear-algebra/mat3.ts), and [Mat4](src/linear-algebra/mat4.ts) classes
 -   Dot products, cross products, vector-matrix multiplication, transformation matrices, and more
 
 ### Random Number Generator
 
--   [Random](util/random.ts) class
+-   [Random](src/util/random.ts) class
     -   Uses `xorShift32` as default random function
     -   `float(n)` - returns a random float between [0, n) (exclusive)
     -   `chance(n, max)` - returns `true` or `false` based off of `n` in `max` chances (ex: `chance(1, 5)` would return true 20% of the time)
