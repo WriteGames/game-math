@@ -31,7 +31,7 @@ yarn add @writegames.com/game-math
     -   `bool()` - returns `true` or `false`
     -   `sign()` - returns `-1` or `1`
     -   `angle()` - returns a random angle in degrees [0, 360)
-    -   `choose(items)` - returns a random item from the array passed
+    -   `choose(...items)` - returns a random item from the items passed (ex: `choose(1, 2, 3)` would return `1`, `2`, or `3`)
     -   `shuffle(arr)` - shuffles an array using the Fisher–Yates shuffle algorithm
     -   `vec2(scale)` - returns a random Vec2 of the length of `scale` (defaults to `1`)
     -   `vec3(scale)` - returns a random Vec3 of the length of `scale` (defaults to `1`)

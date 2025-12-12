@@ -137,11 +137,11 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static choose<T>(items: T[]): T {
-		return Random.staticRandom.choose(items);
+	static choose<T>(...items: T[]): T {
+		return Random.staticRandom.choose(...items);
 	}
 
-	choose<T>(items: T[]): T {
+	choose<T>(...items: T[]): T {
 		return items[this.int(items.length)];
 	}
 

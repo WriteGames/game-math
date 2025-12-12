@@ -384,7 +384,7 @@ describe('class Random', () => {
 					samples,
 					bCount,
 					callback: () => {
-						const value = random.choose(choices);
+						const value = random.choose(...choices);
 						return [value, value];
 					},
 				});
@@ -406,7 +406,7 @@ describe('class Random', () => {
 					samples,
 					bCount,
 					callback: () => {
-						const value = random.choose(choices);
+						const value = random.choose(...choices);
 						const index = choices.indexOf(value);
 						return [index, index];
 					},
