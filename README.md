@@ -1,4 +1,4 @@
-# Game Math
+# @writegames.com/game-math
 
 A library of useful math classes & functions for game development, involving linear algebra, trigonometry, RNG, and more.
 
