@@ -3,7 +3,7 @@
 
 const { resolve } = require('node:path');
 
-const project = resolve(__dirname, 'tsconfig.json');
+const project = resolve(__dirname, 'tsconfig.build.json');
 
 // canvas-lord
 module.exports = {
@@ -21,7 +21,16 @@ module.exports = {
 		sourceType: 'module',
 		project,
 	},
-	ignorePatterns: ['node_modules/', '**/*.js'],
+	ignorePatterns: [
+		'node_modules/',
+		'**/*.js',
+		'bin/',
+		'**.config.ts',
+		'.eslintrc.cjs',
+		// TODO(bret): maybe re-enable these
+		'tests/',
+		'scripts/',
+	],
 	rules: {
 		curly: 0, // ['error', 'multi'],
 		'no-bitwise': 0,
@@ -72,5 +81,8 @@ module.exports = {
 		'@typescript-eslint/no-unsafe-declaration-merging': 0,
 		'@typescript-eslint/no-shadow': 0,
 		'@typescript-eslint/non-nullable-type-assertion-style': 0,
+
+		'@typescript-eslint/naming-convention': 0,
+		'tsdoc/syntax': 0,
 	},
 };

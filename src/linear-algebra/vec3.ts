@@ -1,4 +1,3 @@
-import type { FuncMapVector, FuncReduceVector } from '../util/functional.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,
@@ -6,16 +5,16 @@ import {
 	posEqual,
 	scalePos,
 	subPos,
-	Vec3Like,
 	type V3_T,
 	type Vec2Like,
+	type Vec3Like,
 	type Vector,
 } from './common.js';
 import { Vec2 } from './vec2.js';
 
-export const isVec3 = (vec: Vector): vec is Vec3 => {
+export function isVec3(vec: Vector): vec is Vec3 {
 	return vec instanceof Vec3;
-};
+}
 
 const error = 'Vec3';
 
@@ -196,9 +195,9 @@ export class Vec3 extends Array<number> {
 	 * @param {Vec3} v The vector to normalize
 	 * @returns {Vec3} The input vector
 	 */
-	static normalize = (v: Vec3): Vec3 => {
+	static normalize(v: Vec3): Vec3 {
 		return v.clone().invScale(v.magnitude);
-	};
+	}
 
 	/**
 	 * Normalizes the vector, setting its magnitude to 1.
@@ -225,7 +224,9 @@ export class Vec3 extends Array<number> {
 	 * @param {Vec3} b Vector b
 	 * @returns {Vec3} Sum
 	 */
-	static add = (a: Vec3, b: Vector): Vec3 => addPos(a, b);
+	static add(a: Vec3, b: Vector): Vec3 {
+		return addPos(a, b);
+	}
 
 	/**
 	 * Adds a vector to itself.
@@ -248,7 +249,9 @@ export class Vec3 extends Array<number> {
 	 * @param {Vec3} b Vector b
 	 * @returns {Vec3} Sum
 	 */
-	static plus = (a: Vec3, b: Vector): Vec3 => Vec3.add(a, b);
+	static plus(a: Vec3, b: Vector): Vec3 {
+		return Vec3.add(a, b);
+	}
 
 	/**
 	 * An alias for {@link Vec3#add}.
@@ -268,7 +271,9 @@ export class Vec3 extends Array<number> {
 	 * @param {Vec3} b Vector b
 	 * @returns {Vec3} Difference
 	 */
-	static sub = (a: Vec3, b: Vector): Vec3 => subPos(a, b);
+	static sub(a: Vec3, b: Vector): Vec3 {
+		return subPos(a, b);
+	}
 
 	/**
 	 * Subtracts a vector from itself.
@@ -291,7 +296,9 @@ export class Vec3 extends Array<number> {
 	 * @param {Vec3} b Vector b
 	 * @returns {Vec3} Vec3
 	 */
-	static minus = (a: Vec3, b: Vector): Vec3 => Vec3.sub(a, b);
+	static minus(a: Vec3, b: Vector): Vec3 {
+		return Vec3.sub(a, b);
+	}
 
 	/**
 	 * An alias for {@link Vec3#sub}.
@@ -311,7 +318,9 @@ export class Vec3 extends Array<number> {
 	 * @param {number} s Scalar
 	 * @returns {Vec3} The vector, scaled
 	 */
-	static scale = (v: Vec3, s: number): Vec3 => scalePos(v, s);
+	static scale(v: Vec3, s: number): Vec3 {
+		return scalePos(v, s);
+	}
 
 	/**
 	 * Scales the vector by a scalar.
@@ -334,7 +343,9 @@ export class Vec3 extends Array<number> {
 	 * @param {number} s Scalar
 	 * @returns {Vec3} The vector, scaled inversely
 	 */
-	static invScale = (v: Vec3, s: number): Vec3 => scalePos(v, 1 / s);
+	static invScale(v: Vec3, s: number): Vec3 {
+		return scalePos(v, 1 / s);
+	}
 
 	/**
 	 * Scales the vector by the inverse of a scalar.
@@ -352,7 +363,10 @@ export class Vec3 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static cross = (a: Vec3, b: Vec3 | V3_T): Vec3 => crossProduct3D(a, b);
+	static cross(a: Vec3, b: Vec3 | V3_T): Vec3 {
+		return crossProduct3D(a, b);
+	}
+
 	cross(v: Vec3 | V3_T): Vec3 {
 		return Vec3.cross(this, v);
 	}
@@ -360,7 +374,10 @@ export class Vec3 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static dot = (a: Vec3, b: Vec3 | V3_T): number => dotProduct3D(a, b);
+	static dot(a: Vec3, b: Vec3 | V3_T): number {
+		return dotProduct3D(a, b);
+	}
+
 	dot(v: Vec3 | V3_T): number {
 		return Vec3.dot(this, v);
 	}
@@ -370,7 +387,10 @@ export class Vec3 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static equal = (a: Vec3, b: Vec3 | V3_T): boolean => posEqual(a, b);
+	static equal(a: Vec3, b: Vec3 | V3_T): boolean {
+		return posEqual(a, b);
+	}
+
 	equal(v: Vec3 | V3_T): boolean {
 		return Vec3.equal(this, v);
 	}
@@ -385,9 +405,9 @@ export class Vec3 extends Array<number> {
 	 * @param {number} t Percentage between a and b
 	 * @returns {Vec3}
 	 */
-	static lerp = (a: Vec3, b: Vec3, t: number): Vec3 => {
+	static lerp(a: Vec3, b: Vec3, t: number): Vec3 {
 		return Vec3.sub(b, a).scale(t).add(a);
-	};
+	}
 
 	/**
 	 * Approaches a target {@link Vec3} by an amount without exceeding the target.
@@ -396,11 +416,9 @@ export class Vec3 extends Array<number> {
 	 * @param amount Amount to approach
 	 * @returns
 	 */
-	static approach = (
-		v: Vec3Like,
-		target: Vec3Like,
-		amount: Vec3Like,
-	): Vec3Like => approachVec(v, target, amount);
+	static approach(v: Vec3Like, target: Vec3Like, amount: Vec3Like): Vec3Like {
+		return approachVec(v, target, amount);
+	}
 
 	/**
 	 * Returns a random {@link Vec3}, with a uniform sample distribution.
@@ -410,9 +428,9 @@ export class Vec3 extends Array<number> {
 	 * @param {number} scale Magnitude of the vector, defaults to 1
 	 * @returns {Vec3} A random vector
 	 */
-	static random = (scale = 1): Vec3 => {
+	static random(scale = 1): Vec3 {
 		return Random.vec3(scale);
-	};
+	}
 
 	// #region overrides
 
@@ -458,13 +476,17 @@ export class Vec3 extends Array<number> {
 	// #endregion
 }
 
-export const crossProduct3D: FuncMapVector<Vec3 | V3_T> = (a, b) => {
+export function crossProduct3D(a: Vec3 | V3_T, b: Vec3 | V3_T): Vec3 {
 	const c1 = a[Y] * b[Z] - a[Z] * b[Y];
 	const c2 = a[Z] * b[X] - a[X] * b[Z];
 	const c3 = a[X] * b[Y] - a[Y] * b[X];
-	return new Vec3(c1, c2, c3) as typeof a;
-};
-export const dotProduct3D: FuncReduceVector<Vec3 | V3_T> = (a, b) =>
-	a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z];
-export const magnitude3D = (v: Vec3 | V3_T): number =>
-	Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2);
+	return new Vec3(c1, c2, c3);
+}
+
+export function dotProduct3D(a: Vec3 | V3_T, b: Vec3 | V3_T): number {
+	return a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z];
+}
+
+export function magnitude3D(v: Vec3 | V3_T): number {
+	return Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2);
+}

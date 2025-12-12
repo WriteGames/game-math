@@ -3,7 +3,8 @@
 	"compilerOptions": {
 		"rootDir": "./src",
 		"outDir": "bin",
-		"declaration": true
+		"declaration": true,
+		"declarationMap": true
 	},
 	"exclude": ["bin/*", "tests/*", "**/*.config.ts", "scripts/*"]
 }

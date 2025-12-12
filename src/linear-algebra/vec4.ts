@@ -1,4 +1,3 @@
-import type { FuncReduceVector } from '../util/functional.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,
@@ -6,18 +5,18 @@ import {
 	posEqual,
 	scalePos,
 	subPos,
-	Vec4Like,
 	type V4_T,
 	type Vec2Like,
 	type Vec3Like,
+	type Vec4Like,
 	type Vector,
 } from './common.js';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
 
-export const isVec4 = (vec: Vector): vec is Vec4 => {
+export function isVec4(vec: Vector): vec is Vec4 {
 	return vec instanceof Vec4;
-};
+}
 
 const error = 'Vec4';
 
@@ -172,9 +171,9 @@ export class Vec4 extends Array<number> {
 	 * @param {Vec4} v The vector to normalize
 	 * @returns {Vec4} The input vector
 	 */
-	static normalize = (v: Vec4): Vec4 => {
+	static normalize(v: Vec4): Vec4 {
 		return v.clone().invScale(v.magnitude);
-	};
+	}
 
 	/**
 	 * Normalizes the vector, setting its magnitude to 1.
@@ -201,7 +200,9 @@ export class Vec4 extends Array<number> {
 	 * @param {Vec4} b Vector b
 	 * @returns {Vec4} Sum
 	 */
-	static add = (a: Vec4, b: Vec4 | Vector): Vec4 => addPos(a, b);
+	static add(a: Vec4, b: Vec4 | Vector): Vec4 {
+		return addPos(a, b);
+	}
 
 	/**
 	 * Adds a vector to itself.
@@ -225,7 +226,9 @@ export class Vec4 extends Array<number> {
 	 * @param {Vec4} b Vector b
 	 * @returns {Vec4} Sum
 	 */
-	static plus = (a: Vec4, b: Vec4 | Vector): Vec4 => Vec4.add(a, b);
+	static plus(a: Vec4, b: Vec4 | Vector): Vec4 {
+		return Vec4.add(a, b);
+	}
 
 	/**
 	 * An alias for {@link Vec4#add}.
@@ -245,7 +248,9 @@ export class Vec4 extends Array<number> {
 	 * @param {Vec4} b Vector b
 	 * @returns {Vec4} Vec2
 	 */
-	static sub = (a: Vec4, b: Vec4 | Vector): Vec4 => subPos(a, b);
+	static sub(a: Vec4, b: Vec4 | Vector): Vec4 {
+		return subPos(a, b);
+	}
 
 	/**
 	 * Subtracts a vector from itself.
@@ -269,7 +274,9 @@ export class Vec4 extends Array<number> {
 	 * @param {Vec4} b Vector b
 	 * @returns {Vec4} Vec2
 	 */
-	static minus = (a: Vec4, b: Vec4 | Vector): Vec4 => Vec4.sub(a, b);
+	static minus(a: Vec4, b: Vec4 | Vector): Vec4 {
+		return Vec4.sub(a, b);
+	}
 
 	/**
 	 * An alias for {@link Vec4#sub}.
@@ -289,7 +296,9 @@ export class Vec4 extends Array<number> {
 	 * @param {number} s Scalar
 	 * @returns {Vec4} The vector, scaled
 	 */
-	static scale = (v: Vec4, s: number): Vec4 => scalePos(v, s);
+	static scale(v: Vec4, s: number): Vec4 {
+		return scalePos(v, s);
+	}
 
 	/**
 	 * Scales the vector by a scalar.
@@ -313,7 +322,9 @@ export class Vec4 extends Array<number> {
 	 * @param {number} s Scalar
 	 * @returns {Vec4} The vector, scaled inversely
 	 */
-	static invScale = (v: Vec4, s: number): Vec4 => scalePos(v, 1 / s);
+	static invScale(v: Vec4, s: number): Vec4 {
+		return scalePos(v, 1 / s);
+	}
 
 	/**
 	 * Scales the vector by the inverse of a scalar.
@@ -332,7 +343,10 @@ export class Vec4 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static dot = (a: Vec4, b: Vec4 | V4_T): number => dotProduct4D(a, b);
+	static dot(a: Vec4, b: Vec4 | V4_T): number {
+		return dotProduct4D(a, b);
+	}
+
 	dot(v: Vec4 | V4_T): number {
 		return Vec4.dot(this, v);
 	}
@@ -340,7 +354,10 @@ export class Vec4 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static equal = (a: Vec4, b: Vec4 | V4_T): boolean => posEqual(a, b);
+	static equal(a: Vec4, b: Vec4 | V4_T): boolean {
+		return posEqual(a, b);
+	}
+
 	equal(v: Vec4): boolean {
 		return Vec4.equal(this, v);
 	}
@@ -355,9 +372,9 @@ export class Vec4 extends Array<number> {
 	 * @param {number} t Percentage between a and b
 	 * @returns {Vec4}
 	 */
-	static lerp = (a: Vec4, b: Vec4, t: number): Vec4 => {
+	static lerp(a: Vec4, b: Vec4, t: number): Vec4 {
 		return Vec4.sub(b, a).scale(t).add(a);
-	};
+	}
 
 	/**
 	 * Approaches a target {@link Vec3} by an amount without exceeding the target.
@@ -366,11 +383,9 @@ export class Vec4 extends Array<number> {
 	 * @param amount Amount to approach
 	 * @returns
 	 */
-	static approach = (
-		v: Vec4Like,
-		target: Vec4Like,
-		amount: Vec4Like,
-	): Vec4Like => approachVec(v, target, amount);
+	static approach(v: Vec4Like, target: Vec4Like, amount: Vec4Like): Vec4Like {
+		return approachVec(v, target, amount);
+	}
 
 	/**
 	 * Returns a random {@link Vec4}, with a uniform sample distribution.
@@ -380,9 +395,9 @@ export class Vec4 extends Array<number> {
 	 * @param {number} scale Magnitude of the vector, defaults to 1
 	 * @returns {Vec4} A random vector
 	 */
-	static random = (scale = 1): Vec4 => {
+	static random(scale = 1): Vec4 {
 		return Random.vec4(scale);
-	};
+	}
 
 	// #region overrides
 
@@ -428,7 +443,10 @@ export class Vec4 extends Array<number> {
 	// #endregion
 }
 
-export const dotProduct4D: FuncReduceVector<Vec4 | V4_T> = (a, b) =>
-	a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z] + a[W] * b[W];
-export const magnitude4D = (v: Vec4): number =>
-	Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2 + v[W] ** 2);
+export function dotProduct4D(a: Vec4 | V4_T, b: Vec4 | V4_T): number {
+	return a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z] + a[W] * b[W];
+}
+
+export function magnitude4D(v: Vec4): number {
+	return Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2 + v[W] ** 2);
+}

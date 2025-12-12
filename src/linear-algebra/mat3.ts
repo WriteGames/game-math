@@ -5,9 +5,9 @@ import { magnitude3D, Vec3 } from './vec3.js';
 /**
  * @category Linear Algebra
  */
-export const isMat3 = (mat: Matrix): mat is Mat3 => {
+export function isMat3(mat: Matrix): mat is Mat3 {
 	return mat instanceof Mat3;
-};
+}
 
 // prettier-ignore
 const INDICES = [
@@ -473,7 +473,10 @@ export class Mat3 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns Determinant
 	 */
-	static determinant = (m: Mat3Like): number => determinantM3(m);
+	static determinant(m: Mat3Like): number {
+		return determinantM3(m);
+	}
+
 	/**
 	 * Returns the matrix's determinant
 	 * @returns Determinant
@@ -487,7 +490,10 @@ export class Mat3 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns New, transposed matrix
 	 */
-	static transpose = <T extends Mat3Like>(m: T): T => transpose3D(m);
+	static transpose<T extends Mat3Like>(m: T): T {
+		return transpose3D(m);
+	}
+
 	/**
 	 * Transposes the matrix in-place
 	 * @returns this
@@ -502,8 +508,9 @@ export class Mat3 extends Array<number> {
 	 * @param right Matrix b
 	 * @returns The product of the two matrices
 	 */
-	static multiply = <T extends Mat3Like>(left: T, right: Mat3Like): T =>
-		multiplyM3M3(left, right);
+	static multiply<T extends Mat3Like>(left: T, right: Mat3Like): T {
+		return multiplyM3M3(left, right);
+	}
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
@@ -546,7 +553,10 @@ export class Mat3 extends Array<number> {
 	 * @param b Matrix b
 	 * @returns Equality result
 	 */
-	static equal = (a: Mat3, b: Mat3Like): boolean => posEqual(a, b);
+	static equal(a: Mat3, b: Mat3Like): boolean {
+		return posEqual(a, b);
+	}
+
 	/**
 	 * Check if this matrix is equal to another.
 	 * @param m Other matrix
@@ -563,7 +573,7 @@ export class Mat3 extends Array<number> {
  * @param m Input matrix
  * @returns New, transposed matrix
  */
-export const transpose3D = <T extends Mat3Like>(m: T): T => {
+export function transpose3D<T extends Mat3Like>(m: T): T {
 	if (m.length !== 9) throw new Error('not a valid 3x3 matrix');
 	const result = (isMat3(m) ? m.clone() : [...m]) as typeof m;
 
@@ -580,25 +590,25 @@ export const transpose3D = <T extends Mat3Like>(m: T): T => {
 	result[M21] = temp;
 
 	return result;
-};
+}
 
 /**
  * Throws an error if input is not a 3x3 matrix.
  * @category Linear Algebra
  * @param m Input matrix
  */
-const assertMat3 = (m: Mat3Like): void => {
+function assertMat3(m: Mat3Like): void {
 	if (m.length !== 9) throw new Error('not a valid 3x3 matrix');
-};
+}
 
 /**
  * Throws an error if input is not a 2D array
  * @category Linear Algebra
  * @param m Input matrix
  */
-const assertVec3 = (v: Vec3Like): void => {
+function assertVec3(v: Vec3Like): void {
 	if (v.length !== 3) throw new Error('not a valid 3D vector');
-};
+}
 
 /**
  * Computes the determinant of a matrix.
@@ -606,14 +616,14 @@ const assertVec3 = (v: Vec3Like): void => {
  * @param m Input matrix
  * @returns Determinant
  */
-export const determinantM3 = (m: Mat3Like): number => {
+export function determinantM3(m: Mat3Like): number {
 	assertMat3(m);
 	return (
 		m[M00] * (m[M22] * m[M11] - m[M12] * m[M21]) +
 		m[M01] * (m[M12] * m[M20] - m[M22] * m[M10]) +
 		m[M02] * (m[M21] * m[M10] - m[M11] * m[M20])
 	);
-};
+}
 
 /**
  * Multiplies the matrices (left x right) left to right.
@@ -622,7 +632,7 @@ export const determinantM3 = (m: Mat3Like): number => {
  * @param r Right matrix
  * @returns The product of the two matrices
  */
-export const multiplyM3M3 = <T extends Mat3Like>(l: T, r: Mat3Like): T => {
+export function multiplyM3M3<T extends Mat3Like>(l: T, r: Mat3Like): T {
 	assertMat3(l);
 	assertMat3(r);
 
@@ -643,7 +653,7 @@ export const multiplyM3M3 = <T extends Mat3Like>(l: T, r: Mat3Like): T => {
 	result[M22] = l[M02] * r[M20] + l[M12] * r[M21] + l[M22] * r[M22];
 
 	return result;
-};
+}
 
 /**
  * Multiplies a 3x3 matrix by a 2D vector
@@ -652,7 +662,7 @@ export const multiplyM3M3 = <T extends Mat3Like>(l: T, r: Mat3Like): T => {
  * @param v Vector
  * @returns Product (2D Vector)
  */
-export const multiplyM3V3 = (m: Mat3Like, v: Vec3Like): Vec3 => {
+export function multiplyM3V3(m: Mat3Like, v: Vec3Like): Vec3 {
 	assertMat3(m);
 	assertVec3(v);
 	const result = new Vec3();
@@ -660,7 +670,7 @@ export const multiplyM3V3 = (m: Mat3Like, v: Vec3Like): Vec3 => {
 	result[1] = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2];
 	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2];
 	return result;
-};
+}
 
 /**
  * @category Linear Algebra

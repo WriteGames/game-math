@@ -1,4 +1,3 @@
-import type { FuncReduceVector } from '../util/functional.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,
@@ -6,14 +5,14 @@ import {
 	posEqual,
 	scalePos,
 	subPos,
-	Vec2Like,
 	type V2_T,
+	type Vec2Like,
 	type Vector,
 } from './common.js';
 
-export const isVec2 = (vec: Vector): vec is Vec2 => {
+export function isVec2(vec: Vector): vec is Vec2 {
 	return vec instanceof Vec2;
-};
+}
 
 const error = 'Vec2';
 
@@ -147,9 +146,9 @@ export class Vec2 extends Array<number> {
 	 * @param {Vec2} v The vector to normalize
 	 * @returns {Vec2} The input vector
 	 */
-	static normalize = (v: Vec2): Vec2 => {
+	static normalize(v: Vec2): Vec2 {
 		return v.clone().invScale(v.magnitude);
-	};
+	}
 
 	/**
 	 * Normalizes the vector, setting its magnitude to 1.
@@ -176,7 +175,9 @@ export class Vec2 extends Array<number> {
 	 * @param {Vec2} b Vector b
 	 * @returns {Vec2} Sum
 	 */
-	static add = (a: Vec2, b: Vector): Vec2 => addPos(a, b);
+	static add(a: Vec2, b: Vector): Vec2 {
+		return addPos(a, b);
+	}
 
 	/**
 	 * Adds a vector to itself.
@@ -198,7 +199,9 @@ export class Vec2 extends Array<number> {
 	 * @param {Vec2} b Vector b
 	 * @returns {Vec2} Sum
 	 */
-	static plus = (a: Vec2, b: Vector): Vec2 => Vec2.add(a, b);
+	static plus(a: Vec2, b: Vector): Vec2 {
+		return Vec2.add(a, b);
+	}
 
 	/**
 	 * An alias for {@link Vec2#add}.
@@ -218,7 +221,9 @@ export class Vec2 extends Array<number> {
 	 * @param {Vec2} b Vector b
 	 * @returns {Vec2} Vec2
 	 */
-	static sub = (a: Vec2, b: Vector): Vec2 => subPos(a, b);
+	static sub(a: Vec2, b: Vector): Vec2 {
+		return subPos(a, b);
+	}
 
 	/**
 	 * Subtracts a vector from itself.
@@ -240,7 +245,9 @@ export class Vec2 extends Array<number> {
 	 * @param {Vec2} b Vector b
 	 * @returns {Vec2} Vec2
 	 */
-	static minus = (a: Vec2, b: Vector): Vec2 => Vec2.sub(a, b);
+	static minus(a: Vec2, b: Vector): Vec2 {
+		return Vec2.sub(a, b);
+	}
 
 	/**
 	 * An alias for {@link Vec2#sub}.
@@ -260,7 +267,9 @@ export class Vec2 extends Array<number> {
 	 * @param {number} s Scalar
 	 * @returns {Vec2} The vector, scaled
 	 */
-	static scale = (v: Vec2, s: number): Vec2 => scalePos(v, s);
+	static scale(v: Vec2, s: number): Vec2 {
+		return scalePos(v, s);
+	}
 
 	/**
 	 * Scales the vector by a scalar.
@@ -282,7 +291,9 @@ export class Vec2 extends Array<number> {
 	 * @param {number} s Scalar
 	 * @returns {Vec2} The vector, scaled inversely
 	 */
-	static invScale = (v: Vec2, s: number): Vec2 => scalePos(v, 1 / s);
+	static invScale(v: Vec2, s: number): Vec2 {
+		return scalePos(v, 1 / s);
+	}
 
 	/**
 	 * Scales the vector by the inverse of a scalar.
@@ -299,7 +310,10 @@ export class Vec2 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static cross = (a: Vec2, b: Vec2 | V2_T): number => crossProduct2D(a, b);
+	static cross(a: Vec2, b: Vec2 | V2_T): number {
+		return crossProduct2D(a, b);
+	}
+
 	cross(v: Vec2 | V2_T): number {
 		return Vec2.cross(this, v);
 	}
@@ -307,7 +321,10 @@ export class Vec2 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static dot = (a: Vec2, b: Vec2 | V2_T): number => dotProduct2D(a, b);
+	static dot(a: Vec2, b: Vec2 | V2_T): number {
+		return dotProduct2D(a, b);
+	}
+
 	dot(v: Vec2 | V2_T): number {
 		return Vec2.dot(this, v);
 	}
@@ -315,7 +332,10 @@ export class Vec2 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static rotate = (v: Vec2, angle: number): Vec2 => rotate2D(v, angle);
+	static rotate(v: Vec2, angle: number): Vec2 {
+		return rotate2D(v, angle);
+	}
+
 	rotate(angle: number): this {
 		const v = Vec2.rotate(this, angle);
 		this.x = v.x;
@@ -326,7 +346,10 @@ export class Vec2 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static equal = (a: Vec2, b: Vec2 | V2_T): boolean => posEqual(a, b);
+	static equal(a: Vec2, b: Vec2 | V2_T): boolean {
+		return posEqual(a, b);
+	}
+
 	equal(v: Vec2 | V2_T): boolean {
 		return Vec2.equal(this, v);
 	}
@@ -341,9 +364,9 @@ export class Vec2 extends Array<number> {
 	 * @param {number} t Percentage between a and b
 	 * @returns {Vec2}
 	 */
-	static lerp = (a: Vec2, b: Vec2, t: number): Vec2 => {
+	static lerp(a: Vec2, b: Vec2, t: number): Vec2 {
 		return Vec2.sub(b, a).scale(t).add(a);
-	};
+	}
 
 	/**
 	 * Approaches a target {@link Vec2} by an amount without exceeding the target.
@@ -352,11 +375,9 @@ export class Vec2 extends Array<number> {
 	 * @param amount Amount to approach
 	 * @returns
 	 */
-	static approach = (
-		v: Vec2Like,
-		target: Vec2Like,
-		amount: Vec2Like,
-	): Vec2Like => approachVec(v, target, amount);
+	static approach(v: Vec2Like, target: Vec2Like, amount: Vec2Like): Vec2Like {
+		return approachVec(v, target, amount);
+	}
 
 	/**
 	 * Returns a random {@link Vec2}, with a uniform sample distribution.
@@ -366,9 +387,9 @@ export class Vec2 extends Array<number> {
 	 * @param {number} scale Magnitude of the vector, defaults to 1
 	 * @returns {Vec2} A random vector
 	 */
-	static random = (scale = 1): Vec2 => {
+	static random(scale = 1): Vec2 {
 		return Random.vec2(scale);
-	};
+	}
 
 	// #region overrides
 
@@ -414,20 +435,28 @@ export class Vec2 extends Array<number> {
 	// #endregion
 }
 
-export const indexToPos = (index: number, stride: number): Vec2 =>
-	new Vec2(index % stride, Math.floor(index / stride));
-export const posToIndex = ([x, y]: Vec2, stride: number): number =>
-	y * stride + x;
+export function indexToPos(index: number, stride: number): Vec2 {
+	return new Vec2(index % stride, Math.floor(index / stride));
+}
 
-export const rotate2D = (v: Vec2, angle: number): Vec2 => {
+export function posToIndex([x, y]: Vec2, stride: number): number {
+	return y * stride + x;
+}
+
+export function rotate2D(v: Vec2, angle: number): Vec2 {
 	const cos = Math.cos(angle);
 	const sin = Math.sin(angle);
 	return new Vec2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
-};
+}
 
-export const crossProduct2D: FuncReduceVector<Vec2 | V2_T> = (a, b) =>
-	a[0] * b[1] - a[1] * b[0];
-export const dotProduct2D: FuncReduceVector<Vec2 | V2_T> = (a, b) =>
-	a[0] * b[0] + a[1] * b[1];
-export const magnitude2D = (v: Vec2): number =>
-	Math.sqrt(v[X] ** 2 + v[Y] ** 2);
+export function crossProduct2D(a: Vec2 | V2_T, b: Vec2 | V2_T): number {
+	return a[0] * b[1] - a[1] * b[0];
+}
+
+export function dotProduct2D(a: Vec2 | V2_T, b: Vec2 | V2_T): number {
+	return a[0] * b[0] + a[1] * b[1];
+}
+
+export function magnitude2D(v: Vec2): number {
+	return Math.sqrt(v[X] ** 2 + v[Y] ** 2);
+}

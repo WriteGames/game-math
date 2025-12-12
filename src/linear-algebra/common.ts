@@ -1,10 +1,3 @@
-import type {
-	FuncCompare,
-	FuncMapVector,
-	FuncMapVectorByScalar,
-	FuncReduceVector,
-	FuncTernaryVector,
-} from '../util/index.js';
 import { approach, distance, distanceSq, equal } from '../util/index.js';
 import { type Mat2 } from './mat2.js';
 import { type Mat3 } from './mat3.js';
@@ -128,53 +121,72 @@ export const V2 = Object.defineProperties(
 	one: V2_T;
 };
 
-export const hashPos = (pos: Vector): string => pos.join(',');
+export function hashPos(pos: Vector): string {
+	return pos.join(',');
+}
 
-export const approachVec: FuncTernaryVector = (a, b, c) => {
+export function approachVec<
+	T extends Vector = Vector,
+	A extends T = T,
+	B extends T = T,
+	C extends T = T,
+>(a: A, b: B, c: C): A {
 	return a.map((v, i) => approach(v, b[i], c[i])) as typeof a;
-};
+}
 
-export const addPos: FuncMapVector = (a, b) => {
+export function addPos<
+	T extends Vector = Vector,
+	A extends T = T,
+	B extends T = T,
+>(a: A, b: B): A {
 	return a.map((v, i) => v + (b[i] ?? 0)) as typeof a;
-};
+}
 
-export const addScalar: FuncMapVectorByScalar = (p, s) => {
+export function addScalar<T extends Vector>(p: T, s: number): T {
 	const sums = p.map((v) => v + s);
 	if (isVec2(p)) return new Vec2(...sums) as typeof p;
 	if (isVec3(p)) return new Vec3(...sums) as typeof p;
 	if (isVec4(p)) return new Vec4(...sums) as typeof p;
 	return sums as typeof p;
-};
+}
 
-export const scalePos: FuncMapVectorByScalar = (p, s) => {
+export function scalePos<T extends Vector>(p: T, s: number): T {
 	const scaled = p.map((v) => v * s);
 	if (isVec2(p)) return new Vec2(...scaled) as typeof p;
 	if (isVec3(p)) return new Vec3(...scaled) as typeof p;
 	if (isVec4(p)) return new Vec4(...scaled) as typeof p;
 	return scaled as typeof p;
-};
+}
 
-export const subPos: FuncMapVector = (a, b) => {
+export function subPos<
+	T extends Vector = Vector,
+	A extends T = T,
+	B extends T = T,
+>(a: A, b: B): A {
 	return a.map((v, i) => v - (b[i] ?? 0)) as typeof a;
-};
+}
 
-export const posEqual: FuncCompare<Vector | number[]> = (a, b) => {
+export function posEqual<T extends Vector | number[]>(a: T, b: T): boolean {
 	const aa = [...a];
 	const bb = [...b];
 	return aa.length === bb.length && aa.every((v, i) => equal(v, bb[i]));
-};
+}
 
-export const lengthSq = (a: Vector): number => {
+export function lengthSq(a: Vector): number {
 	return a.map((v) => v ** 2).reduce((a, v) => a + v);
-};
-export const length = (a: Vector): number => {
-	return Math.sqrt(lengthSq(a));
-};
+}
 
-export const posDistance: FuncReduceVector = (a, b) =>
-	distance(subPos(b, a) as number[]);
-export const posDistanceSq: FuncReduceVector = (a, b) =>
-	distanceSq(subPos(b, a) as number[]);
+export function length(a: Vector): number {
+	return Math.sqrt(lengthSq(a));
+}
+
+export function posDistance<T extends Vector = Vector>(a: T, b: T): number {
+	return distance(subPos(b, a) as number[]);
+}
+
+export function posDistanceSq<T extends Vector = Vector>(a: T, b: T): number {
+	return distanceSq(subPos(b, a) as number[]);
+}
 
 /**
  * Checks whether a point lies on a line.
@@ -182,14 +194,13 @@ export const posDistanceSq: FuncReduceVector = (a, b) =>
  * @param a The start of the line
  * @param b The end of the line
  */
-export const isPointOnLine = <T extends Vector>(
-	point: T,
-	a: T,
-	b: T,
-): boolean =>
-	Math.abs(
-		posDistance(a, point) + posDistance(point, b) - posDistance(a, b),
-	) < Number.EPSILON;
+export function isPointOnLine<T extends Vector>(point: T, a: T, b: T): boolean {
+	return (
+		Math.abs(
+			posDistance(a, point) + posDistance(point, b) - posDistance(a, b),
+		) < Number.EPSILON
+	);
+}
 
 /**
  * Checks whether a point is within bounds. Start is inclusive, end is exclusive.
@@ -197,9 +208,12 @@ export const isPointOnLine = <T extends Vector>(
  * @param start The upper left of the bounds rect
  * @param end The lower right of the bounds rect
  */
-export const isWithinBounds = <T extends Vector>(
+export function isWithinBounds<T extends Vector>(
 	p: T,
 	start: T,
 	end: T,
-): boolean =>
-	p.every((x: number, i: number) => x >= start[i] && x < end[i]) as boolean;
+): boolean {
+	return p.every(
+		(x: number, i: number) => x >= start[i] && x < end[i],
+	) as boolean;
+}

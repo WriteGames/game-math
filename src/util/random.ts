@@ -1,14 +1,14 @@
 import { Vec2, Vec3, Vec4 } from '../linear-algebra';
 
-type RandomFunc = (seed: number) => number;
-
-const xorShift32: RandomFunc = (seed): number => {
+function xorShift32(seed: number): number {
 	let x = seed;
 	x ^= x << 13;
 	x ^= x >>> 17;
 	x ^= x << 5;
 	return x >>> 0;
-};
+}
+
+type RandomFunc = typeof xorShift32;
 
 export interface Random {
 	seed: number;
@@ -35,17 +35,19 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static setDefaultGenerator(randomFunc: RandomFunc) {
+	static setDefaultGenerator(randomFunc: RandomFunc): void {
 		Random.staticRandom.setGenerator(randomFunc);
 		globalRandomFunc = randomFunc;
 	}
+
 	/**
 	 * @group Static
 	 */
-	static resetDefaultGenerator() {
+	static resetDefaultGenerator(): void {
 		Random.setDefaultGenerator(xorShift32);
 	}
-	setGenerator(randomFunc: RandomFunc) {
+
+	setGenerator(randomFunc: RandomFunc): void {
 		this.#randomFunc = randomFunc;
 	}
 
@@ -57,7 +59,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static float = (n = 1): number => Random.staticRandom.float(n);
+	static float(n = 1): number {
+		return Random.staticRandom.float(n);
+	}
+
 	float(n = 1): number {
 		return this.#next() * n;
 	}
@@ -65,8 +70,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static chance = (n: number, max: number): boolean =>
-		Random.staticRandom.chance(n, max);
+	static chance(n: number, max: number): boolean {
+		return Random.staticRandom.chance(n, max);
+	}
+
 	chance(n: number, max: number): boolean {
 		if (max === 0) return false;
 		return this.#next() < n / max;
@@ -75,7 +82,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static int = (n: number): number => Random.staticRandom.int(n);
+	static int(n: number): number {
+		return Random.staticRandom.int(n);
+	}
+
 	int(n: number): number {
 		return Math.floor(this.#next() * n);
 	}
@@ -83,8 +93,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static range = (a: number, b: number): number =>
-		Random.staticRandom.range(a, b);
+	static range(a: number, b: number): number {
+		return Random.staticRandom.range(a, b);
+	}
+
 	range(a: number, b: number): number {
 		return this.float(b - a) + a;
 	}
@@ -92,7 +104,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static bool = (): boolean => Random.staticRandom.bool();
+	static bool(): boolean {
+		return Random.staticRandom.bool();
+	}
+
 	bool(): boolean {
 		return this.int(2) > 0;
 	}
@@ -100,7 +115,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static sign = (): 1 | -1 => Random.staticRandom.sign();
+	static sign(): 1 | -1 {
+		return Random.staticRandom.sign();
+	}
+
 	sign(): 1 | -1 {
 		return this.bool() ? 1 : -1;
 	}
@@ -108,7 +126,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static angle = (): number => Random.staticRandom.angle();
+	static angle(): number {
+		return Random.staticRandom.angle();
+	}
+
 	angle(): number {
 		return this.float(360);
 	}
@@ -116,7 +137,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static choose = <T>(items: T[]): T => Random.staticRandom.choose(items);
+	static choose<T>(items: T[]): T {
+		return Random.staticRandom.choose(items);
+	}
+
 	choose<T>(items: T[]): T {
 		return items[this.int(items.length)];
 	}
@@ -124,7 +148,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static shuffle = <T>(arr: T[]): T[] => Random.staticRandom.shuffle(arr);
+	static shuffle<T>(arr: T[]): T[] {
+		return Random.staticRandom.shuffle(arr);
+	}
+
 	shuffle<T>(arr: T[]): T[] {
 		let m = arr.length;
 		let t: T;
@@ -143,7 +170,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static vec2 = (scale = 1): Vec2 => Random.staticRandom.vec2(scale);
+	static vec2(scale = 1): Vec2 {
+		return Random.staticRandom.vec2(scale);
+	}
+
 	vec2(scale = 1): Vec2 {
 		return new Vec2(scale, 0).rotate(this.float(Math.PI * 2));
 	}
@@ -151,7 +181,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static vec3 = (scale = 1): Vec3 => Random.staticRandom.vec3(scale);
+	static vec3(scale = 1): Vec3 {
+		return Random.staticRandom.vec3(scale);
+	}
+
 	vec3(scale = 1): Vec3 {
 		const v = new Vec3(
 			this.range(-1, 1),
@@ -164,7 +197,10 @@ export class Random {
 	/**
 	 * @group Static
 	 */
-	static vec4 = (scale = 1): Vec4 => Random.staticRandom.vec4(scale);
+	static vec4(scale = 1): Vec4 {
+		return Random.staticRandom.vec4(scale);
+	}
+
 	vec4(scale = 1): Vec4 {
 		const v = new Vec4(
 			this.range(-1, 1),

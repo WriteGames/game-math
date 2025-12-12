@@ -14,9 +14,9 @@ import { Vec4 } from './vec4.js';
 /**
  * @category Linear Algebra
  */
-export const isMat4 = (mat: Matrix): mat is Mat4 => {
+export function isMat4(mat: Matrix): mat is Mat4 {
 	return mat instanceof Mat4;
-};
+}
 
 // prettier-ignore
 const INDICES = [
@@ -633,7 +633,10 @@ export class Mat4 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns Determinant
 	 */
-	static determinant = (m: Mat4Like): number => determinantM4(m);
+	static determinant(m: Mat4Like): number {
+		return determinantM4(m);
+	}
+
 	/**
 	 * Returns the matrix's determinant
 	 * @returns Determinant
@@ -647,7 +650,10 @@ export class Mat4 extends Array<number> {
 	 * @param m Input matrix
 	 * @returns New, transposed matrix
 	 */
-	static transpose = <T extends Mat4Like>(m: T): T => transpose4D(m);
+	static transpose<T extends Mat4Like>(m: T): T {
+		return transpose4D(m);
+	}
+
 	/**
 	 * Transposes the matrix in-place
 	 * @returns this
@@ -662,8 +668,9 @@ export class Mat4 extends Array<number> {
 	 * @param right Matrix b
 	 * @returns The product of the two matrices
 	 */
-	static multiply = <T extends Mat4Like>(left: T, right: Mat4Like): T =>
-		multiplyM4M4(left, right);
+	static multiply<T extends Mat4Like>(left: T, right: Mat4Like): T {
+		return multiplyM4M4(left, right);
+	}
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
@@ -706,7 +713,10 @@ export class Mat4 extends Array<number> {
 	 * @param b Matrix b
 	 * @returns Equality result
 	 */
-	static equal = (a: Mat4, b: Mat4Like): boolean => posEqual(a, b);
+	static equal(a: Mat4, b: Mat4Like): boolean {
+		return posEqual(a, b);
+	}
+
 	/**
 	 * Check if this matrix is equal to another.
 	 * @param m Other matrix
@@ -723,7 +733,7 @@ export class Mat4 extends Array<number> {
  * @param m Input matrix
  * @returns New, transposed matrix
  */
-export const transpose4D = <T extends Mat4Like>(m: T): T => {
+export function transpose4D<T extends Mat4Like>(m: T): T {
 	if (m.length !== 16) throw new Error('not a valid 4x4 matrix');
 
 	const result = (isMat4(m) ? m.clone() : [...m]) as typeof m;
@@ -753,25 +763,25 @@ export const transpose4D = <T extends Mat4Like>(m: T): T => {
 	result[M32] = temp;
 
 	return result;
-};
+}
 
 /**
  * Throws an error if input is not a 4x4 matrix.
  * @category Linear Algebra
  * @param m Input matrix
  */
-const assertMat4 = (m: Mat4Like): void => {
+function assertMat4(m: Mat4Like): void {
 	if (m.length !== 16) throw new Error('not a valid 4x4 matrix');
-};
+}
 
 /**
  * Throws an error if input is not a 2D array
  * @category Linear Algebra
  * @param m Input matrix
  */
-const assertVec4 = (v: Vec4Like): void => {
+function assertVec4(v: Vec4Like): void {
 	if (v.length !== 4) throw new Error('not a valid 4D vector');
-};
+}
 
 /**
  * Computes the determinant of a matrix.
@@ -779,7 +789,7 @@ const assertVec4 = (v: Vec4Like): void => {
  * @param m Input matrix
  * @returns Determinant
  */
-export const determinantM4 = (m: Mat4Like): number => {
+export function determinantM4(m: Mat4Like): number {
 	assertMat4(m);
 
 	// prettier-ignore
@@ -812,7 +822,7 @@ export const determinantM4 = (m: Mat4Like): number => {
 		m[M20] * a2.determinant() -
 		m[M30] * a3.determinant()
 	);
-};
+}
 
 /**
  * Multiplies the matrices (left x right) left to right.
@@ -821,7 +831,7 @@ export const determinantM4 = (m: Mat4Like): number => {
  * @param r Right matrix
  * @returns The product of the two matrices
  */
-export const multiplyM4M4 = <T extends Mat4Like>(l: T, r: Mat4Like): T => {
+export function multiplyM4M4<T extends Mat4Like>(l: T, r: Mat4Like): T {
 	assertMat4(l);
 	assertMat4(r);
 
@@ -871,7 +881,7 @@ export const multiplyM4M4 = <T extends Mat4Like>(l: T, r: Mat4Like): T => {
 		l[M03] * r[M30] + l[M13] * r[M31] + l[M23] * r[M32] + l[M33] * r[M33];
 
 	return result;
-};
+}
 
 /**
  * Multiplies a 4x4 matrix by a 2D vector
@@ -880,7 +890,7 @@ export const multiplyM4M4 = <T extends Mat4Like>(l: T, r: Mat4Like): T => {
  * @param v Vector
  * @returns Product (2D Vector)
  */
-export const multiplyM4V4 = (m: Mat4Like, v: Vec4Like): Vec4 => {
+export function multiplyM4V4(m: Mat4Like, v: Vec4Like): Vec4 {
 	assertMat4(m);
 	assertVec4(v);
 
@@ -890,7 +900,7 @@ export const multiplyM4V4 = (m: Mat4Like, v: Vec4Like): Vec4 => {
 	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2] + m[M32] * v[3];
 	result[3] = m[M03] * v[0] + m[M13] * v[1] + m[M23] * v[2] + m[M33] * v[3];
 	return result;
-};
+}
 
 /**
  * @category Linear Algebra

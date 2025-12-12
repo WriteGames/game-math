@@ -1,4 +1,4 @@
-import { FuncCompare, reduceSum } from './functional.js';
+import { reduceSum } from './functional.js';
 import { angleDifference, angleDifferenceDeg } from './trig.js';
 
 export * from './directions.js';
@@ -20,7 +20,7 @@ export const EPSILON = 0.000001 as const;
  * @param amount Amount to approach
  * @returns
  */
-export function approach(from: number, to: number, amount: number) {
+export function approach(from: number, to: number, amount: number): number {
 	return from > to
 		? Math.max(from - amount, to)
 		: Math.min(from + amount, to);
@@ -63,9 +63,9 @@ export function distance(dimensions: number[]): number {
  * @param b Value b
  * @returns Whether or not they're about equal
  */
-export const equal: FuncCompare<number> = (a, b) => {
+export function equal(a: number, b: number): boolean {
 	return Math.abs(a - b) < EPSILON;
-};
+}
 
 /**
  * Linear interpolation between two values.
@@ -158,6 +158,10 @@ export function remapClamp(
  * @param increment Grid size
  * @param offset Offset to apply after the snap
  */
-export function snapToGrid(value: number, increment: number, offset = 0) {
+export function snapToGrid(
+	value: number,
+	increment: number,
+	offset = 0,
+): number {
 	return offset + Math.floor(value / increment) * increment;
 }

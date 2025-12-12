@@ -11,7 +11,9 @@ export const RAD_TO_DEG = 180 / Math.PI;
  * @param rad Radian to convert
  * @returns Angle in degrees
  */
-export const radToDeg = (rad: number): number => rad * RAD_TO_DEG;
+export function radToDeg(rad: number): number {
+	return rad * RAD_TO_DEG;
+}
 
 /** Ratio to multiply to convert degrees to radians */
 export const DEG_TO_RAD = Math.PI / 180;
@@ -36,7 +38,9 @@ export const RAD_720 = 720 * DEG_TO_RAD;
  * @param deg Degree to convert
  * @returns Angle in radians
  */
-export const degToRad = (deg: number): number => deg * DEG_TO_RAD;
+export function degToRad(deg: number): number {
+	return deg * DEG_TO_RAD;
+}
 
 /**
  * Calculates the angle between two given angles.
@@ -87,7 +91,7 @@ export function angleDifferenceSignDeg(a: number, b: number): number {
  * @param amount Amount (radians) to approach
  * @returns
  */
-export function approachAngle(from: number, to: number, rad: number) {
+export function approachAngle(from: number, to: number, rad: number): number {
 	const diff = angleDifference(from, to);
 	const sign = Math.sign(diff);
 	const moveBy = Math.min(diff * sign, rad);
@@ -101,7 +105,11 @@ export function approachAngle(from: number, to: number, rad: number) {
  * @param amount Amount (degrees) to approach
  * @returns
  */
-export function approachAngleDeg(from: number, to: number, deg: number) {
+export function approachAngleDeg(
+	from: number,
+	to: number,
+	deg: number,
+): number {
 	const diff = angleDifferenceDeg(from, to);
 	const sign = Math.sign(diff);
 	const moveBy = Math.min(diff * sign, deg);
