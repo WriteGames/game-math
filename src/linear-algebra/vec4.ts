@@ -46,7 +46,7 @@ export class Vec4 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <0, 0, 0, 0>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec4
 	 */
 	static get zero(): Vec4 {
 		return new Vec4(0, 0, 0, 0);
@@ -55,7 +55,7 @@ export class Vec4 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <1, 1, 1, 1>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec4
 	 */
 	static get one(): Vec4 {
 		return new Vec4(1, 1, 1, 1);
@@ -246,7 +246,7 @@ export class Vec4 extends Array<number> {
 	 * @group Static
 	 * @param {Vec4} a Vector a
 	 * @param {Vec4} b Vector b
-	 * @returns {Vec4} Vec2
+	 * @returns {Vec4} Vec4
 	 */
 	static sub(a: Vec4, b: Vec4 | Vector): Vec4 {
 		return subPos(a, b);
@@ -272,7 +272,7 @@ export class Vec4 extends Array<number> {
 	 * @group Static
 	 * @param {Vec4} a Vector a
 	 * @param {Vec4} b Vector b
-	 * @returns {Vec4} Vec2
+	 * @returns {Vec4} Vec4
 	 */
 	static minus(a: Vec4, b: Vec4 | Vector): Vec4 {
 		return Vec4.sub(a, b);

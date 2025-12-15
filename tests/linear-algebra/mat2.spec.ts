@@ -167,7 +167,7 @@ describe('Matrix operations', () => {
 		});
 
 		describe('static properties', () => {
-			test(`.identity should return the 2x2 identity matrix`, () => {
+			test('.identity should return the 2x2 identity matrix', () => {
 				expect(Mat2.identity).toEqual([1, 0, 0, 1]);
 			});
 

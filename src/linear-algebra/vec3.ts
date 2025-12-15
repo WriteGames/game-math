@@ -42,7 +42,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <0, 0, 0>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get zero(): Vec3 {
 		return new Vec3(0, 0, 0);
@@ -51,7 +51,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <1, 1, 1>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get one(): Vec3 {
 		return new Vec3(1, 1, 1);
@@ -60,7 +60,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <-1, 0, 0>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get left(): Vec3 {
 		return new Vec3(-1, 0, 0);
@@ -69,7 +69,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <1, 0, 0>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get right(): Vec3 {
 		return new Vec3(1, 0, 0);
@@ -78,7 +78,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <0, -1, 0>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get down(): Vec3 {
 		return new Vec3(0, -1, 0);
@@ -87,7 +87,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <0, 1, 0>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get up(): Vec3 {
 		return new Vec3(0, 1, 0);
@@ -96,7 +96,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <0, 0, -1>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get back(): Vec3 {
 		return new Vec3(0, 0, -1);
@@ -105,7 +105,7 @@ export class Vec3 extends Array<number> {
 	/**
 	 * Creates an instance of a Vec3 at <0, 0, 1>
 	 * @group Helper
-	 * @type Vec2
+	 * @type Vec3
 	 */
 	static get forward(): Vec3 {
 		// DECIDE(bret): which way is forward?
