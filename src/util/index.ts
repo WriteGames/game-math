@@ -54,7 +54,7 @@ export function distanceSq(dimensions: number[]): number {
  * @returns The distance of the vector
  */
 export function distance(dimensions: number[]): number {
-	return Math.sqrt(distanceSq(dimensions));
+	return Math.hypot(...dimensions);
 }
 
 /**
