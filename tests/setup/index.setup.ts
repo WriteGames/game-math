@@ -16,6 +16,7 @@ import type {
 import { toChain } from './matchers/toChain';
 import { toEqualMatrix } from './matchers/toEqualMatrix';
 import { toEqualVector } from './matchers/toEqualVector';
+import { Quat } from '../../bin/linear-algebra/quat';
 
 expect.extend({
 	toChain,
@@ -25,6 +26,7 @@ expect.extend({
 	toEqualVec2: toEqualVector,
 	toEqualVec3: toEqualVector,
 	toEqualVec4: toEqualVector,
+	toEqualQuat: toEqualVector,
 });
 
 type OnlyIf<T, Type, Func> = T extends Type ? Func : never;
@@ -38,5 +40,6 @@ declare module 'vitest' {
 		toEqualVec2: OnlyIf<T, Vec2, (expected: Vec2 | V2_T) => void>;
 		toEqualVec3: OnlyIf<T, Vec3, (expected: Vec3 | V3_T) => void>;
 		toEqualVec4: OnlyIf<T, Vec4, (expected: Vec4 | V4_T) => void>;
+		toEqualQuat: OnlyIf<T, Quat, (expected: Quat | V4_T) => void>;
 	}
 }

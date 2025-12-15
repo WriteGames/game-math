@@ -2,6 +2,7 @@ import { approach, distance, distanceSq, equal } from '../util/index.js';
 import { type Mat2 } from './mat2.js';
 import { type Mat3 } from './mat3.js';
 import { type Mat4 } from './mat4.js';
+import { isQuat, Quat } from './quat.js';
 import { isVec2, Vec2 } from './vec2.js';
 import { isVec3, Vec3 } from './vec3.js';
 import { isVec4, Vec4 } from './vec4.js';
@@ -34,7 +35,7 @@ export type Vector_T =
 /**
  * @category Linear Algebra
  */
-export type Vector = Vector_T | Vec2 | Vec3 | Vec4;
+export type Vector = Vector_T | Vec2 | Vec3 | Vec4 | Quat;
 
 // DECIDE(bret): Internally, Mat2 uses column-major; however, its constructor
 // takes row-major. This makes the array-based version and the Mat2 version
@@ -155,6 +156,7 @@ export function scalePos<T extends Vector>(p: T, s: number): T {
 	if (isVec2(p)) return new Vec2(...scaled) as typeof p;
 	if (isVec3(p)) return new Vec3(...scaled) as typeof p;
 	if (isVec4(p)) return new Vec4(...scaled) as typeof p;
+	if (isQuat(p)) return new Quat(...scaled) as typeof p;
 	return scaled as typeof p;
 }
 
