@@ -11,6 +11,7 @@ import {
 	type Vec4Like,
 	type Vector,
 } from './common.js';
+import { Quat } from './quat.js';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
 
@@ -443,7 +444,10 @@ export class Vec4 extends Array<number> {
 	// #endregion
 }
 
-export function dotProduct4D(a: Vec4 | V4_T, b: Vec4 | V4_T): number {
+export function dotProduct4D(
+	a: Vec4 | V4_T | Quat,
+	b: Vec4 | V4_T | Quat,
+): number {
 	return a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z] + a[W] * b[W];
 }
 

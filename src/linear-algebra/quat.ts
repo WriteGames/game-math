@@ -1,6 +1,9 @@
+import { distance } from '../util';
 import { posEqual, scalePos, V4_T, type Vector } from './common';
+import { Mat4 } from './mat4';
 import { Vec2 } from './vec2';
 import { Vec3 } from './vec3';
+import { dotProduct4D } from './vec4';
 
 export function isQuat(quat: Vector): quat is Quat {
 	return quat instanceof Quat;
@@ -111,7 +114,7 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Sets x/y to another Quat's properties.
-	 * @param {Quat} v Input vector
+	 * @param {Quat} v Input quaternion
 	 */
 	set(v: Quat): void {
 		this.x = v.x;
@@ -121,7 +124,7 @@ export class Quat extends Array<number> {
 	}
 
 	/**
-	 * Sets the vector to a set of values.
+	 * Sets the quaternion to a set of values.
 	 * @param {number} x New x position
 	 * @param {number} y New y position
 	 * @param {number} z New z position
@@ -135,8 +138,30 @@ export class Quat extends Array<number> {
 	}
 
 	/**
+	 * Normalizes a quaternion, setting its magnitude to 1.
+	 * @memberof Quat
+	 * @method
+	 * @group Static
+	 * @param {Quat} v The quaternion to normalize
+	 * @returns {Quat} The input quaternion
+	 */
+	static normalize(v: Quat): Quat {
+		return scalePos(v, 1 / distance(v));
+	}
+
+	/**
+	 * Normalizes the quaternion, setting its magnitude to 1.
+	 * @returns {this} this
+	 */
+	normalize(): this {
+		const v = scalePos(this, 1 / distance(this));
+		this.set(v);
+		return this;
+	}
+
+	/**
 	 * Creates a new Quat instance with identical properties.
-	 * @returns {Quat} A clone of the vector
+	 * @returns {Quat} A clone of the quaternion
 	 */
 	clone(): Quat {
 		return new Quat(...this);
@@ -151,6 +176,86 @@ export class Quat extends Array<number> {
 
 	equal(v: Quat | V4_T): boolean {
 		return Quat.equal(this, v);
+	}
+
+	toMat4(): Mat4 {
+		const result = new Mat4();
+		const normalized = this.clone().normalize();
+
+		const XX = normalized[X] * normalized[X];
+		const YY = normalized[Y] * normalized[Y];
+		const ZZ = normalized[Z] * normalized[Z];
+		const XY = normalized[X] * normalized[Y];
+		const XZ = normalized[X] * normalized[Z];
+		const YZ = normalized[Y] * normalized[Z];
+		const WX = normalized[X] * normalized[W];
+		const WY = normalized[Y] * normalized[W];
+		const WZ = normalized[Z] * normalized[W];
+
+		result.m00 = 1.0 - 2.0 * (YY + ZZ);
+		result.m01 = 2.0 * (XY + WZ);
+		result.m02 = 2.0 * (XZ - WY);
+		result.m03 = 0.0;
+
+		result.m10 = 2.0 * (XY - WZ);
+		result.m11 = 1.0 - 2.0 * (XX + ZZ);
+		result.m12 = 2.0 * (YZ + WX);
+		result.m13 = 0.0;
+
+		result.m20 = 2.0 * (XZ + WY);
+		result.m21 = 2.0 * (YZ - WX);
+		result.m22 = 1.0 - 2.0 * (XX + YY);
+		result.m23 = 0.0;
+
+		result.m30 = 0.0;
+		result.m31 = 0.0;
+		result.m32 = 0.0;
+		result.m33 = 1.0;
+
+		return result;
+	}
+
+	/**
+	 * Linearly interpolates between two {@link Quat}s, normalized.
+	 * @memberof Quat
+	 * @method
+	 * @group Static
+	 * @param {Quat} a Start vector
+	 * @param {Quat} b End vector
+	 * @param {number} t Percentage between a and b
+	 * @returns {Quat}
+	 */
+	static nlerp(a: Quat, b: Quat, t: number): Quat {
+		const result = _mixQ4Q4(a, 1 - t, b, t);
+		return result.normalize();
+	}
+
+	/**
+	 * Spherically linearly interpolates between two {@link Quat}s.
+	 * @memberof Quat
+	 * @method
+	 * @group Static
+	 * @param {Quat} a Start vector
+	 * @param {Quat} b End vector
+	 * @param {number} t Percentage between a and b
+	 * @returns {Quat}
+	 */
+	static slerp(a: Quat, b: Quat, t: number): Quat {
+		let theta = dotProduct4D(a, b);
+		if (theta < 0) {
+			theta = -theta;
+			b.x = -b.x;
+			b.y = -b.y;
+			b.z = -b.z;
+			b.w = -b.w;
+		}
+
+		const angle = Math.acos(theta);
+		const aT = Math.sin((1 - t) * angle);
+		const bT = Math.sin(t * angle);
+
+		const result = _mixQ4Q4(a, aT, b, bT);
+		return result.normalize();
 	}
 
 	// #region overrides
@@ -200,7 +305,7 @@ export class Quat extends Array<number> {
 export function inverseQ4(q: Quat): Quat {
 	const result = new Quat(-q.x, -q.y, -q.z, q.w);
 
-	return divideQ4Scalar(result, dotProductQ4(q, q));
+	return divideQ4Scalar(result, dotProduct4D(q, q));
 }
 
 export function multiplyQ4Q4(a: Quat, b: Quat) {
@@ -233,6 +338,11 @@ export function divideQ4Scalar(q: Quat, v: number) {
 	return scalePos(q, 1 / v);
 }
 
-export function dotProductQ4(a: Quat, b: Quat) {
-	return a.x * b.x + a.z * b.z + a.y * b.y + a.w * b.w;
+function _mixQ4Q4(a: Quat, aT: number, b: Quat, bT: number) {
+	const result = new Quat();
+	result[X] = a[X] * aT + b[X] * bT;
+	result[Y] = a[Y] * aT + b[Y] * bT;
+	result[Z] = a[Z] * aT + b[Z] * bT;
+	result[W] = a[W] * aT + b[W] * bT;
+	return result;
 }
