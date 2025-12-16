@@ -1,5 +1,5 @@
 import { distance } from '../util';
-import { posEqual, scalePos, V4_T, type Vector } from './common';
+import { posEqual, QuatLike, scalePos, V4_T, type Vector } from './common';
 import { Mat4 } from './mat4';
 import { Vec2 } from './vec2';
 import { Vec3 } from './vec3';
@@ -178,9 +178,10 @@ export class Quat extends Array<number> {
 		return Quat.equal(this, v);
 	}
 
-	toMat4(): Mat4 {
+	static toMat4(q: QuatLike): Mat4 {
 		const result = new Mat4();
-		const normalized = this.clone().normalize();
+		const _q = q instanceof Quat ? q : new Quat(...q);
+		const normalized = _q.clone().normalize();
 
 		const XX = normalized[X] * normalized[X];
 		const YY = normalized[Y] * normalized[Y];
@@ -213,6 +214,10 @@ export class Quat extends Array<number> {
 		result.m33 = 1.0;
 
 		return result;
+	}
+
+	toMat4(): Mat4 {
+		return Quat.toMat4(this);
 	}
 
 	/**
@@ -332,6 +337,10 @@ export function multiplyQ4Q4(a: Quat, b: Quat) {
 	result.w += b[3] * +a[3];
 
 	return result;
+}
+
+export function multiplyQ4Scalar(q: Quat, v: number) {
+	return scalePos(q, v);
 }
 
 export function divideQ4Scalar(q: Quat, v: number) {

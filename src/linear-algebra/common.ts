@@ -104,6 +104,10 @@ export type Mat4Like = Mat4 | M4_T;
  * @category Linear Algebra
  */
 export type Vec4Like = Vec4 | V4_T;
+/**
+ * @category Linear Algebra
+ */
+export type QuatLike = Quat | V4_T;
 
 export const V2 = Object.defineProperties(
 	{},
