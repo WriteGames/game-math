@@ -4,12 +4,14 @@ import {
 	clamp,
 	distance,
 	distanceSq,
+	equal,
 	lerp,
 	lerpAngle,
 	lerpAngleDeg,
 	lerpClamp,
 	remap,
 	remapClamp,
+	snapToGrid,
 	type V4_T,
 } from '..';
 import { DEG_TO_RAD } from '../src/util/trig';
@@ -116,6 +118,60 @@ describe(`${clamp.name}()`, () => {
 	});
 });
 
+describe(`${distanceSq.name}()`, () => {
+	test('should return squared distance of vector', () => {
+		expect(distanceSq([10])).toEqual(100);
+		expect(distanceSq([-10])).toEqual(100);
+
+		expect(distanceSq([3, 4])).toEqual(25);
+		expect(distanceSq([-3, 4])).toEqual(25);
+		expect(distanceSq([-3, -4])).toEqual(25);
+		expect(distanceSq([3, -4])).toEqual(25);
+
+		expect(distanceSq([3, 4, 5])).toEqual(50);
+		expect(distanceSq([-3, 4, -5])).toEqual(50);
+		expect(distanceSq([-3, -4, -5])).toEqual(50);
+		expect(distanceSq([3, -4, 5])).toEqual(50);
+	});
+});
+
+describe(`${distanceSq.name}()`, () => {
+	test('should return distance of vector', () => {
+		expect(distance([10])).toEqual(10);
+		expect(distance([-10])).toEqual(10);
+
+		expect(distance([3, 4])).toEqual(5);
+		expect(distance([-3, 4])).toEqual(5);
+		expect(distance([-3, -4])).toEqual(5);
+		expect(distance([3, -4])).toEqual(5);
+
+		const sqrt50 = Math.sqrt(50);
+		expect(distance([3, 4, 5])).toEqual(sqrt50);
+		expect(distance([-3, 4, -5])).toEqual(sqrt50);
+		expect(distance([-3, -4, -5])).toEqual(sqrt50);
+		expect(distance([3, -4, 5])).toEqual(sqrt50);
+	});
+});
+
+describe(`${equal.name}()`, () => {
+	test('should identify equal values as equal', () => {
+		expect(equal(-1, -1)).toBeTruthy();
+		expect(equal(3, 3)).toBeTruthy();
+		expect(equal(123.4567, 123.4567)).toBeTruthy();
+	});
+
+	test('should identify nearly equal values as equal', () => {
+		expect(equal(1 / 3, 0.333333)).toBeTruthy();
+		expect(equal(-0, 0)).toBeTruthy();
+	});
+
+	test('should identify non-equal values as not equal', () => {
+		expect(equal(-1, 1)).toBeFalsy();
+		expect(equal(0.1, 0.2)).toBeFalsy();
+		expect(equal(0.00001, 0.00002)).toBeFalsy();
+	});
+});
+
 describe(`${lerp.name}()`, () => {
 	const from = 13;
 	const to = 23;
@@ -138,6 +194,58 @@ describe(`${lerp.name}()`, () => {
 
 	runTests(tests, (...args: [number]): number => {
 		return lerp(from, to, ...args);
+	});
+});
+
+describe(`${lerpAngle.name}()`, () => {
+	test('should correctly interpolate between the two angles', () => {
+		expect(lerpAngle(0, DEG_TO_RAD * 10, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * 10, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
+		expect(lerpAngle(0, DEG_TO_RAD * 10, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+
+		expect(lerpAngle(0, DEG_TO_RAD * 370, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * 370, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
+		expect(lerpAngle(0, DEG_TO_RAD * 370, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+
+		expect(lerpAngle(0, DEG_TO_RAD * 730, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * 730, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
+		expect(lerpAngle(0, DEG_TO_RAD * 730, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+
+		expect(lerpAngle(0, DEG_TO_RAD * -350, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * -350, 0.5)).toBeCloseTo(
+			DEG_TO_RAD * 5,
+		);
+		expect(lerpAngle(0, DEG_TO_RAD * -350, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+
+		expect(lerpAngle(0, DEG_TO_RAD * -710, 0)).toEqual(DEG_TO_RAD * 0);
+		expect(lerpAngle(0, DEG_TO_RAD * -710, 0.5)).toBeCloseTo(
+			DEG_TO_RAD * 5,
+		);
+		expect(lerpAngle(0, DEG_TO_RAD * -710, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+	});
+});
+
+describe(`${lerpAngleDeg.name}()`, () => {
+	test('should correctly interpolate between the two angles', () => {
+		expect(lerpAngleDeg(0, 10, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, 10, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, 10, 1)).toEqual(10);
+
+		expect(lerpAngleDeg(0, 370, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, 370, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, 370, 1)).toEqual(10);
+
+		expect(lerpAngleDeg(0, 730, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, 730, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, 730, 1)).toEqual(10);
+
+		expect(lerpAngleDeg(0, -350, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, -350, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, -350, 1)).toEqual(10);
+
+		expect(lerpAngleDeg(0, -710, 0)).toEqual(0);
+		expect(lerpAngleDeg(0, -710, 0.5)).toEqual(5);
+		expect(lerpAngleDeg(0, -710, 1)).toEqual(10);
 	});
 });
 
@@ -316,89 +424,28 @@ describe(`${remapClamp.name}()`, () => {
 	});
 });
 
-describe('lerpAngle()', () => {
-	test('should correctly interpolate between the two angles', () => {
-		expect(lerpAngle(0, DEG_TO_RAD * 10, 0)).toEqual(DEG_TO_RAD * 0);
-		expect(lerpAngle(0, DEG_TO_RAD * 10, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
-		expect(lerpAngle(0, DEG_TO_RAD * 10, 1)).toBeCloseTo(DEG_TO_RAD * 10);
-
-		expect(lerpAngle(0, DEG_TO_RAD * 370, 0)).toEqual(DEG_TO_RAD * 0);
-		expect(lerpAngle(0, DEG_TO_RAD * 370, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
-		expect(lerpAngle(0, DEG_TO_RAD * 370, 1)).toBeCloseTo(DEG_TO_RAD * 10);
-
-		expect(lerpAngle(0, DEG_TO_RAD * 730, 0)).toEqual(DEG_TO_RAD * 0);
-		expect(lerpAngle(0, DEG_TO_RAD * 730, 0.5)).toBeCloseTo(DEG_TO_RAD * 5);
-		expect(lerpAngle(0, DEG_TO_RAD * 730, 1)).toBeCloseTo(DEG_TO_RAD * 10);
-
-		expect(lerpAngle(0, DEG_TO_RAD * -350, 0)).toEqual(DEG_TO_RAD * 0);
-		expect(lerpAngle(0, DEG_TO_RAD * -350, 0.5)).toBeCloseTo(
-			DEG_TO_RAD * 5,
-		);
-		expect(lerpAngle(0, DEG_TO_RAD * -350, 1)).toBeCloseTo(DEG_TO_RAD * 10);
-
-		expect(lerpAngle(0, DEG_TO_RAD * -710, 0)).toEqual(DEG_TO_RAD * 0);
-		expect(lerpAngle(0, DEG_TO_RAD * -710, 0.5)).toBeCloseTo(
-			DEG_TO_RAD * 5,
-		);
-		expect(lerpAngle(0, DEG_TO_RAD * -710, 1)).toBeCloseTo(DEG_TO_RAD * 10);
+describe(`${snapToGrid.name}()`, () => {
+	test('should snap value to a grid', () => {
+		for (let i = 0; i < 32; ++i) {
+			expect(snapToGrid(i, 32)).toBe(0);
+		}
+		for (let i = 0; i < 32; ++i) {
+			expect(snapToGrid(32 + i, 32)).toBe(32);
+		}
+		for (let i = 0; i < 32; ++i) {
+			expect(snapToGrid(64 + i, 32)).toBe(64);
+		}
 	});
-});
 
-describe('lerpAngleDeg()', () => {
-	test('should correctly interpolate between the two angles', () => {
-		expect(lerpAngleDeg(0, 10, 0)).toEqual(0);
-		expect(lerpAngleDeg(0, 10, 0.5)).toEqual(5);
-		expect(lerpAngleDeg(0, 10, 1)).toEqual(10);
+	test('should snap value to a grid and apply an offset', () => {
+		for (let i = 0; i < 32; ++i) {
+			expect(snapToGrid(i, 32, 48)).toBe(48);
+		}
 
-		expect(lerpAngleDeg(0, 370, 0)).toEqual(0);
-		expect(lerpAngleDeg(0, 370, 0.5)).toEqual(5);
-		expect(lerpAngleDeg(0, 370, 1)).toEqual(10);
+		for (let i = 0; i < 10; ++i) {
+			expect(snapToGrid(12, 32, i)).toBe(i);
+		}
 
-		expect(lerpAngleDeg(0, 730, 0)).toEqual(0);
-		expect(lerpAngleDeg(0, 730, 0.5)).toEqual(5);
-		expect(lerpAngleDeg(0, 730, 1)).toEqual(10);
-
-		expect(lerpAngleDeg(0, -350, 0)).toEqual(0);
-		expect(lerpAngleDeg(0, -350, 0.5)).toEqual(5);
-		expect(lerpAngleDeg(0, -350, 1)).toEqual(10);
-
-		expect(lerpAngleDeg(0, -710, 0)).toEqual(0);
-		expect(lerpAngleDeg(0, -710, 0.5)).toEqual(5);
-		expect(lerpAngleDeg(0, -710, 1)).toEqual(10);
-	});
-});
-
-describe('distanceSq()', () => {
-	test('should return squared distance of vector', () => {
-		expect(distanceSq([10])).toEqual(100);
-		expect(distanceSq([-10])).toEqual(100);
-
-		expect(distanceSq([3, 4])).toEqual(25);
-		expect(distanceSq([-3, 4])).toEqual(25);
-		expect(distanceSq([-3, -4])).toEqual(25);
-		expect(distanceSq([3, -4])).toEqual(25);
-
-		expect(distanceSq([3, 4, 5])).toEqual(50);
-		expect(distanceSq([-3, 4, -5])).toEqual(50);
-		expect(distanceSq([-3, -4, -5])).toEqual(50);
-		expect(distanceSq([3, -4, 5])).toEqual(50);
-	});
-});
-
-describe('distanceSq()', () => {
-	test('should return distance of vector', () => {
-		expect(distance([10])).toEqual(10);
-		expect(distance([-10])).toEqual(10);
-
-		expect(distance([3, 4])).toEqual(5);
-		expect(distance([-3, 4])).toEqual(5);
-		expect(distance([-3, -4])).toEqual(5);
-		expect(distance([3, -4])).toEqual(5);
-
-		const sqrt50 = Math.sqrt(50);
-		expect(distance([3, 4, 5])).toEqual(sqrt50);
-		expect(distance([-3, 4, -5])).toEqual(sqrt50);
-		expect(distance([-3, -4, -5])).toEqual(sqrt50);
-		expect(distance([3, -4, 5])).toEqual(sqrt50);
+		expect(snapToGrid(32, 32, -48)).toBe(-16);
 	});
 });
