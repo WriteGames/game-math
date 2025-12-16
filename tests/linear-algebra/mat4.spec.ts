@@ -8,6 +8,7 @@ import {
 	multiplyM4V4,
 	transpose4D,
 } from '../../src/linear-algebra/mat4.js';
+import { cosDeg, RAD_45, RAD_90, sinDeg } from '../../src/index.js';
 
 // prettier-ignore
 const INDICES = [
@@ -771,6 +772,44 @@ describe('Matrix operations', () => {
 						50, 162, 274, 386,
 					] as M4_T;
 					expect(b).toEqualMat4(expected);
+				});
+			});
+
+			describe(`.${Mat4.prototype.toQuat.name}() should return a quaternion representation of the given matrix`, () => {
+				test('rotate 90 degrees about the x-axis', () => {
+					expect(Mat4.rotateX(RAD_90).toQuat()).toEqualQuat([
+						sinDeg(90 / 2),
+						0,
+						0,
+						cosDeg(90 / 2),
+					]);
+				});
+
+				test('rotate 90 degrees about the y-axis', () => {
+					expect(Mat4.rotateY(RAD_90).toQuat()).toEqualQuat([
+						0,
+						sinDeg(90 / 2),
+						0,
+						cosDeg(90 / 2),
+					]);
+				});
+
+				test('rotate 90 degrees about the z-axis', () => {
+					expect(Mat4.rotateZ(RAD_90).toQuat()).toEqualQuat([
+						0,
+						0,
+						sinDeg(90 / 2),
+						cosDeg(90 / 2),
+					]);
+				});
+
+				test('rotate 45 degrees about the x-axis', () => {
+					expect(Mat4.rotateX(RAD_45).toQuat()).toEqualQuat([
+						sinDeg(45 / 2),
+						0,
+						0,
+						cosDeg(45 / 2),
+					]);
 				});
 			});
 		});

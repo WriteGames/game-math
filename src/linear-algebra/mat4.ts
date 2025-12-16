@@ -6,8 +6,9 @@ import type {
 	Vec3Like,
 	Vec4Like,
 } from './common.js';
-import { posEqual } from './common.js';
+import { posEqual, scalePos } from './common.js';
 import { Mat3 } from './mat3.js';
+import { Quat } from './quat.js';
 import { magnitude3D, Vec3 } from './vec3.js';
 import { Vec4 } from './vec4.js';
 
@@ -724,6 +725,64 @@ export class Mat4 extends Array<number> {
 	 */
 	equal(m: Mat4Like): boolean {
 		return Mat4.equal(this, m);
+	}
+
+	/**
+	 * Converts a matrix to a quaternion. Based off of
+	 * Mike Day's implementation:
+	 * https://d3cw3dd2w32x2b.cloudfront.net/wp-content/uploads/2015/01/matrix-to-quat.pdf
+	 * @param m The matrix to convert
+	 * @returns Equivalanet quaternion
+	 */
+	static toQuat(m: Mat4Like): Quat {
+		let t: number;
+		let result: Quat;
+
+		if (m[M22] < 0) {
+			if (m[M00] > m[M11]) {
+				t = 1 + m[M00] - m[M11] - m[M22];
+				result = new Quat(
+					t,
+					m[M01] + m[M10],
+					m[M20] + m[M02],
+					m[M12] - m[M21],
+				);
+			} else {
+				t = 1 - m[M00] + m[M11] - m[M22];
+				result = new Quat(
+					m[M01] + m[M10],
+					t,
+					m[M12] + m[M21],
+					m[M20] - m[M02],
+				);
+			}
+		} else {
+			if (m[M00] < -m[M11]) {
+				t = 1 - m[M00] - m[M11] + m[M22];
+				result = new Quat(
+					m[M20] + m[M02],
+					m[M12] + m[M21],
+					t,
+					m[M01] - m[M10],
+				);
+			} else {
+				t = 1 + m[M00] + m[M11] + m[M22];
+				result = new Quat(
+					m[M12] - m[M21],
+					m[M20] - m[M02],
+					m[M01] - m[M10],
+					t,
+				);
+			}
+		}
+
+		result = scalePos(result, 0.5 / Math.sqrt(t));
+
+		return result;
+	}
+
+	toQuat(): Quat {
+		return Mat4.toQuat(this);
 	}
 }
 
