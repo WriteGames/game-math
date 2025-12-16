@@ -7,9 +7,9 @@ import {
 	approachAngle,
 	approachAngleDeg,
 	DEG_TO_RAD,
+	wrapAngle,
 	wrapAngleDeg,
 } from '../src/util/trig';
-import { RAD_360, wrapAngle } from '../bin';
 
 describe(`${angleDifference.name}() / ${angleDifferenceDeg.name}()`, () => {
 	test('should return correct delta between angles', () => {

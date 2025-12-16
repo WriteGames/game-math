@@ -174,10 +174,20 @@ export function atan2Deg(y: number, x: number): number {
 	return Math.atan2(y, x) * RAD_TO_DEG;
 }
 
-export function wrapAngle(degree: number): number {
-	return ((degree % RAD_360) + RAD_360) % RAD_360;
+/**
+ * Wraps an angle to fall between [0, 2pi)
+ * @param radian Input angle
+ * @returns Wrapped angle, [0, 2pi)
+ */
+export function wrapAngle(radian: number): number {
+	return ((radian % RAD_360) + RAD_360) % RAD_360;
 }
 
+/**
+ * Wraps an angle to fall between [0, 360)
+ * @param radian Input angle
+ * @returns Wrapped angle, [0, 360)
+ */
 export function wrapAngleDeg(degree: number): number {
 	return ((degree % 360) + 360) % 360;
 }
