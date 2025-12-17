@@ -142,8 +142,7 @@ describe(`${wrapAngle.name}()/${wrapAngleDeg.name}()`, () => {
 		const start = -360 * 3;
 		for (let i = 0; i < 360 * 5; ++i) {
 			const expected = i % 360;
-			let result = wrapAngleDeg(start + i);
-			if (result === -0) result = 0;
+			const result = wrapAngleDeg(start + i);
 			expect(result).toEqual(expected);
 
 			const result2 = wrapAngle((start + i) * DEG_TO_RAD);
