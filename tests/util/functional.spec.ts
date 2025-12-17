@@ -5,6 +5,7 @@ import { reduceProduct, reduceSum } from '../../bin';
 describe(`${reduceProduct.name}()`, () => {
 	test('should reduce a set of numbers into their product', () => {
 		expect([1, 2, 3, 4].reduce(reduceProduct)).toEqual(24);
+		expect([1, 2, 3, 4].reduce(reduceProduct)).toEqual(24);
 	});
 });
 

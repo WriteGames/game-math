@@ -1,22 +1,17 @@
 import { expect } from 'vitest';
-import type {
-	M2_T,
-	M3_T,
-	M4_T,
-	Mat2,
-	Mat3,
-	Mat4,
-	V2_T,
-	V3_T,
-	V4_T,
-	Vec2,
-	Vec3,
-	Vec4,
-} from '../../.';
+
+import {
+	Mat2Like,
+	Mat3Like,
+	Mat4Like,
+	QuatLike,
+	Vec2Like,
+	Vec3Like,
+	Vec4Like,
+} from '../../src';
 import { toChain } from './matchers/toChain';
 import { toEqualMatrix } from './matchers/toEqualMatrix';
 import { toEqualVector } from './matchers/toEqualVector';
-import { Quat } from '../../bin/linear-algebra/quat';
 
 expect.extend({
 	toChain,
@@ -34,12 +29,12 @@ type OnlyIf<T, Type, Func> = T extends Type ? Func : never;
 declare module 'vitest' {
 	interface Assertion<T> {
 		toChain: (callback: (v: T) => T) => void;
-		toEqualMat2: OnlyIf<T, Mat2, (expected: Mat2 | M2_T) => void>;
-		toEqualMat3: OnlyIf<T, Mat3, (expected: Mat3 | M3_T) => void>;
-		toEqualMat4: OnlyIf<T, Mat4, (expected: Mat4 | M4_T) => void>;
-		toEqualVec2: OnlyIf<T, Vec2, (expected: Vec2 | V2_T) => void>;
-		toEqualVec3: OnlyIf<T, Vec3, (expected: Vec3 | V3_T) => void>;
-		toEqualVec4: OnlyIf<T, Vec4, (expected: Vec4 | V4_T) => void>;
-		toEqualQuat: OnlyIf<T, Quat, (expected: Quat | V4_T) => void>;
+		toEqualMat2: OnlyIf<T, Mat2Like, (expected: Mat2Like) => void>;
+		toEqualMat3: OnlyIf<T, Mat3Like, (expected: Mat3Like) => void>;
+		toEqualMat4: OnlyIf<T, Mat4Like, (expected: Mat4Like) => void>;
+		toEqualVec2: OnlyIf<T, Vec2Like, (expected: Vec2Like) => void>;
+		toEqualVec3: OnlyIf<T, Vec3Like, (expected: Vec3Like) => void>;
+		toEqualVec4: OnlyIf<T, Vec4Like, (expected: Vec4Like) => void>;
+		toEqualQuat: OnlyIf<T, QuatLike, (expected: QuatLike) => void>;
 	}
 }

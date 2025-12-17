@@ -1,10 +1,10 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 // @ts-ignore -- chi-squared has no types
 import chiSquared from 'chi-squared';
 // @ts-ignore -- chi-squared has no types
 import pRank from 'permutation-rank';
 import { Random } from '../src/util/random';
-import { Vec2, Vec3 } from '../src/linear-algebra';
+import { Vec2, Vec3, Vec4 } from '../src/linear-algebra';
 import { RAD_TO_DEG } from '../src/util';
 
 const sampleCount = 1000;
@@ -90,72 +90,102 @@ describe('class Random', () => {
 		});
 	});
 
-	describe('supplying custom generator function', () => {
-		const mockRandomFunc = (seed: number) => seed;
+	describe('static methods', () => {
+		describe('supplying custom generator function', () => {
+			const mockRandomFunc = (seed: number) => seed;
 
-		test.afterEach(() => {
-			Random.resetDefaultGenerator();
+			test.afterEach(() => {
+				Random.resetDefaultGenerator();
+			});
+
+			test(`.prototype.${Random.prototype.setGenerator.name}() should set the random generator's random function`, () => {
+				const seed = Date.now() >>> 0;
+				const random = new Random(seed);
+				random.setGenerator(mockRandomFunc);
+				for (let i = 0; i < 100; ++i) {
+					const v = random.float();
+					expect(v).toBeGreaterThanOrEqual(0);
+					expect(v).toBeLessThan(1);
+					expect(random.seed).toEqual(seed);
+				}
+			});
+
+			test(`.${Random.setDefaultGenerator.name}() should set the default random function`, () => {
+				const seed = Date.now() >>> 0;
+				Random.setDefaultGenerator(mockRandomFunc);
+				const random = new Random(seed);
+				for (let i = 0; i < 100; ++i) {
+					const v = random.float();
+					expect(v).toBeGreaterThanOrEqual(0);
+					expect(v).toBeLessThan(1);
+					expect(random.seed).toEqual(seed);
+				}
+			});
+
+			test(`.${Random.resetDefaultGenerator.name}() should reset the default random function`, () => {
+				const seed = Date.now() >>> 0;
+				Random.setDefaultGenerator(mockRandomFunc);
+				Random.resetDefaultGenerator();
+				const random = new Random(seed);
+				for (let i = 0; i < 100; ++i) {
+					const v = random.float();
+					expect(v).toBeGreaterThanOrEqual(0);
+					expect(v).toBeLessThan(1);
+					expect(random.seed).not.toEqual(seed);
+				}
+			});
+
+			test(`.${Random.setDefaultGenerator.name}() should set the global Random instance's random function`, () => {
+				const seed = Date.now() >>> 0;
+				Random.staticRandom.seed = seed;
+				Random.setDefaultGenerator(mockRandomFunc);
+				for (let i = 0; i < 100; ++i) {
+					const v = Random.float();
+					expect(v).toBeGreaterThanOrEqual(0);
+					expect(v).toBeLessThan(1);
+					expect(Random.staticRandom.seed).toEqual(seed);
+				}
+			});
+
+			test(`.${Random.setDefaultGenerator.name}() should not affect existing Random instances`, () => {
+				const seed = Date.now() >>> 0;
+				const random = new Random(seed);
+				Random.setDefaultGenerator(mockRandomFunc);
+				for (let i = 0; i < 100; ++i) {
+					const v = random.float();
+					expect(v).toBeGreaterThanOrEqual(0);
+					expect(v).toBeLessThan(1);
+					expect(random.seed).not.toEqual(seed);
+				}
+			});
 		});
 
-		test(`.prototype.${Random.prototype.setGenerator.name}() should set the random generator's random function`, () => {
-			const seed = Date.now() >>> 0;
-			const random = new Random(seed);
-			random.setGenerator(mockRandomFunc);
-			for (let i = 0; i < 100; ++i) {
-				const v = random.float();
-				expect(v).toBeGreaterThanOrEqual(0);
-				expect(v).toBeLessThan(1);
-				expect(random.seed).toEqual(seed);
-			}
-		});
-
-		test(`.${Random.setDefaultGenerator.name}() should set the default random function`, () => {
-			const seed = Date.now() >>> 0;
-			Random.setDefaultGenerator(mockRandomFunc);
-			const random = new Random(seed);
-			for (let i = 0; i < 100; ++i) {
-				const v = random.float();
-				expect(v).toBeGreaterThanOrEqual(0);
-				expect(v).toBeLessThan(1);
-				expect(random.seed).toEqual(seed);
-			}
-		});
-
-		test(`.${Random.resetDefaultGenerator.name}() should reset the default random function`, () => {
-			const seed = Date.now() >>> 0;
-			Random.setDefaultGenerator(mockRandomFunc);
-			Random.resetDefaultGenerator();
-			const random = new Random(seed);
-			for (let i = 0; i < 100; ++i) {
-				const v = random.float();
-				expect(v).toBeGreaterThanOrEqual(0);
-				expect(v).toBeLessThan(1);
-				expect(random.seed).not.toEqual(seed);
-			}
-		});
-
-		test(`.${Random.setDefaultGenerator.name}() should set the global Random instance's random function`, () => {
-			const seed = Date.now() >>> 0;
-			Random.staticRandom.seed = seed;
-			Random.setDefaultGenerator(mockRandomFunc);
-			for (let i = 0; i < 100; ++i) {
-				const v = Random.float();
-				expect(v).toBeGreaterThanOrEqual(0);
-				expect(v).toBeLessThan(1);
-				expect(Random.staticRandom.seed).toEqual(seed);
-			}
-		});
-
-		test(`.${Random.setDefaultGenerator.name}() should not affect existing Random instances`, () => {
-			const seed = Date.now() >>> 0;
-			const random = new Random(seed);
-			Random.setDefaultGenerator(mockRandomFunc);
-			for (let i = 0; i < 100; ++i) {
-				const v = random.float();
-				expect(v).toBeGreaterThanOrEqual(0);
-				expect(v).toBeLessThan(1);
-				expect(random.seed).not.toEqual(seed);
-			}
+		(
+			[
+				['float', [3.5]],
+				['chance', [1, 2]],
+				['int', [1]],
+				['range', [1, 5]],
+				['bool', []],
+				['sign', []],
+				['angle', []],
+				['vec2', []],
+				['vec3', []],
+				['vec4', []],
+				['choose', [1, 2, 3]],
+				['shuffle', [[1, 2, 3]]],
+			] as const
+		).forEach(([m, args]) => {
+			test(`Random.${m}() should call Random.staticRandom.${m}()`, () => {
+				const fn = vi.fn();
+				const _fn = Random.staticRandom[m];
+				Random.staticRandom[m] = fn;
+				// @ts-expect-error - too lazy to fix
+				Random[m](...args);
+				expect(fn).toHaveBeenCalled();
+				// @ts-expect-error - too lazy to fix
+				Random.staticRandom[m] = _fn;
+			});
 		});
 	});
 
@@ -549,6 +579,64 @@ describe('class Random', () => {
 					neighbors.reduce((a, v) => a + v) / neighbors.length;
 
 				expect(mean).approximately(samples / 4, samples / 200);
+			});
+		});
+
+		describe(`${Random.prototype.vec4.name}()`, () => {
+			test('should return a Vec4', () => {
+				expect(random.vec4()).toBeInstanceOf(Vec4);
+			});
+
+			test('should return a Vec4 of length 1 when no argument is provided', () => {
+				expect(random.vec4().magnitude).toBeCloseTo(1);
+			});
+
+			test('should return a Vec4 of the passed scale', () => {
+				const scale = 7.7;
+				expect(random.vec4(scale).magnitude).toBeCloseTo(scale);
+			});
+
+			test('should have a uniform sample distribution', () => {
+				const samples = sampleCount * 9;
+
+				const points: Vec4[] = [];
+				for (let i = 0; i < samples; ++i) {
+					points.push(random.vec4());
+				}
+
+				(['x', 'y', 'z', 'w'] as const).forEach((prop) => {
+					const values = points.map((p) => p[prop]);
+					const min = Math.min(...values);
+					const max = Math.max(...values);
+					const mean = values.reduce((a, v) => a + v) / values.length;
+
+					expect(min).approximately(-1, 0.05);
+					expect(max).approximately(1, 0.05);
+					expect(mean).approximately(0, 0.05);
+				});
+
+				const neighbors = Array.from({ length: samples }, () => 0);
+				for (let i = 0; i < samples; ++i) {
+					const a = points[i];
+					for (let j = i + 1; j < samples; ++j) {
+						const b = points[j];
+						const d = Math.sqrt(
+							(a[0] - b[0]) ** 2 +
+								(a[1] - b[1]) ** 2 +
+								(a[2] - b[2]) ** 2 +
+								(a[3] - b[3]) ** 2,
+						);
+						if (d < 1) {
+							++neighbors[i];
+							++neighbors[j];
+						}
+					}
+				}
+
+				const mean =
+					neighbors.reduce((a, v) => a + v) / neighbors.length;
+
+				expect(mean).approximately(samples / 5, samples / 100);
 			});
 		});
 	});

@@ -136,7 +136,7 @@ export function approachVec<
 	B extends T = T,
 	C extends T = T,
 >(a: A, b: B, c: C): A {
-	return a.map((v, i) => approach(v, b[i], c[i])) as typeof a;
+	return a.map((v, i) => approach(v, b[i] ?? 0, c[i] ?? 0)) as typeof a;
 }
 
 export function addPos<
@@ -152,6 +152,7 @@ export function addScalar<T extends Vector>(p: T, s: number): T {
 	if (isVec2(p)) return new Vec2(...sums) as typeof p;
 	if (isVec3(p)) return new Vec3(...sums) as typeof p;
 	if (isVec4(p)) return new Vec4(...sums) as typeof p;
+	if (isQuat(p)) return new Quat(...sums) as typeof p;
 	return sums as typeof p;
 }
 
@@ -196,16 +197,13 @@ export function posDistanceSq<T extends Vector = Vector>(a: T, b: T): number {
 
 /**
  * Checks whether a point lies on a line.
- * @param point The point to test
+ * @param p The point to test
  * @param a The start of the line
  * @param b The end of the line
  */
-export function isPointOnLine<T extends Vector>(point: T, a: T, b: T): boolean {
-	return (
-		Math.abs(
-			posDistance(a, point) + posDistance(point, b) - posDistance(a, b),
-		) < Number.EPSILON
-	);
+export function isPointOnLine<T extends Vector>(p: T, a: T, b: T): boolean {
+	const pp = posDistance(a, p) + posDistance(p, b) - posDistance(a, b);
+	return Math.abs(pp) < Number.EPSILON;
 }
 
 /**
