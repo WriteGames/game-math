@@ -5,6 +5,12 @@ import { Vec2 } from './vec2';
 import { Vec3 } from './vec3';
 import { dotProduct4D } from './vec4';
 
+/**
+ * Checks if a given argument is an instance of {@link Quat}.
+ * @category Linear Algebra
+ * @param quat Potential Quat
+ * @returns Whether or not the argument is a Quat
+ */
 export function isQuat(quat: Vector): quat is Quat {
 	return quat instanceof Quat;
 }
@@ -17,7 +23,7 @@ const Z = 2;
 const W = 3;
 
 /**
- * A 4d vector.
+ * A quaternion.
  * @category Linear Algebra
  */
 export class Quat extends Array<number> {
@@ -35,7 +41,7 @@ export class Quat extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Quat at <0, 0, 0, 1>
+	 * Creates an instance of a Quat at <0, 0, 0, 1>.
 	 * @group Helper
 	 * @type Quat
 	 */
@@ -178,6 +184,12 @@ export class Quat extends Array<number> {
 		return Quat.equal(this, v);
 	}
 
+	/**
+	 * Converts a quaternion to a 4D matrix.
+	 * @group Static
+	 * @param q The quaternion to convert
+	 * @returns {Mat4} Equivalanet matrix
+	 */
 	static toMat4(q: QuatLike): Mat4 {
 		const result = new Mat4();
 		const _q = q instanceof Quat ? q : new Quat(...q);
@@ -216,6 +228,10 @@ export class Quat extends Array<number> {
 		return result;
 	}
 
+	/**
+	 * Converts the quaternion to a 4D matrix.
+	 * @returns {Mat4} Equivalanet matrix
+	 */
 	toMat4(): Mat4 {
 		return Quat.toMat4(this);
 	}

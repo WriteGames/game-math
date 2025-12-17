@@ -13,7 +13,10 @@ import { magnitude3D, Vec3 } from './vec3.js';
 import { Vec4 } from './vec4.js';
 
 /**
+ * Checks if a given argument is an instance of {@link Mat4}.
  * @category Linear Algebra
+ * @param mat Potential Mat4
+ * @returns Whether or not the argument is a Mat4
  */
 export function isMat4(mat: Matrix): mat is Mat4 {
 	return mat instanceof Mat4;
@@ -731,6 +734,7 @@ export class Mat4 extends Array<number> {
 	 * Converts a matrix to a quaternion. Based off of
 	 * Mike Day's implementation:
 	 * https://d3cw3dd2w32x2b.cloudfront.net/wp-content/uploads/2015/01/matrix-to-quat.pdf
+	 * @group Static
 	 * @param m The matrix to convert
 	 * @returns Equivalanet quaternion
 	 */

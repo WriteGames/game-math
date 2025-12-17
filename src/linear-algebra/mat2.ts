@@ -3,7 +3,10 @@ import { posEqual } from './common.js';
 import { Vec2 } from './vec2.js';
 
 /**
+ * Checks if a given argument is an instance of {@link Mat2}.
  * @category Linear Algebra
+ * @param mat Potential Mat2
+ * @returns Whether or not the argument is a Mat2
  */
 export function isMat2(mat: Matrix): mat is Mat2 {
 	return mat instanceof Mat2;

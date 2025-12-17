@@ -15,6 +15,12 @@ import { Quat } from './quat.js';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
 
+/**
+ * Checks if a given argument is an instance of {@link Vec4}.
+ * @category Linear Algebra
+ * @param vec Potential Vec4
+ * @returns Whether or not the argument is a Vec4
+ */
 export function isVec4(vec: Vector): vec is Vec4 {
 	return vec instanceof Vec4;
 }

@@ -10,6 +10,12 @@ import {
 	type Vector,
 } from './common.js';
 
+/**
+ * Checks if a given argument is an instance of {@link Vec2}.
+ * @category Linear Algebra
+ * @param vec Potential Vec2
+ * @returns Whether or not the vector is a Vec2
+ */
 export function isVec2(vec: Vector): vec is Vec2 {
 	return vec instanceof Vec2;
 }
