@@ -10,6 +10,7 @@ tsconfig*.tsbuildinfo
 bin/*
 dist/*
 docs/*
+tests/coverage/*
 
 # npm pack
 *.tgz

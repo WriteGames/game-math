@@ -12,6 +12,7 @@
 		"prepublishOnly": "npm run build",
 		"generate-docs": "pnpm typedoc",
 		"test": "vitest --pool=forks",
+		"test:coverage": "vitest --pool=forks --coverage.enabled",
 		"lint": "eslint .",
 		"watch": "tsc-watch --p tsconfig.build.json --onSuccess \"pnpm postbuild\""
 	},
@@ -33,6 +34,7 @@
 	},
 	"author": "Write Games",
 	"devDependencies": {
+		"@vitest/coverage-v8": "^4.0.16",
 		"@writegames.com/style-guide": "^0.1.1",
 		"chi-squared": "^1.1.0",
 		"eslint": "8.56.0",
@@ -43,7 +45,7 @@
 		"typedoc-github-theme": "^0.3.1",
 		"typescript": "^5.9.3",
 		"vite": "^7.2.7",
-		"vitest": "^4.0.9"
+		"vitest": "^4.0.16"
 	},
 	"publishConfig": {
 		"access": "public"
