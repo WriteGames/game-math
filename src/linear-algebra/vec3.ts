@@ -6,7 +6,6 @@ import {
 	posEqual,
 	scalePos,
 	subPos,
-	type V3_T,
 	type Vec2Like,
 	type Vec3Like,
 	type Vector,
@@ -370,35 +369,45 @@ export class Vec3 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static cross(a: Vec3, b: Vec3 | V3_T): Vec3 {
+	static cross(a: Vec3, b: Vec3Like): Vec3 {
 		return crossProduct3D(a, b);
 	}
 
-	cross(v: Vec3 | V3_T): Vec3 {
+	cross(v: Vec3Like): Vec3 {
 		return Vec3.cross(this, v);
 	}
 
 	/**
 	 * @group Static
 	 */
-	static dot(a: Vec3, b: Vec3 | V3_T): number {
+	static dot(a: Vec3, b: Vec3Like): number {
 		return dotProduct3D(a, b);
 	}
 
-	dot(v: Vec3 | V3_T): number {
+	dot(v: Vec3Like): number {
 		return Vec3.dot(this, v);
 	}
 
 	// TODO(bret): rotation
 
 	/**
+	 * Tests whether two 3D vectorss are equal, accounting for floating-point
+	 * arithmetic error.
 	 * @group Static
+	 * @param a Vector A
+	 * @param b Vector B
+	 * @returns Whether the two vectors are equal
 	 */
-	static equal(a: Vec3, b: Vec3 | V3_T): boolean {
+	static equal(a: Vec3, b: Vec3Like): boolean {
 		return posEqual(a, b);
 	}
 
-	equal(v: Vec3 | V3_T): boolean {
+	/**
+	 * Tests whether this vector is equal to another 3D vector.
+	 * @param v Other vector
+	 * @returns Whether the two vetors are equal
+	 */
+	equal(v: Vec3Like): boolean {
 		return Vec3.equal(this, v);
 	}
 
@@ -498,17 +507,17 @@ export class Vec3 extends Array<number> {
 	// #endregion
 }
 
-export function crossProduct3D(a: Vec3 | V3_T, b: Vec3 | V3_T): Vec3 {
+export function crossProduct3D(a: Vec3Like, b: Vec3Like): Vec3 {
 	const c1 = a[Y] * b[Z] - a[Z] * b[Y];
 	const c2 = a[Z] * b[X] - a[X] * b[Z];
 	const c3 = a[X] * b[Y] - a[Y] * b[X];
 	return new Vec3(c1, c2, c3);
 }
 
-export function dotProduct3D(a: Vec3 | V3_T, b: Vec3 | V3_T): number {
+export function dotProduct3D(a: Vec3Like, b: Vec3Like): number {
 	return a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z];
 }
 
-export function magnitude3D(v: Vec3 | V3_T): number {
+export function magnitude3D(v: Vec3Like): number {
 	return Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2);
 }

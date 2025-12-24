@@ -6,13 +6,12 @@ import {
 	posEqual,
 	scalePos,
 	subPos,
-	type V4_T,
+	type QuatLike,
 	type Vec2Like,
 	type Vec3Like,
 	type Vec4Like,
 	type Vector,
 } from './common.js';
-import { Quat } from './quat.js';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
 
@@ -351,21 +350,31 @@ export class Vec4 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static dot(a: Vec4, b: Vec4 | V4_T): number {
+	static dot(a: Vec4, b: Vec4Like): number {
 		return dotProduct4D(a, b);
 	}
 
-	dot(v: Vec4 | V4_T): number {
+	dot(v: Vec4Like): number {
 		return Vec4.dot(this, v);
 	}
 
 	/**
+	 * Tests whether two 4D vectors are equal, accounting for floating-point
+	 * arithmetic error.
 	 * @group Static
+	 * @param a Vector A
+	 * @param b Vector B
+	 * @returns Whether the two vectors are equal
 	 */
-	static equal(a: Vec4, b: Vec4 | V4_T): boolean {
+	static equal(a: Vec4, b: Vec4Like): boolean {
 		return posEqual(a, b);
 	}
 
+	/**
+	 * Tests whether this vector is equal to another 4D vector.
+	 * @param v Other vector
+	 * @returns Whether the two vetors are equal
+	 */
 	equal(v: Vec4): boolean {
 		return Vec4.equal(this, v);
 	}
@@ -468,8 +477,8 @@ export class Vec4 extends Array<number> {
 }
 
 export function dotProduct4D(
-	a: Vec4 | V4_T | Quat,
-	b: Vec4 | V4_T | Quat,
+	a: Vec4Like | QuatLike,
+	b: Vec4Like | QuatLike,
 ): number {
 	return a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z] + a[W] * b[W];
 }

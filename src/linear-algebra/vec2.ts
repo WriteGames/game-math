@@ -6,7 +6,6 @@ import {
 	posEqual,
 	scalePos,
 	subPos,
-	type V2_T,
 	type Vec2Like,
 	type Vector,
 } from './common.js';
@@ -317,22 +316,22 @@ export class Vec2 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static cross(a: Vec2, b: Vec2 | V2_T): number {
+	static cross(a: Vec2, b: Vec2Like): number {
 		return crossProduct2D(a, b);
 	}
 
-	cross(v: Vec2 | V2_T): number {
+	cross(v: Vec2Like): number {
 		return Vec2.cross(this, v);
 	}
 
 	/**
 	 * @group Static
 	 */
-	static dot(a: Vec2, b: Vec2 | V2_T): number {
+	static dot(a: Vec2, b: Vec2Like): number {
 		return dotProduct2D(a, b);
 	}
 
-	dot(v: Vec2 | V2_T): number {
+	dot(v: Vec2Like): number {
 		return Vec2.dot(this, v);
 	}
 
@@ -351,13 +350,23 @@ export class Vec2 extends Array<number> {
 	}
 
 	/**
+	 * Tests whether two 2D vectors are equal, accounting for floating-point
+	 * arithmetic error.
 	 * @group Static
+	 * @param a Vector A
+	 * @param b Vector B
+	 * @returns Whether the two vectors are equal
 	 */
-	static equal(a: Vec2, b: Vec2 | V2_T): boolean {
+	static equal(a: Vec2, b: Vec2Like): boolean {
 		return posEqual(a, b);
 	}
 
-	equal(v: Vec2 | V2_T): boolean {
+	/**
+	 * Tests whether this vector is equal to another 2D vector.
+	 * @param v Other vector
+	 * @returns Whether the two vetors are equal
+	 */
+	equal(v: Vec2Like): boolean {
 		return Vec2.equal(this, v);
 	}
 
@@ -470,11 +479,11 @@ export function rotate2D(v: Vec2, angle: number): Vec2 {
 	return new Vec2(v.x * cos - v.y * sin, v.x * sin + v.y * cos);
 }
 
-export function crossProduct2D(a: Vec2 | V2_T, b: Vec2 | V2_T): number {
+export function crossProduct2D(a: Vec2Like, b: Vec2Like): number {
 	return a[0] * b[1] - a[1] * b[0];
 }
 
-export function dotProduct2D(a: Vec2 | V2_T, b: Vec2 | V2_T): number {
+export function dotProduct2D(a: Vec2Like, b: Vec2Like): number {
 	return a[0] * b[0] + a[1] * b[1];
 }
 
