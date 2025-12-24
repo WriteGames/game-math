@@ -133,9 +133,10 @@ describe('Vec3', () => {
 	});
 
 	describe('add(v)', () => {
-		test('should add Vec2 to itself', () => {
+		test.fails('should add Vec2 to itself', () => {
 			const a = new Vec3(...VEC3_A);
 			const b = new Vec2(...VEC2_B);
+			// @ts-expect-error
 			expect(a.add(b)).toEqualVec3([...VEC2_SUM, VEC_A_Z]);
 			expect(a).toEqualVec3([...VEC2_SUM, VEC_A_Z]);
 		});
@@ -150,16 +151,18 @@ describe('Vec3', () => {
 		test('should add Vec4 to itself', () => {
 			const a = new Vec3(...VEC3_A);
 			const b = new Vec4(...VEC4_B);
+			// @ts-expect-error
 			expect(a.add(b)).toEqualVec3(VEC3_SUM);
 			expect(a).toEqualVec3(VEC3_SUM);
 		});
 	});
 
 	describe('sub(v)', () => {
-		test('should subtract Vec2 from itself', () => {
+		test.fails('should subtract Vec2 from itself', () => {
 			const a = new Vec3(...VEC3_A);
 			const b = new Vec2(...VEC2_B);
 			const expected = [...VEC2_DIFF, VEC_A_Z] as V3_T;
+			// @ts-expect-error
 			expect(a.sub(b)).toEqualVec3(expected);
 			expect(a).toEqualVec3(expected);
 		});
@@ -174,6 +177,7 @@ describe('Vec3', () => {
 		test('should subtract Vec4 from itself', () => {
 			const a = new Vec3(...VEC3_A);
 			const b = new Vec4(...VEC4_B);
+			// @ts-expect-error
 			expect(a.sub(b)).toEqualVec3(VEC3_DIFF);
 			expect(a).toEqualVec3(VEC3_DIFF);
 		});

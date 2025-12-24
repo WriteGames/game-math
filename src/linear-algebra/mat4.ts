@@ -1,3 +1,4 @@
+import { distance } from '../util/index.js';
 import type {
 	M4_T,
 	Mat4Like,
@@ -9,7 +10,7 @@ import type {
 import { posEqual, scalePos } from './common.js';
 import { Mat3 } from './mat3.js';
 import { Quat } from './quat.js';
-import { magnitude3D, Vec3 } from './vec3.js';
+import { Vec3 } from './vec3.js';
 import { Vec4 } from './vec4.js';
 
 /**
@@ -530,7 +531,7 @@ export class Mat4 extends Array<number> {
 		const result = new Mat4();
 
 		let [x, y, z] = axis;
-		const invLen = 1 / magnitude3D(axis);
+		const invLen = 1 / distance(axis);
 		x *= invLen;
 		y *= invLen;
 		z *= invLen;

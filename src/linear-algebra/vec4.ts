@@ -1,4 +1,4 @@
-import { clamp } from '../util/index.js';
+import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,
@@ -23,6 +23,16 @@ import { Vec3 } from './vec3.js';
  */
 export function isVec4(vec: Vector): vec is Vec4 {
 	return vec instanceof Vec4;
+}
+
+function asVec4Like<T extends Vec4Like>(
+	v: T,
+	x: number,
+	y: number,
+	z: number,
+	w: number,
+): T {
+	return (isVec4(v) ? new Vec4(x, y, z, w) : [x, y, z, w]) as T;
 }
 
 const error = 'Vec4';
@@ -142,7 +152,7 @@ export class Vec4 extends Array<number> {
 	 * @type number
 	 */
 	get magnitude(): number {
-		return magnitude4D(this);
+		return distance(this);
 	}
 
 	/**
@@ -175,11 +185,17 @@ export class Vec4 extends Array<number> {
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} v The vector to normalize
-	 * @returns {Vec4} The input vector
+	 * @param {Vec4Like} v The vector to normalize
+	 * @returns {Vec4Like} The input vector
 	 */
-	static normalize(v: Vec4): Vec4 {
-		return v.clone().invScale(v.magnitude);
+	static normalize<T extends Vec4Like>(v: T): T {
+		let [x, y, z, w] = v;
+		const invMag = 1 / distance(v);
+		x *= invMag;
+		y *= invMag;
+		z *= invMag;
+		w *= invMag;
+		return asVec4Like(v, x, y, z, w);
 	}
 
 	/**
@@ -199,16 +215,17 @@ export class Vec4 extends Array<number> {
 	}
 
 	/**
-	 * Adds two {@link Vec4}s and returns a new {@link Vec4} with the sum.
+	 * Adds two 4D vectors and returns a new 4D vector with the sum.
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} a Vector a
-	 * @param {Vec4} b Vector b
-	 * @returns {Vec4} Sum
+	 * @param {Vec4Like} a Vector a
+	 * @param {Vec4Like} b Vector b
+	 * @returns {Vec4Like} Sum
 	 */
-	static add(a: Vec4, b: Vec4 | Vector): Vec4 {
-		return addPos(a, b);
+	static add<T extends Vec4Like>(a: T, b: Vec4Like): T {
+		const [x, y, z, w] = addPos(a, b);
+		return asVec4Like(a, x, y, z, w);
 	}
 
 	/**
@@ -216,11 +233,11 @@ export class Vec4 extends Array<number> {
 	 * @param v Vector to add
 	 * @returns {this} this
 	 */
-	add(v: Vec4 | Vector): this {
+	add(v: Vec4Like): this {
 		this.x += v[X];
 		this.y += v[Y];
-		this.z += v[Z] ?? 0;
-		this.w += v[W] ?? 0;
+		this.z += v[Z];
+		this.w += v[W];
 		return this;
 	}
 
@@ -229,46 +246,47 @@ export class Vec4 extends Array<number> {
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} a Vector a
-	 * @param {Vec4} b Vector b
-	 * @returns {Vec4} Sum
+	 * @param {Vec4Like} a Vector a
+	 * @param {Vec4Like} b Vector b
+	 * @returns {Vec4Like} Sum
 	 */
-	static plus(a: Vec4, b: Vec4 | Vector): Vec4 {
+	static plus<T extends Vec4Like>(a: T, b: Vec4Like): T {
 		return Vec4.add(a, b);
 	}
 
 	/**
 	 * An alias for {@link Vec4#add}.
-	 * @param {Vec4} v Vector to add
+	 * @param {Vec4Like} v Vector to add
 	 * @returns {this} this
 	 */
-	plus(v: Vec4 | Vector): this {
+	plus(v: Vec4Like): this {
 		return this.add(v);
 	}
 
 	/**
-	 * Subtracts two {@link Vec4}s and returns a new {@link Vec4} with the difference.
+	 * Subtracts two 4D vectors and returns a new vector with the difference.
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} a Vector a
-	 * @param {Vec4} b Vector b
-	 * @returns {Vec4} Vec4
+	 * @param {Vec4Like} a Vector a
+	 * @param {Vec4Like} b Vector b
+	 * @returns {Vec4Like} Vec4
 	 */
-	static sub(a: Vec4, b: Vec4 | Vector): Vec4 {
-		return subPos(a, b);
+	static sub<T extends Vec4Like>(a: T, b: Vec4Like): T {
+		const [x, y, z, w] = subPos(a, b);
+		return asVec4Like(a, x, y, z, w);
 	}
 
 	/**
 	 * Subtracts a vector from itself.
-	 * @param {Vec4} v Vector to subtract
+	 * @param {Vec4Like} v Vector to subtract
 	 * @returns {this} this
 	 */
-	sub(v: Vec4 | Vector): this {
+	sub(v: Vec4Like): this {
 		this.x -= v[X];
 		this.y -= v[Y];
-		this.z -= v[Z] ?? 0;
-		this.w -= v[W] ?? 0;
+		this.z -= v[Z];
+		this.w -= v[W];
 		return this;
 	}
 
@@ -277,20 +295,20 @@ export class Vec4 extends Array<number> {
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} a Vector a
-	 * @param {Vec4} b Vector b
-	 * @returns {Vec4} Vec4
+	 * @param {Vec4Like} a Vector a
+	 * @param {Vec4Like} b Vector b
+	 * @returns {Vec4Like} Vec4
 	 */
-	static minus(a: Vec4, b: Vec4 | Vector): Vec4 {
+	static minus<T extends Vec4Like>(a: T, b: Vec4Like): T {
 		return Vec4.sub(a, b);
 	}
 
 	/**
 	 * An alias for {@link Vec4#sub}.
-	 * @param {Vec4} v Vector to subtract
+	 * @param {Vec4Like} v Vector to subtract
 	 * @returns {this} this
 	 */
-	minus(v: Vec4 | Vector): this {
+	minus(v: Vec4Like): this {
 		return this.sub(v);
 	}
 
@@ -299,12 +317,13 @@ export class Vec4 extends Array<number> {
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} v Vector to scale
+	 * @param {Vec4Like} v Vector to scale
 	 * @param {number} s Scalar
-	 * @returns {Vec4} The vector, scaled
+	 * @returns {Vec4Like} The vector, scaled
 	 */
-	static scale(v: Vec4, s: number): Vec4 {
-		return scalePos(v, s);
+	static scale<T extends Vec4Like>(v: T, s: number): T {
+		const [x, y, z, w] = scalePos(v, s);
+		return asVec4Like(v, x, y, z, w);
 	}
 
 	/**
@@ -325,12 +344,13 @@ export class Vec4 extends Array<number> {
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} v Vector to scale
+	 * @param {Vec4Like} v Vector to scale
 	 * @param {number} s Scalar
-	 * @returns {Vec4} The vector, scaled inversely
+	 * @returns {Vec4Like} The vector, scaled inversely
 	 */
-	static invScale(v: Vec4, s: number): Vec4 {
-		return scalePos(v, 1 / s);
+	static invScale<T extends Vec4Like>(v: T, s: number): T {
+		const [x, y, z, w] = scalePos(v, 1 / s);
+		return asVec4Like(v, x, y, z, w);
 	}
 
 	/**
@@ -350,7 +370,7 @@ export class Vec4 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static dot(a: Vec4, b: Vec4Like): number {
+	static dot(a: Vec4Like, b: Vec4Like): number {
 		return dotProduct4D(a, b);
 	}
 
@@ -366,7 +386,7 @@ export class Vec4 extends Array<number> {
 	 * @param b Vector B
 	 * @returns Whether the two vectors are equal
 	 */
-	static equal(a: Vec4, b: Vec4Like): boolean {
+	static equal(a: Vec4Like, b: Vec4Like): boolean {
 		return posEqual(a, b);
 	}
 
@@ -375,33 +395,38 @@ export class Vec4 extends Array<number> {
 	 * @param v Other vector
 	 * @returns Whether the two vetors are equal
 	 */
-	equal(v: Vec4): boolean {
+	equal(v: Vec4Like): boolean {
 		return Vec4.equal(this, v);
 	}
 
 	/**
-	 * Linearly interpolates between two {@link Vec4}s.
+	 * Linearly interpolates between two 4D vectors.
 	 * @memberof Vec4
 	 * @method
 	 * @group Static
-	 * @param {Vec4} a Start vector
-	 * @param {Vec4} b End vector
+	 * @param {Vec4Like} a Start vector
+	 * @param {Vec4Like} b End vector
 	 * @param {number} t Percentage between a and b
-	 * @returns {Vec4}
+	 * @returns {Vec4Like}
 	 */
-	static lerp(a: Vec4, b: Vec4, t: number): Vec4 {
-		return Vec4.sub(b, a).scale(t).add(a);
+	static lerp<T extends Vec4Like>(a: T, b: Vec4Like, t: number): T {
+		return Vec4.add(a, Vec4.scale(Vec4.sub(b, a), t));
 	}
 
 	/**
-	 * Approaches a target {@link Vec3} by an amount without exceeding the target.
+	 * Approaches a target 4D vector by an amount without exceeding the target.
 	 * @param v Input vector
 	 * @param target Target vector
 	 * @param amount Amount to approach
 	 * @returns
 	 */
-	static approach(v: Vec4Like, target: Vec4Like, amount: Vec4Like): Vec4Like {
-		return approachVec(v, target, amount);
+	static approach<T extends Vec4Like>(
+		v: T,
+		target: Vec4Like,
+		amount: Vec4Like,
+	): T {
+		const [x, y, z, w] = approachVec(v, target, amount);
+		return asVec4Like(v, x, y, z, w);
 	}
 
 	/**
@@ -411,13 +436,12 @@ export class Vec4 extends Array<number> {
 	 * @param max Upper bound
 	 * @returns Clamped vector
 	 */
-	static clamp(val: Vec4Like, min: Vec4Like, max: Vec4Like): Vec4 {
-		return new Vec4(
-			clamp(val[0], min[0], max[0]),
-			clamp(val[1], min[1], max[1]),
-			clamp(val[2], min[2], max[2]),
-			clamp(val[3], min[3], max[3]),
-		);
+	static clamp<T extends Vec4Like>(val: T, min: Vec4Like, max: Vec4Like): T {
+		const x = clamp(val[X], min[X], max[X]);
+		const y = clamp(val[Y], min[Y], max[Y]);
+		const z = clamp(val[Z], min[Z], max[Z]);
+		const w = clamp(val[W], min[W], max[W]);
+		return asVec4Like(val, x, y, z, w);
 	}
 
 	/**
@@ -481,8 +505,4 @@ export function dotProduct4D(
 	b: Vec4Like | QuatLike,
 ): number {
 	return a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z] + a[W] * b[W];
-}
-
-export function magnitude4D(v: Vec4): number {
-	return Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2 + v[W] ** 2);
 }

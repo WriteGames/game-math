@@ -90,6 +90,7 @@ describe('Vec2', () => {
 		test('should add Vec3 to itself', () => {
 			const a = new Vec2(...VEC2_A);
 			const b = new Vec3(...VEC3_B);
+			// @ts-expect-error
 			expect(a.add(b)).toEqualVec2(VEC2_SUM);
 			expect(a).toEqualVec2(VEC2_SUM);
 		});
@@ -97,6 +98,7 @@ describe('Vec2', () => {
 		test('should add Vec4 to itself', () => {
 			const a = new Vec2(...VEC2_A);
 			const b = new Vec4(...VEC4_B);
+			// @ts-expect-error
 			expect(a.add(b)).toEqualVec2(VEC2_SUM);
 			expect(a).toEqualVec2(VEC2_SUM);
 		});
@@ -113,6 +115,7 @@ describe('Vec2', () => {
 		test('should subtract Vec3 from itself', () => {
 			const a = new Vec2(...VEC2_A);
 			const b = new Vec3(...VEC3_B);
+			// @ts-expect-error
 			expect(a.sub(b)).toEqualVec2(VEC2_DIFF);
 			expect(a).toEqualVec2(VEC2_DIFF);
 		});
@@ -120,6 +123,7 @@ describe('Vec2', () => {
 		test('should subtract Vec4 from itself', () => {
 			const a = new Vec2(...VEC2_A);
 			const b = new Vec4(...VEC4_B);
+			// @ts-expect-error
 			expect(a.sub(b)).toEqualVec2(VEC2_DIFF);
 			expect(a).toEqualVec2(VEC2_DIFF);
 		});

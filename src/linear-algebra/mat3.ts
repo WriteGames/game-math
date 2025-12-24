@@ -1,6 +1,7 @@
+import { distance } from '../util/index.js';
 import type { Mat3Like, Matrix, Vec3Like } from './common.js';
 import { posEqual } from './common.js';
-import { magnitude3D, Vec3 } from './vec3.js';
+import { Vec3 } from './vec3.js';
 
 /**
  * Checks if a given argument is an instance of {@link Mat3}.
@@ -381,7 +382,7 @@ export class Mat3 extends Array<number> {
 		const result = new Mat3();
 
 		let [x, y, z] = axis;
-		const invLen = 1 / magnitude3D(axis);
+		const invLen = 1 / distance(axis);
 		x *= invLen;
 		y *= invLen;
 		z *= invLen;

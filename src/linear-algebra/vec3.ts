@@ -1,4 +1,4 @@
-import { clamp } from '../util/index.js';
+import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,
@@ -20,6 +20,15 @@ import { Vec2 } from './vec2.js';
  */
 export function isVec3(vec: Vector): vec is Vec3 {
 	return vec instanceof Vec3;
+}
+
+function asVec3Like<T extends Vec3Like>(
+	v: T,
+	x: number,
+	y: number,
+	z: number,
+): T {
+	return (isVec3(v) ? new Vec3(x, y, z) : [x, y, z]) as T;
 }
 
 const error = 'Vec3';
@@ -168,7 +177,7 @@ export class Vec3 extends Array<number> {
 	 * @type number
 	 */
 	get magnitude(): number {
-		return magnitude3D(this);
+		return distance(this);
 	}
 
 	/**
@@ -198,11 +207,16 @@ export class Vec3 extends Array<number> {
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} v The vector to normalize
-	 * @returns {Vec3} The input vector
+	 * @param {Vec3Like} v The vector to normalize
+	 * @returns {Vec3Like} The input vector
 	 */
-	static normalize(v: Vec3): Vec3 {
-		return v.clone().invScale(v.magnitude);
+	static normalize<T extends Vec3Like>(v: T): T {
+		let [x, y, z] = v;
+		const invMag = 1 / distance(v);
+		x *= invMag;
+		y *= invMag;
+		z *= invMag;
+		return asVec3Like(v, x, y, z);
 	}
 
 	/**
@@ -222,16 +236,17 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Adds two {@link Vec3}s and returns a new {@link Vec3} with the sum.
+	 * Adds two 3D vectors and returns a new 3D vector with the sum.
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} a Vector a
-	 * @param {Vec3} b Vector b
-	 * @returns {Vec3} Sum
+	 * @param {Vec3Like} a Vector a
+	 * @param {Vec3Like} b Vector b
+	 * @returns {Vec3Like} Sum
 	 */
-	static add(a: Vec3, b: Vector): Vec3 {
-		return addPos(a, b);
+	static add<T extends Vec3Like>(a: T, b: Vec3Like): T {
+		const [x, y, z] = addPos(a, b);
+		return asVec3Like(a, x, y, z);
 	}
 
 	/**
@@ -239,10 +254,10 @@ export class Vec3 extends Array<number> {
 	 * @param v Vector to add
 	 * @returns {this} this
 	 */
-	add(v: Vector): this {
+	add(v: Vec3Like): this {
 		this.x += v[X];
 		this.y += v[Y];
-		this.z += v[Z] ?? 0;
+		this.z += v[Z];
 		return this;
 	}
 
@@ -251,45 +266,45 @@ export class Vec3 extends Array<number> {
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} a Vector a
-	 * @param {Vec3} b Vector b
-	 * @returns {Vec3} Sum
+	 * @param {Vec3Like} a Vector a
+	 * @param {Vec3Like} b Vector b
+	 * @returns {Vec3Like} Sum
 	 */
-	static plus(a: Vec3, b: Vector): Vec3 {
+	static plus<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		return Vec3.add(a, b);
 	}
 
 	/**
 	 * An alias for {@link Vec3#add}.
-	 * @param {Vec3} v Vector to add
+	 * @param {Vec3Like} v Vector to add
 	 * @returns {this} this
 	 */
-	plus(v: Vector): this {
+	plus(v: Vec3Like): this {
 		return this.add(v);
 	}
 
 	/**
-	 * Subtracts two {@link Vec3}s and returns a new {@link Vec3} with the difference.
+	 * Subtracts two 3D vectors and returns a new 3D vector with the difference.
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} a Vector a
-	 * @param {Vec3} b Vector b
-	 * @returns {Vec3} Difference
+	 * @param {Vec3Like} a Vector a
+	 * @param {Vec3Like} b Vector b
+	 * @returns {Vec3Like} Difference
 	 */
-	static sub(a: Vec3, b: Vector): Vec3 {
+	static sub<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		return subPos(a, b);
 	}
 
 	/**
 	 * Subtracts a vector from itself.
-	 * @param {Vec3} v Vector to subtract
+	 * @param {Vec3Like} v Vector to subtract
 	 * @returns {this} this
 	 */
-	sub(v: Vector): this {
+	sub(v: Vec3Like): this {
 		this.x -= v[X];
 		this.y -= v[Y];
-		this.z -= v[Z] ?? 0;
+		this.z -= v[Z];
 		return this;
 	}
 
@@ -298,20 +313,20 @@ export class Vec3 extends Array<number> {
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} a Vector a
-	 * @param {Vec3} b Vector b
-	 * @returns {Vec3} Vec3
+	 * @param {Vec3Like} a Vector a
+	 * @param {Vec3Like} b Vector b
+	 * @returns {Vec3Like} Vec3
 	 */
-	static minus(a: Vec3, b: Vector): Vec3 {
+	static minus<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		return Vec3.sub(a, b);
 	}
 
 	/**
 	 * An alias for {@link Vec3#sub}.
-	 * @param {Vec3} v Vector to subtract
+	 * @param {Vec3Like} v Vector to subtract
 	 * @returns {this} this
 	 */
-	minus(v: Vector): this {
+	minus(v: Vec3Like): this {
 		return this.sub(v);
 	}
 
@@ -320,12 +335,13 @@ export class Vec3 extends Array<number> {
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} v Vector to scale
+	 * @param {Vec3Like} v Vector to scale
 	 * @param {number} s Scalar
-	 * @returns {Vec3} The vector, scaled
+	 * @returns {Vec3Like} The vector, scaled
 	 */
-	static scale(v: Vec3, s: number): Vec3 {
-		return scalePos(v, s);
+	static scale<T extends Vec3Like>(v: T, s: number): T {
+		const [x, y, z] = scalePos(v, s);
+		return asVec3Like(v, x, y, z);
 	}
 
 	/**
@@ -345,12 +361,13 @@ export class Vec3 extends Array<number> {
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} v Vector to scale
+	 * @param {Vec3Like} v Vector to scale
 	 * @param {number} s Scalar
-	 * @returns {Vec3} The vector, scaled inversely
+	 * @returns {Vec3Like} The vector, scaled inversely
 	 */
-	static invScale(v: Vec3, s: number): Vec3 {
-		return scalePos(v, 1 / s);
+	static invScale<T extends Vec3Like>(v: T, s: number): T {
+		const [x, y, z] = scalePos(v, 1 / s);
+		return asVec3Like(v, x, y, z);
 	}
 
 	/**
@@ -369,18 +386,18 @@ export class Vec3 extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static cross(a: Vec3, b: Vec3Like): Vec3 {
+	static cross<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		return crossProduct3D(a, b);
 	}
 
-	cross(v: Vec3Like): Vec3 {
+	cross(v: Vec3): Vec3 {
 		return Vec3.cross(this, v);
 	}
 
 	/**
 	 * @group Static
 	 */
-	static dot(a: Vec3, b: Vec3Like): number {
+	static dot(a: Vec3Like, b: Vec3Like): number {
 		return dotProduct3D(a, b);
 	}
 
@@ -398,7 +415,7 @@ export class Vec3 extends Array<number> {
 	 * @param b Vector B
 	 * @returns Whether the two vectors are equal
 	 */
-	static equal(a: Vec3, b: Vec3Like): boolean {
+	static equal(a: Vec3Like, b: Vec3Like): boolean {
 		return posEqual(a, b);
 	}
 
@@ -412,28 +429,33 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Linearly interpolates between two {@link Vec3}s.
+	 * Linearly interpolates between two 3D vectors.
 	 * @memberof Vec3
 	 * @method
 	 * @group Static
-	 * @param {Vec3} a Start vector
-	 * @param {Vec3} b End vector
+	 * @param {Vec3Like} a Start vector
+	 * @param {Vec3Like} b End vector
 	 * @param {number} t Percentage between a and b
-	 * @returns {Vec3}
+	 * @returns {Vec3Like}
 	 */
-	static lerp(a: Vec3, b: Vec3, t: number): Vec3 {
-		return Vec3.sub(b, a).scale(t).add(a);
+	static lerp<T extends Vec3Like>(a: T, b: Vec3Like, t: number): T {
+		return Vec3.add(a, Vec3.scale(Vec3.sub(b, a), t));
 	}
 
 	/**
-	 * Approaches a target {@link Vec3} by an amount without exceeding the target.
+	 * Approaches a target 3D vector by an amount without exceeding the target.
 	 * @param v Input vector
 	 * @param target Target vector
 	 * @param amount Amount to approach
 	 * @returns
 	 */
-	static approach(v: Vec3Like, target: Vec3Like, amount: Vec3Like): Vec3Like {
-		return approachVec(v, target, amount);
+	static approach<T extends Vec3Like>(
+		v: T,
+		target: Vec3Like,
+		amount: Vec3Like,
+	): T {
+		const [x, y, z] = approachVec(v, target, amount);
+		return asVec3Like(v, x, y, z);
 	}
 
 	/**
@@ -443,12 +465,11 @@ export class Vec3 extends Array<number> {
 	 * @param max Upper bound
 	 * @returns Clamped vector
 	 */
-	static clamp(val: Vec3Like, min: Vec3Like, max: Vec3Like): Vec3 {
-		return new Vec3(
-			clamp(val[0], min[0], max[0]),
-			clamp(val[1], min[1], max[1]),
-			clamp(val[2], min[2], max[2]),
-		);
+	static clamp<T extends Vec3Like>(val: T, min: Vec3Like, max: Vec3Like): T {
+		const x = clamp(val[X], min[X], max[X]);
+		const y = clamp(val[Y], min[Y], max[Y]);
+		const z = clamp(val[Z], min[Z], max[Z]);
+		return asVec3Like(val, x, y, z);
 	}
 
 	/**
@@ -507,17 +528,13 @@ export class Vec3 extends Array<number> {
 	// #endregion
 }
 
-export function crossProduct3D(a: Vec3Like, b: Vec3Like): Vec3 {
+export function crossProduct3D<T extends Vec3Like>(a: T, b: Vec3Like): T {
 	const c1 = a[Y] * b[Z] - a[Z] * b[Y];
 	const c2 = a[Z] * b[X] - a[X] * b[Z];
 	const c3 = a[X] * b[Y] - a[Y] * b[X];
-	return new Vec3(c1, c2, c3);
+	return asVec3Like(a, c1, c2, c3);
 }
 
 export function dotProduct3D(a: Vec3Like, b: Vec3Like): number {
 	return a[X] * b[X] + a[Y] * b[Y] + a[Z] * b[Z];
-}
-
-export function magnitude3D(v: Vec3Like): number {
-	return Math.sqrt(v[X] ** 2 + v[Y] ** 2 + v[Z] ** 2);
 }
