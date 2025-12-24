@@ -1,3 +1,4 @@
+import { clamp } from '../util/index.js';
 import { Random } from '../util/random.js';
 import {
 	addPos,
@@ -392,6 +393,22 @@ export class Vec4 extends Array<number> {
 	 */
 	static approach(v: Vec4Like, target: Vec4Like, amount: Vec4Like): Vec4Like {
 		return approachVec(v, target, amount);
+	}
+
+	/**
+	 * Clamps a 4D vector within the bounds of the min and max vectors.
+	 * @param val Input vector
+	 * @param min Lower bound
+	 * @param max Upper bound
+	 * @returns Clamped vector
+	 */
+	static clamp(val: Vec4Like, min: Vec4Like, max: Vec4Like): Vec4 {
+		return new Vec4(
+			clamp(val[0], min[0], max[0]),
+			clamp(val[1], min[1], max[1]),
+			clamp(val[2], min[2], max[2]),
+			clamp(val[3], min[3], max[3]),
+		);
 	}
 
 	/**
