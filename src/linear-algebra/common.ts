@@ -37,6 +37,16 @@ export type Vector_T =
  */
 export type Vector = Vector_T | Vec2 | Vec3 | Vec4 | Quat;
 
+export type VectorToTuple<T extends Vector> = T extends Vec2
+	? V2_T
+	: T extends Vec3
+	? V3_T
+	: T extends Vec4
+	? V4_T
+	: T extends Quat
+	? V4_T
+	: T;
+
 // DECIDE(bret): Internally, Mat2 uses column-major; however, its constructor
 // takes row-major. This makes the array-based version and the Mat2 version
 // have different interfaces. Will need to think about this
@@ -135,16 +145,18 @@ export function approachVec<
 	A extends T = T,
 	B extends T = T,
 	C extends T = T,
->(a: A, b: B, c: C): A {
-	return a.map((v, i) => approach(v, b[i] ?? 0, c[i] ?? 0)) as typeof a;
+	R = VectorToTuple<A>,
+>(a: A, b: B, c: C): R {
+	return a.map((v, i) => approach(v, b[i] ?? 0, c[i] ?? 0)) as R;
 }
 
 export function addPos<
 	T extends Vector = Vector,
 	A extends T = T,
 	B extends T = T,
->(a: A, b: B): A {
-	return a.map((v, i) => v + (b[i] ?? 0)) as typeof a;
+	R = VectorToTuple<A>,
+>(a: A, b: B): R {
+	return a.map((v, i) => v + (b[i] ?? 0)) as R;
 }
 
 export function addScalar<T extends Vector>(p: T, s: number): T {
@@ -169,8 +181,9 @@ export function subPos<
 	T extends Vector = Vector,
 	A extends T = T,
 	B extends T = T,
->(a: A, b: B): A {
-	return a.map((v, i) => v - (b[i] ?? 0)) as typeof a;
+	R = VectorToTuple<A>,
+>(a: A, b: B): R {
+	return a.map((v, i) => v - (b[i] ?? 0)) as R;
 }
 
 export function posEqual<T extends Vector | number[]>(a: T, b: T): boolean {
