@@ -119,23 +119,6 @@ export type Vec4Like = Vec4 | V4_T;
  */
 export type QuatLike = Quat | V4_T;
 
-export const V2 = Object.defineProperties(
-	{},
-	{
-		zero: {
-			value: [0, 0] as V2_T,
-			writable: false,
-		},
-		one: {
-			value: [1, 1] as V2_T,
-			writable: false,
-		},
-	},
-) as {
-	zero: V2_T;
-	one: V2_T;
-};
-
 export function hashPos(pos: Vector): string {
 	return pos.join(',');
 }
