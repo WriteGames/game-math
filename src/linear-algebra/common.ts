@@ -144,17 +144,17 @@ export function onInterval(
 
 /**
  * Scales a vector by a scalar.
- * @param p - Vector
+ * @param v - Vector
  * @param s - Scalar
  * @returns Scaled vector
  */
-export function scaleVec<T extends Vector>(p: T, s: number): T {
-	const scaled = p.map((v) => v * s);
-	if (isVec2(p)) return new Vec2(...scaled) as typeof p;
-	if (isVec3(p)) return new Vec3(...scaled) as typeof p;
-	if (isVec4(p)) return new Vec4(...scaled) as typeof p;
-	if (isQuat(p)) return new Quat(...scaled) as typeof p;
-	return scaled as typeof p;
+export function scaleVec<T extends Vector>(v: T, s: number): T {
+	const scaled = v.map((v) => v * s);
+	if (isVec2(v)) return new Vec2(...scaled) as typeof v;
+	if (isVec3(v)) return new Vec3(...scaled) as typeof v;
+	if (isVec4(v)) return new Vec4(...scaled) as typeof v;
+	if (isQuat(v)) return new Quat(...scaled) as typeof v;
+	return scaled as typeof v;
 }
 
 /**
