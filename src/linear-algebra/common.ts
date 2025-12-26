@@ -53,6 +53,22 @@ export function approachVec<
 }
 
 /**
+ * Returns true when the elapsed `time` is between the given `interval`.
+ * Ex: an `interval` of `0.1` will be `false` for 0.1 seconds, then `true` for 0.1 seconds, and then repeat.
+ * @param time - Elapsed time
+ * @param interval - INterval to check whether we're between
+ * @param offset - Offset to the interval (so we can, in effect, start partyway through an interval)
+ * Credit: Maddy Thorson (https://bsky.app/profile/maddymakesgames.com/post/3maozzg422227)
+ */
+export function betweenInterval(
+	time: number,
+	interval: number,
+	offset = 0,
+): boolean {
+	return (time - offset) % (interval * 2) >= interval;
+}
+
+/**
  * Hashes a vector using a comma as a separator.
  * Ex: hashVec([1, 2, 3]) =\> '1,2,3'
  * @param vec - Vector to hash
@@ -103,6 +119,27 @@ export function length(a: Vector): number {
  */
 export function lengthSq(a: Vector): number {
 	return a.map((v) => v ** 2).reduce((a, v) => a + v);
+}
+
+/**
+ * Returns true every time the elapsed `time` passes a given `interval`.
+ * Ex: with an `interval` of `0.1`, this will be true for one frame every 0.1 seconds
+ * @param time - Elapsed time
+ * @param delta - TIme since last frame
+ * @param interval - Interval to check whether we've crossed
+ * @param offset - Offset to the interval (so we can, in effect,start partway through an interval)
+ * Credit: Maddy Thorson (https://bsky.app/profile/maddymakesgames.com/post/3maozzg422227)
+ */
+export function onInterval(
+	time: number,
+	delta: number,
+	interval: number,
+	offset = 0,
+): boolean {
+	return (
+		Math.floor((time - offset - delta) / interval) <
+		Math.floor((time - offset) / interval)
+	);
 }
 
 /**
