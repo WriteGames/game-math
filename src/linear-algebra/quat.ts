@@ -1,5 +1,5 @@
 import { distance } from '../util/index.js';
-import { posEqual, scalePos } from './common.js';
+import { vecEqual, scaleVec } from './common.js';
 import { Mat4 } from './mat4.js';
 import type { QuatLike, V4_T, Vector } from './types';
 import { Vec2 } from './vec2.js';
@@ -151,7 +151,7 @@ export class Quat extends Array<number> {
 	 * @returns The input quaternion
 	 */
 	static normalize(v: Quat): Quat {
-		return scalePos(v, 1 / distance(v));
+		return scaleVec(v, 1 / distance(v));
 	}
 
 	/**
@@ -159,7 +159,7 @@ export class Quat extends Array<number> {
 	 * @returns this
 	 */
 	normalize(): this {
-		const v = scalePos(this, 1 / distance(this));
+		const v = scaleVec(this, 1 / distance(this));
 		this.set(v);
 		return this;
 	}
@@ -176,7 +176,7 @@ export class Quat extends Array<number> {
 	 * @group Static
 	 */
 	static equal(a: Quat, b: Quat | V4_T): boolean {
-		return posEqual(a, b);
+		return vecEqual(a, b);
 	}
 
 	equal(v: Quat | V4_T): boolean {
@@ -351,11 +351,11 @@ export function multiplyQ4Q4(a: Quat, b: Quat): Quat {
 }
 
 export function multiplyQ4Scalar(q: Quat, v: number): Quat {
-	return scalePos(q, v);
+	return scaleVec(q, v);
 }
 
 export function divideQ4Scalar(q: Quat, v: number): Quat {
-	return scalePos(q, 1 / v);
+	return scaleVec(q, 1 / v);
 }
 
 function _mixQ4Q4(a: Quat, aT: number, b: Quat, bT: number): Quat {

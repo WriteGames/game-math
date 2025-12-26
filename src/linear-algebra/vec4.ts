@@ -1,6 +1,6 @@
 import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
-import { addPos, approachVec, posEqual, scalePos, subPos } from './common.js';
+import { addVec, approachVec, vecEqual, scaleVec, subVec } from './common.js';
 import type { QuatLike, Vec2Like, Vec3Like, Vec4Like, Vector } from './types';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
@@ -210,7 +210,7 @@ export class Vec4 extends Array<number> {
 	 * @returns Sum
 	 */
 	static add<T extends Vec4Like>(a: T, b: Vec4Like): T {
-		const [x, y, z, w] = addPos(a, b);
+		const [x, y, z, w] = addVec(a, b);
 		return asVec4Like(a, x, y, z, w);
 	}
 
@@ -255,7 +255,7 @@ export class Vec4 extends Array<number> {
 	 * @returns Vec4
 	 */
 	static sub<T extends Vec4Like>(a: T, b: Vec4Like): T {
-		const [x, y, z, w] = subPos(a, b);
+		const [x, y, z, w] = subVec(a, b);
 		return asVec4Like(a, x, y, z, w);
 	}
 
@@ -300,7 +300,7 @@ export class Vec4 extends Array<number> {
 	 * @returns The vector, scaled
 	 */
 	static scale<T extends Vec4Like>(v: T, s: number): T {
-		const [x, y, z, w] = scalePos(v, s);
+		const [x, y, z, w] = scaleVec(v, s);
 		return asVec4Like(v, x, y, z, w);
 	}
 
@@ -325,7 +325,7 @@ export class Vec4 extends Array<number> {
 	 * @returns The vector, scaled inversely
 	 */
 	static invScale<T extends Vec4Like>(v: T, s: number): T {
-		const [x, y, z, w] = scalePos(v, 1 / s);
+		const [x, y, z, w] = scaleVec(v, 1 / s);
 		return asVec4Like(v, x, y, z, w);
 	}
 
@@ -363,7 +363,7 @@ export class Vec4 extends Array<number> {
 	 * @returns Whether the two vectors are equal
 	 */
 	static equal(a: Vec4Like, b: Vec4Like): boolean {
-		return posEqual(a, b);
+		return vecEqual(a, b);
 	}
 
 	/**

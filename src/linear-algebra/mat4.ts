@@ -1,6 +1,6 @@
 import { distance } from '../util/index';
 import type { M4_T, Mat4Like, Matrix, V4_T, Vec3Like, Vec4Like } from './types';
-import { posEqual, scalePos } from './common';
+import { vecEqual, scaleVec } from './common';
 import { Mat3 } from './mat3';
 import { Quat } from './quat';
 import { Vec3 } from './vec3';
@@ -667,7 +667,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
 	multiply(other: Mat4Like): this {
@@ -676,7 +676,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) right to left.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
 	multiplyRTL(other: Mat4Like): this {
@@ -685,11 +685,11 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Alias for multiplyRTL. Multiplies the .matrices (this x other) right to left.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
-	postMultiply(m: Mat4Like): this {
-		return this.multiplyRTL(m);
+	postMultiply(other: Mat4Like): this {
+		return this.multiplyRTL(other);
 	}
 
 	/**
@@ -707,7 +707,7 @@ export class Mat4 extends Array<number> {
 	 * @returns Equality result
 	 */
 	static equal(a: Mat4, b: Mat4Like): boolean {
-		return posEqual(a, b);
+		return vecEqual(a, b);
 	}
 
 	/**
@@ -769,7 +769,7 @@ export class Mat4 extends Array<number> {
 			}
 		}
 
-		result = scalePos(result, 0.5 / Math.sqrt(t));
+		result = scaleVec(result, 0.5 / Math.sqrt(t));
 
 		return result;
 	}

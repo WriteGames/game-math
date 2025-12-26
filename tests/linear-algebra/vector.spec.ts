@@ -1,13 +1,13 @@
 import { describe, expect, test } from 'vitest';
 import {
-	addPos,
+	addVec,
 	addScalar,
 	isVec2,
 	isVec3,
 	isVec4,
-	posEqual,
-	scalePos,
-	subPos,
+	vecEqual,
+	scaleVec,
+	subVec,
 	Vec2,
 	Vec3,
 	Vec4,
@@ -38,28 +38,28 @@ describe('(Vec) Vector operations', () => {
 				test('Vec2 + Vec2 should result in a Vec2 sum', () => {
 					const a = new Vec2(...VEC2_A);
 					const b = new Vec2(...VEC2_B);
-					expect(addPos(a, b)).toEqualVec2(VEC2_SUM);
+					expect(addVec(a, b)).toEqualVec2(VEC2_SUM);
 					expect(Vec2.add(a, b)).toEqualVec2(VEC2_SUM);
 				});
 
 				test('Vec3 + Vec3 should result in a Vec3 sum', () => {
 					const a = new Vec3(...VEC3_A);
 					const b = new Vec3(...VEC3_B);
-					expect(addPos(a, b)).toEqual(VEC3_SUM);
+					expect(addVec(a, b)).toEqual(VEC3_SUM);
 					expect(Vec3.add(a, b)).toEqual(VEC3_SUM);
 				});
 
 				test('Vec4 + Vec4 should result in a Vec4 sum', () => {
 					const a = new Vec4(...VEC4_A);
 					const b = new Vec4(...VEC4_B);
-					expect(addPos(a, b)).toEqual(VEC4_SUM);
+					expect(addVec(a, b)).toEqual(VEC4_SUM);
 					expect(Vec4.add(a, b)).toEqual(VEC4_SUM);
 				});
 			});
 
 			describe('when a is longer than b', () => {
 				test("sum should be of length a, treating b's missing elements as 0", () => {
-					const sum = addPos([2, 3, 4], [0, 1]);
+					const sum = addVec([2, 3, 4], [0, 1]);
 					expect(sum).toHaveLength(3);
 					expect(sum).toEqual([2, 4, 4]);
 				});
@@ -67,7 +67,7 @@ describe('(Vec) Vector operations', () => {
 
 			describe('when a is shorter than b', () => {
 				test('sum should be of length a, truncating extra elements from b', () => {
-					const sum = addPos([3, 4], [0, 1, 2]);
+					const sum = addVec([3, 4], [0, 1, 2]);
 					expect(sum).toHaveLength(2);
 					expect(sum).toEqual([3, 5]);
 				});
@@ -79,28 +79,28 @@ describe('(Vec) Vector operations', () => {
 				test('Vec2 - Vec2 should result in a Vec2 difference', () => {
 					const a = new Vec2(...VEC2_A);
 					const b = new Vec2(...VEC2_B);
-					expect(subPos(a, b)).toEqualVec2(VEC2_DIFF);
+					expect(subVec(a, b)).toEqualVec2(VEC2_DIFF);
 					expect(Vec2.sub(a, b)).toEqualVec2(VEC2_DIFF);
 				});
 
 				test('Vec3 - Vec3 should result in a V3 difference', () => {
 					const a = new Vec3(...VEC3_A);
 					const b = new Vec3(...VEC3_B);
-					expect(subPos(a, b)).toEqual(VEC3_DIFF);
+					expect(subVec(a, b)).toEqual(VEC3_DIFF);
 					expect(Vec3.sub(a, b)).toEqual(VEC3_DIFF);
 				});
 
 				test('Vec4 - Vec4 should result in a V4 difference', () => {
 					const a = new Vec4(...VEC4_A);
 					const b = new Vec4(...VEC4_B);
-					expect(subPos(a, b)).toEqual(VEC4_DIFF);
+					expect(subVec(a, b)).toEqual(VEC4_DIFF);
 					expect(Vec4.sub(a, b)).toEqual(VEC4_DIFF);
 				});
 			});
 
 			describe('when a is longer than b', () => {
 				test("difference should be of length a, treating b's missing elements as 0", () => {
-					const diff = subPos([2, 3, 4], [0, 1]);
+					const diff = subVec([2, 3, 4], [0, 1]);
 					expect(diff).toHaveLength(3);
 					expect(diff).toEqual([2, 2, 4]);
 				});
@@ -108,7 +108,7 @@ describe('(Vec) Vector operations', () => {
 
 			describe('when a is shorter than b', () => {
 				test('difference should be of length a, truncating extra elements from b', () => {
-					const diff = subPos([3, 4], [0, 1, 2]);
+					const diff = subVec([3, 4], [0, 1, 2]);
 					expect(diff).toHaveLength(2);
 					expect(diff).toEqual([3, 3]);
 				});
@@ -131,26 +131,26 @@ describe('(Vec) Vector operations', () => {
 			});
 
 			test('should return true if both vectors are of equal length and have the same valued elements', () => {
-				const isEqual = posEqual([1, 2, 3], [1, 2, 3]);
+				const isEqual = vecEqual([1, 2, 3], [1, 2, 3]);
 				expect(isEqual).toEqual(true);
 			});
 			test('should return true if both vectors are of equal length and shared values are within the epsilon margin of error', () => {
-				const isEqual = posEqual([0.1 + 0.2, 2, 3], [0.3, 2, 3]);
+				const isEqual = vecEqual([0.1 + 0.2, 2, 3], [0.3, 2, 3]);
 				expect(isEqual).toEqual(true);
 			});
 
 			test('should return false if the vectors do not match', () => {
-				const isEqual = posEqual([1, 2, 3], [1, 2, 4]);
+				const isEqual = vecEqual([1, 2, 3], [1, 2, 4]);
 				expect(isEqual).toEqual(false);
 			});
 
 			test('should return false if vector a is longer, even if the shared elements match', () => {
-				const isEqual = posEqual([1, 2, 3], [1, 2]);
+				const isEqual = vecEqual([1, 2, 3], [1, 2]);
 				expect(isEqual).toEqual(false);
 			});
 
 			test('should return false if vector b is longer, even if the shared elements match', () => {
-				const isEqual = posEqual([1, 2], [1, 2, 3]);
+				const isEqual = vecEqual([1, 2], [1, 2, 3]);
 				expect(isEqual).toEqual(false);
 			});
 		});
@@ -173,13 +173,13 @@ describe('(Vec) Vector operations', () => {
 
 		describe('scalePos(p, s)', () => {
 			test('should return a vector of equal length scaled by a scalar', () => {
-				const scaled = scalePos(new Vec2(1, 2), 5);
+				const scaled = scaleVec(new Vec2(1, 2), 5);
 				expect(scaled).toHaveLength(2);
 				expect(scaled).toEqual([5, 10]);
 			});
 
 			test('should return a vector of equal length scaled by a scalar', () => {
-				const scaled = scalePos([1, 2, 3], 5);
+				const scaled = scaleVec([1, 2, 3], 5);
 				expect(scaled).toHaveLength(3);
 				expect(scaled).toEqual([5, 10, 15]);
 			});
@@ -219,19 +219,19 @@ describe('Vector operations', () => {
 		describe('addPos(a, b)', () => {
 			describe('when a & b are both the same length', () => {
 				test('V2 + V2 should result in a V2 sum', () => {
-					const sum = addPos([4, 5], [0, 1]);
+					const sum = addVec([4, 5], [0, 1]);
 					expect(sum).toHaveLength(2);
 					expect(sum).toEqual([4, 6]);
 				});
 
 				test('V3 + V3 should result in a V3 sum', () => {
-					const sum = addPos([4, 5, 6], [0, 1, 2]);
+					const sum = addVec([4, 5, 6], [0, 1, 2]);
 					expect(sum).toHaveLength(3);
 					expect(sum).toEqual([4, 6, 8]);
 				});
 
 				test('V4 + V4 should result in a V4 sum', () => {
-					const sum = addPos([4, 5, 6, 7], [0, 1, 2, 3]);
+					const sum = addVec([4, 5, 6, 7], [0, 1, 2, 3]);
 					expect(sum).toHaveLength(4);
 					expect(sum).toEqual([4, 6, 8, 10]);
 				});
@@ -239,7 +239,7 @@ describe('Vector operations', () => {
 
 			describe('when a is longer than b', () => {
 				test("sum should be of length a, treating b's missing elements as 0", () => {
-					const sum = addPos([2, 3, 4], [0, 1]);
+					const sum = addVec([2, 3, 4], [0, 1]);
 					expect(sum).toHaveLength(3);
 					expect(sum).toEqual([2, 4, 4]);
 				});
@@ -247,7 +247,7 @@ describe('Vector operations', () => {
 
 			describe('when a is shorter than b', () => {
 				test('sum should be of length a, truncating extra elements from b', () => {
-					const sum = addPos([3, 4], [0, 1, 2]);
+					const sum = addVec([3, 4], [0, 1, 2]);
 					expect(sum).toHaveLength(2);
 					expect(sum).toEqual([3, 5]);
 				});
@@ -257,19 +257,19 @@ describe('Vector operations', () => {
 		describe('subPos(a, b)', () => {
 			describe('when a & b are both the same length', () => {
 				test('V2 - V2 should result in a V2 difference', () => {
-					const diff = subPos([4, 5], [0, 1]);
+					const diff = subVec([4, 5], [0, 1]);
 					expect(diff).toHaveLength(2);
 					expect(diff).toEqual([4, 4]);
 				});
 
 				test('V3 - V3 should result in a V3 difference', () => {
-					const diff = subPos([4, 5, 6], [0, 1, 2]);
+					const diff = subVec([4, 5, 6], [0, 1, 2]);
 					expect(diff).toHaveLength(3);
 					expect(diff).toEqual([4, 4, 4]);
 				});
 
 				test('V4 - V4 should result in a V4 difference', () => {
-					const diff = subPos([4, 5, 6, 7], [0, 1, 2, 3]);
+					const diff = subVec([4, 5, 6, 7], [0, 1, 2, 3]);
 					expect(diff).toHaveLength(4);
 					expect(diff).toEqual([4, 4, 4, 4]);
 				});
@@ -277,7 +277,7 @@ describe('Vector operations', () => {
 
 			describe('when a is longer than b', () => {
 				test("difference should be of length a, treating b's missing elements as 0", () => {
-					const diff = subPos([2, 3, 4], [0, 1]);
+					const diff = subVec([2, 3, 4], [0, 1]);
 					expect(diff).toHaveLength(3);
 					expect(diff).toEqual([2, 2, 4]);
 				});
@@ -285,7 +285,7 @@ describe('Vector operations', () => {
 
 			describe('when a is shorter than b', () => {
 				test('difference should be of length a, truncating extra elements from b', () => {
-					const diff = subPos([3, 4], [0, 1, 2]);
+					const diff = subVec([3, 4], [0, 1, 2]);
 					expect(diff).toHaveLength(2);
 					expect(diff).toEqual([3, 3]);
 				});
@@ -294,26 +294,26 @@ describe('Vector operations', () => {
 
 		describe('posEqual(a, b)', () => {
 			test('should return true if both vectors are of equal length and have the same valued elements', () => {
-				const isEqual = posEqual([1, 2, 3], [1, 2, 3]);
+				const isEqual = vecEqual([1, 2, 3], [1, 2, 3]);
 				expect(isEqual).toEqual(true);
 			});
 			test('should return true if both vectors are of equal length and shared values are within the epsilon margin of error', () => {
-				const isEqual = posEqual([0.1 + 0.2, 2, 3], [0.3, 2, 3]);
+				const isEqual = vecEqual([0.1 + 0.2, 2, 3], [0.3, 2, 3]);
 				expect(isEqual).toEqual(true);
 			});
 
 			test('should return false if the vectors do not match', () => {
-				const isEqual = posEqual([1, 2, 3], [1, 2, 4]);
+				const isEqual = vecEqual([1, 2, 3], [1, 2, 4]);
 				expect(isEqual).toEqual(false);
 			});
 
 			test('should return false if vector a is longer, even if the shared elements match', () => {
-				const isEqual = posEqual([1, 2, 3], [1, 2]);
+				const isEqual = vecEqual([1, 2, 3], [1, 2]);
 				expect(isEqual).toEqual(false);
 			});
 
 			test('should return false if vector b is longer, even if the shared elements match', () => {
-				const isEqual = posEqual([1, 2], [1, 2, 3]);
+				const isEqual = vecEqual([1, 2], [1, 2, 3]);
 				expect(isEqual).toEqual(false);
 			});
 		});
@@ -330,7 +330,7 @@ describe('Vector operations', () => {
 
 		describe('scalePos(p, s)', () => {
 			test('should return a vector of equal length scaled by a scalar', () => {
-				const scaled = scalePos([1, 2, 3], 5);
+				const scaled = scaleVec([1, 2, 3], 5);
 				expect(scaled).toHaveLength(3);
 				expect(scaled).toEqual([5, 10, 15]);
 			});

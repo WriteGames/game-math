@@ -3,5 +3,29 @@
 	"entryPoints": ["src/index.ts"],
 	"entryPointStrategy": "resolve",
 	"out": "docs",
-	"plugin": ["typedoc-github-theme"]
+	"plugin": ["typedoc-github-theme"],
+	"validation": {
+		"notDocumented": true
+	},
+	"requiredToBeDocumented": [
+		"Enum",
+		"EnumMember",
+		"Variable",
+		"Function",
+		"Class",
+		"Constructor",
+		"Property",
+		"Method",
+		"CallSignature",
+		"IndexSignature",
+		"ConstructorSignature",
+		"Parameter",
+		"TypeLiteral",
+		"Accessor",
+		"GetSignature",
+		"SetSignature",
+		"TypeAlias",
+		"Reference",
+		"Document"
+	]
 }

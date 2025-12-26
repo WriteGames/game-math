@@ -1,6 +1,6 @@
 import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
-import { addPos, approachVec, posEqual, scalePos, subPos } from './common.js';
+import { addVec, approachVec, vecEqual, scaleVec, subVec } from './common.js';
 import type { Vec2Like, Vec3Like, Vector } from './types';
 import { Vec2 } from './vec2.js';
 
@@ -233,7 +233,7 @@ export class Vec3 extends Array<number> {
 	 * @returns Sum
 	 */
 	static add<T extends Vec3Like>(a: T, b: Vec3Like): T {
-		const [x, y, z] = addPos(a, b);
+		const [x, y, z] = addVec(a, b);
 		return asVec3Like(a, x, y, z);
 	}
 
@@ -277,7 +277,7 @@ export class Vec3 extends Array<number> {
 	 * @returns Difference
 	 */
 	static sub<T extends Vec3Like>(a: T, b: Vec3Like): T {
-		return subPos(a, b);
+		return subVec(a, b);
 	}
 
 	/**
@@ -320,7 +320,7 @@ export class Vec3 extends Array<number> {
 	 * @returns The vector, scaled
 	 */
 	static scale<T extends Vec3Like>(v: T, s: number): T {
-		const [x, y, z] = scalePos(v, s);
+		const [x, y, z] = scaleVec(v, s);
 		return asVec3Like(v, x, y, z);
 	}
 
@@ -344,7 +344,7 @@ export class Vec3 extends Array<number> {
 	 * @returns The vector, scaled inversely
 	 */
 	static invScale<T extends Vec3Like>(v: T, s: number): T {
-		const [x, y, z] = scalePos(v, 1 / s);
+		const [x, y, z] = scaleVec(v, 1 / s);
 		return asVec3Like(v, x, y, z);
 	}
 
@@ -394,7 +394,7 @@ export class Vec3 extends Array<number> {
 	 * @returns Whether the two vectors are equal
 	 */
 	static equal(a: Vec3Like, b: Vec3Like): boolean {
-		return posEqual(a, b);
+		return vecEqual(a, b);
 	}
 
 	/**

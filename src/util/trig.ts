@@ -185,7 +185,7 @@ export function wrapAngle(radian: number): number {
 
 /**
  * Wraps an angle to fall between [0, 360)
- * @param radian - Input angle
+ * @param degree - Input angle
  * @returns Wrapped angle, [0, 360)
  */
 export function wrapAngleDeg(degree: number): number {

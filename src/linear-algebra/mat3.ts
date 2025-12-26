@@ -1,6 +1,6 @@
 import { distance } from '../util/index';
 import type { Mat3Like, Matrix, Vec3Like } from './types';
-import { posEqual } from './common';
+import { vecEqual } from './common';
 import { Vec3 } from './vec3';
 
 /**
@@ -514,7 +514,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
 	multiply(other: Mat3Like): this {
@@ -523,7 +523,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) right to left.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
 	multiplyRTL(other: Mat3Like): this {
@@ -532,11 +532,11 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Alias for multiplyRTL. Multiplies the matrices (this x other) right to left.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
-	postMultiply(m: Mat3Like): this {
-		return this.multiplyRTL(m);
+	postMultiply(other: Mat3Like): this {
+		return this.multiplyRTL(other);
 	}
 
 	/**
@@ -554,7 +554,7 @@ export class Mat3 extends Array<number> {
 	 * @returns Equality result
 	 */
 	static equal(a: Mat3, b: Mat3Like): boolean {
-		return posEqual(a, b);
+		return vecEqual(a, b);
 	}
 
 	/**

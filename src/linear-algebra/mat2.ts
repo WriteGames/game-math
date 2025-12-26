@@ -1,5 +1,5 @@
 import type { Mat2Like, Matrix, Vec2Like } from './types';
-import { posEqual } from './common';
+import { vecEqual } from './common';
 import { Vec2 } from './vec2';
 
 /**
@@ -300,7 +300,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
 	multiply(other: Mat2Like): this {
@@ -309,7 +309,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) right to left.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
 	multiplyRTL(other: Mat2Like): this {
@@ -318,7 +318,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Alias for multiplyRTL. Multiplies the matrices (this x other) right to left.
-	 * @param other -
+	 * @param other - Other matrix
 	 * @returns The product of the two matrices
 	 */
 	postMultiply(other: Mat2Like): this {
@@ -346,7 +346,7 @@ export class Mat2 extends Array<number> {
 	 * @returns Equality result
 	 */
 	static equal(a: Mat2, b: Mat2Like): boolean {
-		return posEqual(a, b);
+		return vecEqual(a, b);
 	}
 
 	/**

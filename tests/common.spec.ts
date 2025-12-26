@@ -1,33 +1,33 @@
 import { describe, expect, test } from 'vitest';
 import {
-	addPos,
+	addVec,
 	addScalar,
 	approachVec,
-	hashPos,
+	hashVec,
 	isPointOnLine,
 	isWithinBounds,
 	length,
 	lengthSq,
-	posDistance,
-	posDistanceSq,
-	posEqual,
+	vecDistance,
+	vecDistanceSq,
+	vecEqual,
 	Quat,
-	scalePos,
-	subPos,
+	scaleVec,
+	subVec,
 	V2_T,
 	Vec2,
 	Vec3,
 	Vec4,
 } from '../src';
 
-describe(`${addPos.name}()`, () => {
+describe(`${addVec.name}()`, () => {
 	test('should add vectors together', () => {
-		expect(addPos([1, 2], [3, 4])).toEqualVec2([4, 6]);
-		expect(addPos(new Vec2(1, 2), [3, 4])).toEqualVec2([4, 6]);
-		expect(addPos(new Vec2(1, 2), new Vec2(3, 4))).toEqualVec2([4, 6]);
-		expect(addPos([1, 2], new Vec2(3, 4))).toEqualVec2([4, 6]);
+		expect(addVec([1, 2], [3, 4])).toEqualVec2([4, 6]);
+		expect(addVec(new Vec2(1, 2), [3, 4])).toEqualVec2([4, 6]);
+		expect(addVec(new Vec2(1, 2), new Vec2(3, 4))).toEqualVec2([4, 6]);
+		expect(addVec([1, 2], new Vec2(3, 4))).toEqualVec2([4, 6]);
 
-		expect(addPos([1, 2, 3], [3, 4])).toEqualVec3([4, 6, 3]);
+		expect(addVec([1, 2, 3], [3, 4])).toEqualVec3([4, 6, 3]);
 	});
 });
 
@@ -72,17 +72,17 @@ describe(`${approachVec.name}()`, () => {
 	});
 });
 
-describe(`${hashPos.name}()`, () => {
+describe(`${hashVec.name}()`, () => {
 	test('should hash a vector', () => {
-		expect(hashPos([5, -5])).toEqual('5,-5');
-		expect(hashPos(new Vec2(-5, 5))).toEqual('-5,5');
+		expect(hashVec([5, -5])).toEqual('5,-5');
+		expect(hashVec(new Vec2(-5, 5))).toEqual('-5,5');
 
-		expect(hashPos([-1, 2, -3])).toEqual('-1,2,-3');
-		expect(hashPos(new Vec3(-1, 2, -3))).toEqual('-1,2,-3');
+		expect(hashVec([-1, 2, -3])).toEqual('-1,2,-3');
+		expect(hashVec(new Vec3(-1, 2, -3))).toEqual('-1,2,-3');
 
-		expect(hashPos([-1, 2, -3, 4])).toEqual('-1,2,-3,4');
-		expect(hashPos(new Vec4(-1, 2, -3, 4))).toEqual('-1,2,-3,4');
-		expect(hashPos(new Quat(-1, 2, -3, 4))).toEqual('-1,2,-3,4');
+		expect(hashVec([-1, 2, -3, 4])).toEqual('-1,2,-3,4');
+		expect(hashVec(new Vec4(-1, 2, -3, 4))).toEqual('-1,2,-3,4');
+		expect(hashVec(new Quat(-1, 2, -3, 4))).toEqual('-1,2,-3,4');
 	});
 });
 
@@ -143,31 +143,31 @@ describe(`${lengthSq.name}()`, () => {
 	});
 });
 
-describe(`${posDistance.name}()`, () => {
+describe(`${vecDistance.name}()`, () => {
 	test('should find the distance between two vectors', () => {
 		const a: V2_T = [-1, -1];
 		const b: V2_T = [2, 3];
-		expect(posDistance(a, b)).toEqual(5);
+		expect(vecDistance(a, b)).toEqual(5);
 	});
 });
 
-describe(`${posDistanceSq.name}()`, () => {
+describe(`${vecDistanceSq.name}()`, () => {
 	test('should find the distance between two vectors, squared', () => {
 		const a: V2_T = [-1, -1];
 		const b: V2_T = [2, 3];
-		expect(posDistanceSq(a, b)).toEqual(25);
+		expect(vecDistanceSq(a, b)).toEqual(25);
 	});
 });
 
-describe(`${posEqual.name}()`, () => {
+describe(`${vecEqual.name}()`, () => {
 	test('should match equal vectors', () => {
 		const a1 = [5, 5];
 		const a2 = [5, 5];
 		const b1 = new Vec2(5, 5);
 		const b2 = new Vec2(5, 5);
-		expect(posEqual(a1, a2)).toEqual(true);
-		expect(posEqual(b1, b2)).toEqual(true);
-		expect(posEqual(a1, b2)).toEqual(true);
+		expect(vecEqual(a1, a2)).toEqual(true);
+		expect(vecEqual(b1, b2)).toEqual(true);
+		expect(vecEqual(a1, b2)).toEqual(true);
 	});
 
 	test('should not match non-equal vectors', () => {
@@ -175,46 +175,46 @@ describe(`${posEqual.name}()`, () => {
 		const a2 = [0, 0];
 		const b1 = new Vec2(5, 5);
 		const b2 = new Vec2(0, 0);
-		expect(posEqual(a1, a2)).toEqual(false);
-		expect(posEqual(b1, b2)).toEqual(false);
-		expect(posEqual(a1, b2)).toEqual(false);
+		expect(vecEqual(a1, a2)).toEqual(false);
+		expect(vecEqual(b1, b2)).toEqual(false);
+		expect(vecEqual(a1, b2)).toEqual(false);
 	});
 });
 
-describe(`${scalePos.name}()`, () => {
+describe(`${scaleVec.name}()`, () => {
 	test('should scale a vector', () => {
-		const resultArr = scalePos([3, 4], 5);
+		const resultArr = scaleVec([3, 4], 5);
 		expect(resultArr).not.toBeInstanceOf(Vec2);
 		expect(resultArr).not.toBeInstanceOf(Vec3);
 		expect(resultArr).not.toBeInstanceOf(Vec4);
 		expect(resultArr).not.toBeInstanceOf(Quat);
 		expect(resultArr).toEqualVec2([15, 20]);
 
-		const resultVec2 = scalePos(new Vec2(3, 4), 5);
+		const resultVec2 = scaleVec(new Vec2(3, 4), 5);
 		expect(resultVec2).toBeInstanceOf(Vec2);
 		expect(resultVec2).toEqualVec2([15, 20]);
 
-		const resultVec3 = scalePos(new Vec3(3, 4, 5), 5);
+		const resultVec3 = scaleVec(new Vec3(3, 4, 5), 5);
 		expect(resultVec3).toBeInstanceOf(Vec3);
 		expect(resultVec3).toEqualVec3([15, 20, 25]);
 
-		const resultVec4 = scalePos(new Vec4(3, 4, 5, 6), 5);
+		const resultVec4 = scaleVec(new Vec4(3, 4, 5, 6), 5);
 		expect(resultVec4).toBeInstanceOf(Vec4);
 		expect(resultVec4).toEqualVec4([15, 20, 25, 30]);
 
-		const resultQuat = scalePos(new Quat(3, 4, 5, 6), 5);
+		const resultQuat = scaleVec(new Quat(3, 4, 5, 6), 5);
 		expect(resultQuat).toBeInstanceOf(Quat);
 		expect(resultQuat).toEqualQuat([15, 20, 25, 30]);
 	});
 });
 
-describe(`${subPos.name}()`, () => {
+describe(`${subVec.name}()`, () => {
 	test('should subtract vectors', () => {
-		expect(subPos([1, 2], [3, 4])).toEqualVec2([-2, -2]);
-		expect(subPos(new Vec2(1, 2), [3, 4])).toEqualVec2([-2, -2]);
-		expect(subPos(new Vec2(1, 2), new Vec2(3, 4))).toEqualVec2([-2, -2]);
-		expect(subPos([1, 2], new Vec2(3, 4))).toEqualVec2([-2, -2]);
+		expect(subVec([1, 2], [3, 4])).toEqualVec2([-2, -2]);
+		expect(subVec(new Vec2(1, 2), [3, 4])).toEqualVec2([-2, -2]);
+		expect(subVec(new Vec2(1, 2), new Vec2(3, 4))).toEqualVec2([-2, -2]);
+		expect(subVec([1, 2], new Vec2(3, 4))).toEqualVec2([-2, -2]);
 
-		expect(subPos([1, 2, 3], [3, 4])).toEqualVec3([-2, -2, 3]);
+		expect(subVec([1, 2, 3], [3, 4])).toEqualVec3([-2, -2, 3]);
 	});
 });
