@@ -11,13 +11,13 @@ export * from './random.js';
  * @default
  * @category Utility
  */
-export const EPSILON = 0.000001 as const;
+export const EPSILON = 0.000001;
 
 /**
  * Approaches a target value by an amount without overshooting the target.
- * @param from Input value
- * @param to Target value
- * @param amount Amount to approach
+ * @param from - Input value
+ * @param to - Target value
+ * @param amount - Amount to approach
  * @returns
  */
 export function approach(from: number, to: number, amount: number): number {
@@ -28,9 +28,9 @@ export function approach(from: number, to: number, amount: number): number {
 
 /**
  * Clamps a value within a range.
- * @param val Input value
- * @param min Lower bound
- * @param max Upper bound
+ * @param val - Input value
+ * @param min - Lower bound
+ * @param max - Upper bound
  * @returns Clamped value
  */
 export function clamp(val: number, min: number, max: number): number {
@@ -41,7 +41,7 @@ export function clamp(val: number, min: number, max: number): number {
 
 /**
  * Calculates the distance of a given vector, squared
- * @param dimensions A vector of any length of dimensions
+ * @param dimensions - A vector of any length of dimensions
  * @returns The squared distance of the vector
  */
 export function distanceSq(dimensions: number[]): number {
@@ -50,7 +50,7 @@ export function distanceSq(dimensions: number[]): number {
 
 /**
  * Calculates the distance of a given vector
- * @param dimensions A vector of any length of dimensions
+ * @param dimensions - A vector of any length of dimensions
  * @returns The distance of the vector
  */
 export function distance(dimensions: number[]): number {
@@ -59,8 +59,8 @@ export function distance(dimensions: number[]): number {
 
 /**
  * Checks if two values are approximately equal, using an epsilon to account for floating point errors.
- * @param a Value a
- * @param b Value b
+ * @param a - Value a
+ * @param b - Value b
  * @returns Whether or not they're about equal
  */
 export function equal(a: number, b: number): boolean {
@@ -69,9 +69,9 @@ export function equal(a: number, b: number): boolean {
 
 /**
  * Linear interpolation between two values.
- * @param a Start value
- * @param b End value
- * @param t Fractional value to interpolate between a and b
+ * @param a - Start value
+ * @param b - End value
+ * @param t - Fractional value to interpolate between a and b
  * @returns Interpolated value
  */
 export function lerp(a: number, b: number, t: number): number {
@@ -80,9 +80,9 @@ export function lerp(a: number, b: number, t: number): number {
 
 /**
  * Linear interpolation between two angles (in radians), ensuring the shortest path is taken.
- * @param a Start angle
- * @param b End angle
- * @param t Fractional value to interpolate between and b
+ * @param a - Start angle
+ * @param b - End angle
+ * @param t - Fractional value to interpolate between and b
  * @returns Interpolated angle
  */
 export function lerpAngle(a: number, b: number, t: number): number {
@@ -92,9 +92,9 @@ export function lerpAngle(a: number, b: number, t: number): number {
 
 /**
  * Linear interpolation between two angles (in degrees), ensuring the shortest path is taken.
- * @param a Start angle
- * @param b End angle
- * @param t Fractional value to interpolate between and b
+ * @param a - Start angle
+ * @param b - End angle
+ * @param t - Fractional value to interpolate between and b
  * @returns Interpolated angle
  */
 export function lerpAngleDeg(a: number, b: number, t: number): number {
@@ -104,9 +104,9 @@ export function lerpAngleDeg(a: number, b: number, t: number): number {
 
 /**
  * Linear interpolation between two values, clamping t between 0 and 1.
- * @param a Start value
- * @param b End value
- * @param t Fractional value to interpolate between a and b
+ * @param a - Start value
+ * @param b - End value
+ * @param t - Fractional value to interpolate between a and b
  * @returns Interpolated value
  */
 export function lerpClamp(a: number, b: number, t: number): number {
@@ -115,11 +115,11 @@ export function lerpClamp(a: number, b: number, t: number): number {
 
 /**
  * Remaps a number from one range to another.
- * @param value Input value
- * @param fromMin Source range start
- * @param fromMax Source range end
- * @param toMin Destination range start
- * @param toMax Destination range end
+ * @param value - Input value
+ * @param fromMin - Source range start
+ * @param fromMax - Source range end
+ * @param toMin - Destination range start
+ * @param toMax - Destination range end
  * @returns New value remapped from source range to destination range
  */
 export function remap(
@@ -134,11 +134,11 @@ export function remap(
 
 /**
  * Remaps a number from one range to another, clamping the new value within the destination range.
- * @param value Input value
- * @param fromMin Source range start
- * @param fromMax Source range end
- * @param toMin Destination range start
- * @param toMax Destination range end
+ * @param value - Input value
+ * @param fromMin - Source range start
+ * @param fromMax - Source range end
+ * @param toMin - Destination range start
+ * @param toMax - Destination range end
  * @returns New value remapped from source range to destination range, clamped to the destination range
  */
 export function remapClamp(
@@ -154,9 +154,9 @@ export function remapClamp(
 
 /**
  * Snaps a value to the nearest grid-aligned value.
- * @param value Input vlaue
- * @param increment Grid size
- * @param offset Offset to apply after the snap
+ * @param value - Input vlaue
+ * @param increment - Grid size
+ * @param offset - Offset to apply after the snap
  */
 export function snapToGrid(
 	value: number,

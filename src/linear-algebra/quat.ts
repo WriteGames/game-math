@@ -9,7 +9,7 @@ import { dotProduct4D } from './vec4.js';
 /**
  * Checks if a given argument is an instance of {@link Quat}.
  * @category Linear Algebra
- * @param quat Potential Quat
+ * @param quat - Potential Quat
  * @returns Whether or not the argument is a Quat
  */
 export function isQuat(quat: Vector): quat is Quat {
@@ -31,18 +31,18 @@ export class Quat extends Array<number> {
 	// length: 4 = 4 as const;
 
 	/**
-	 * Uninitialized values default to <0, 0, 0, 1>.
-	 * @param {number} x X value
-	 * @param {number} y Y value
-	 * @param {number} z Z value
-	 * @param {number} w W value
+	 * Uninitialized values default to \<0, 0, 0, 1\>.
+	 * @param x - X value
+	 * @param y - Y value
+	 * @param z - Z value
+	 * @param w - W value
 	 */
 	constructor(x = 0, y = 0, z = 0, w = 1) {
 		super(x, y, z, w);
 	}
 
 	/**
-	 * Creates an instance of a Quat at <0, 0, 0, 1>.
+	 * Creates an instance of a Quat at \<0, 0, 0, 1\>.
 	 * @group Helper
 	 * @type Quat
 	 */
@@ -121,7 +121,7 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Sets x/y to another Quat's properties.
-	 * @param {Quat} v Input quaternion
+	 * @param v - Input quaternion
 	 */
 	set(v: Quat): void {
 		this.x = v.x;
@@ -132,10 +132,10 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Sets the quaternion to a set of values.
-	 * @param {number} x New x position
-	 * @param {number} y New y position
-	 * @param {number} z New z position
-	 * @param {number} w New w position
+	 * @param x - New x position
+	 * @param y - New y position
+	 * @param z - New z position
+	 * @param w - New w position
 	 */
 	setXYZW(x: number, y: number, z: number, w: number): void {
 		this.x = x;
@@ -146,11 +146,9 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Normalizes a quaternion, setting its magnitude to 1.
-	 * @memberof Quat
-	 * @method
 	 * @group Static
-	 * @param {Quat} v The quaternion to normalize
-	 * @returns {Quat} The input quaternion
+	 * @param v - The quaternion to normalize
+	 * @returns The input quaternion
 	 */
 	static normalize(v: Quat): Quat {
 		return scalePos(v, 1 / distance(v));
@@ -158,7 +156,7 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Normalizes the quaternion, setting its magnitude to 1.
-	 * @returns {this} this
+	 * @returns this
 	 */
 	normalize(): this {
 		const v = scalePos(this, 1 / distance(this));
@@ -168,7 +166,7 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Creates a new Quat instance with identical properties.
-	 * @returns {Quat} A clone of the quaternion
+	 * @returns A clone of the quaternion
 	 */
 	clone(): Quat {
 		return new Quat(...this);
@@ -188,8 +186,8 @@ export class Quat extends Array<number> {
 	/**
 	 * Converts a quaternion to a 4D matrix.
 	 * @group Static
-	 * @param q The quaternion to convert
-	 * @returns {Mat4} Equivalanet matrix
+	 * @param q - The quaternion to convert
+	 * @returns Equivalanet matrix
 	 */
 	static toMat4(q: QuatLike): Mat4 {
 		const result = new Mat4();
@@ -231,7 +229,7 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Converts the quaternion to a 4D matrix.
-	 * @returns {Mat4} Equivalanet matrix
+	 * @returns Equivalanet matrix
 	 */
 	toMat4(): Mat4 {
 		return Quat.toMat4(this);
@@ -239,13 +237,11 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Linearly interpolates between two {@link Quat}s, normalized.
-	 * @memberof Quat
-	 * @method
 	 * @group Static
-	 * @param {Quat} a Start vector
-	 * @param {Quat} b End vector
-	 * @param {number} t Percentage between a and b
-	 * @returns {Quat}
+	 * @param a - Start vector
+	 * @param b - End vector
+	 * @param t - Percentage between a and b
+	 * @returns
 	 */
 	static nlerp(a: Quat, b: Quat, t: number): Quat {
 		const result = _mixQ4Q4(a, 1 - t, b, t);
@@ -254,13 +250,11 @@ export class Quat extends Array<number> {
 
 	/**
 	 * Spherically linearly interpolates between two {@link Quat}s.
-	 * @memberof Quat
-	 * @method
 	 * @group Static
-	 * @param {Quat} a Start vector
-	 * @param {Quat} b End vector
-	 * @param {number} t Percentage between a and b
-	 * @returns {Quat}
+	 * @param a - Start vector
+	 * @param b - End vector
+	 * @param t - Percentage between a and b
+	 * @returns
 	 */
 	static slerp(a: Quat, b: Quat, t: number): Quat {
 		let theta = dotProduct4D(a, b);
@@ -330,7 +324,7 @@ export function inverseQ4(q: Quat): Quat {
 	return divideQ4Scalar(result, dotProduct4D(q, q));
 }
 
-export function multiplyQ4Q4(a: Quat, b: Quat) {
+export function multiplyQ4Q4(a: Quat, b: Quat): Quat {
 	const result = new Quat();
 
 	result.x = b[3] * +a[0];
@@ -356,15 +350,15 @@ export function multiplyQ4Q4(a: Quat, b: Quat) {
 	return result;
 }
 
-export function multiplyQ4Scalar(q: Quat, v: number) {
+export function multiplyQ4Scalar(q: Quat, v: number): Quat {
 	return scalePos(q, v);
 }
 
-export function divideQ4Scalar(q: Quat, v: number) {
+export function divideQ4Scalar(q: Quat, v: number): Quat {
 	return scalePos(q, 1 / v);
 }
 
-function _mixQ4Q4(a: Quat, aT: number, b: Quat, bT: number) {
+function _mixQ4Q4(a: Quat, aT: number, b: Quat, bT: number): Quat {
 	const result = new Quat();
 	result[X] = a[X] * aT + b[X] * bT;
 	result[Y] = a[Y] * aT + b[Y] * bT;

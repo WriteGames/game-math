@@ -6,7 +6,7 @@ import { Vec3 } from './vec3';
 /**
  * Checks if a given argument is an instance of {@link Mat3}.
  * @category Linear Algebra
- * @param mat Potential Mat3
+ * @param mat - Potential Mat3
  * @returns Whether or not the argument is a Mat3
  */
 export function isMat3(mat: Matrix): mat is Mat3 {
@@ -51,15 +51,15 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Uninitialized values defaults to the 3x3 identity matrix.
-	 * @param m00 Element at column 0, row 0
-	 * @param m10 Element at column 1, row 0
-	 * @param m20 Element at column 2, row 0
-	 * @param m01 Element at column 0, row 1
-	 * @param m11 Element at column 1, row 1
-	 * @param m21 Element at column 2, row 1
-	 * @param m02 Element at column 0, row 2
-	 * @param m12 Element at column 1, row 2
-	 * @param m22 Element at column 2, row 2
+	 * @param m00 - Element at column 0, row 0
+	 * @param m10 - Element at column 1, row 0
+	 * @param m20 - Element at column 2, row 0
+	 * @param m01 - Element at column 0, row 1
+	 * @param m11 - Element at column 1, row 1
+	 * @param m21 - Element at column 2, row 1
+	 * @param m02 - Element at column 0, row 2
+	 * @param m12 - Element at column 1, row 2
+	 * @param m22 - Element at column 2, row 2
 	 */
 	// prettier-ignore
 	constructor(
@@ -234,8 +234,7 @@ export class Mat3 extends Array<number> {
 	}
 
 	/**
-	 * Alias for column0
-	 * @alias Mat3#column0
+	 * Alias for {@link Mat3#column0}.
 	 */
 	get col0(): Vec3 {
 		return this.column0;
@@ -244,8 +243,7 @@ export class Mat3 extends Array<number> {
 		this.column0 = v;
 	}
 	/**
-	 * Alias for column1
-	 * @alias Mat3#column1
+	 * Alias for {@link Mat3#column1}.
 	 */
 	get col1(): Vec3 {
 		return this.column1;
@@ -254,8 +252,7 @@ export class Mat3 extends Array<number> {
 		this.column1 = v;
 	}
 	/**
-	 * Alias for column2
-	 * @alias Mat3#column1
+	 * Alias for {@link Mat3#column1}.
 	 */
 	get col2(): Vec3 {
 		return this.column2;
@@ -264,8 +261,7 @@ export class Mat3 extends Array<number> {
 		this.column2 = v;
 	}
 	/**
-	 * Alias for columns
-	 * @alias Mat3#columns
+	 * Alias for {@link Mat3#columns}.
 	 */
 	get cols(): [Vec3, Vec3, Vec3] {
 		return this.columns;
@@ -309,15 +305,15 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Sets the matrix to new values
-	 * @param m00 Element at column 0, row 0
-	 * @param m10 Element at column 1, row 0
-	 * @param m20 Element at column 2, row 0
-	 * @param m01 Element at column 0, row 1
-	 * @param m11 Element at column 1, row 1
-	 * @param m21 Element at column 2, row 1
-	 * @param m02 Element at column 0, row 2
-	 * @param m12 Element at column 1, row 2
-	 * @param m22 Element at column 2, row 2
+	 * @param m00 - Element at column 0, row 0
+	 * @param m10 - Element at column 1, row 0
+	 * @param m20 - Element at column 2, row 0
+	 * @param m01 - Element at column 0, row 1
+	 * @param m11 - Element at column 1, row 1
+	 * @param m21 - Element at column 2, row 1
+	 * @param m02 - Element at column 0, row 2
+	 * @param m12 - Element at column 1, row 2
+	 * @param m22 - Element at column 2, row 2
 	 * @returns this
 	 */
 	// prettier-ignore
@@ -342,7 +338,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Sets this matrix to the values of another matrix.
-	 * @param m New values
+	 * @param m - New values
 	 * @returns this
 	 */
 	setMat3(m: Mat3Like): this {
@@ -363,8 +359,8 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Returns a 3x3 translation matrix around an axis.
-	 * @param x X factor
-	 * @param y Y factor
+	 * @param x - X factor
+	 * @param y - Y factor
 	 */
 	static translate(x: number, y: number): Mat3 {
 		const result = new Mat3();
@@ -375,8 +371,8 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Returns a 3x3 rotation matrix around an axis.
-	 * @param axis Axis to rotate around
-	 * @param angle Angle of rotation
+	 * @param axis - Axis to rotate around
+	 * @param angle - Angle of rotation
 	 */
 	static rotate(axis: Vec3Like, angle: number): Mat3 {
 		const result = new Mat3();
@@ -408,7 +404,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Returns a 3x3 rotation matrix around the X-axis.
-	 * @param angle Angle of rotation
+	 * @param angle - Angle of rotation
 	 */
 	static rotateX(angle: number): Mat3 {
 		const c = Math.cos(angle);
@@ -423,7 +419,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Returns a 3x3 rotation matrix around the Y-axis.
-	 * @param angle Angle of rotation
+	 * @param angle - Angle of rotation
 	 */
 	static rotateY(angle: number): Mat3 {
 		const c = Math.cos(angle);
@@ -438,7 +434,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Returns a 3x3 rotation matrix around the Z-axis.
-	 * @param angle Angle of rotation
+	 * @param angle - Angle of rotation
 	 */
 	static rotateZ(angle: number): Mat3 {
 		const c = Math.cos(angle);
@@ -453,14 +449,14 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Returns a 3x3 scale matrix.
-	 * @param scale Scale factor
+	 * @param scale - Scale factor
 	 */
 	static scale(scale: number): Mat3;
 	/**
 	 * Returns a 3x3 scale matrix.
-	 * @param x X factor
-	 * @param y Y factor
-	 * @param z Z factor
+	 * @param x - X factor
+	 * @param y - Y factor
+	 * @param z - Z factor
 	 */
 	static scale(x: number, y: number, z: number): Mat3;
 	static scale(x: number, y = x, z = x): Mat3 {
@@ -474,7 +470,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Returns the determinant of a matrix
-	 * @param m Input matrix
+	 * @param m - Input matrix
 	 * @returns Determinant
 	 */
 	static determinant(m: Mat3Like): number {
@@ -491,7 +487,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Transposes a matrix
-	 * @param m Input matrix
+	 * @param m - Input matrix
 	 * @returns New, transposed matrix
 	 */
 	static transpose<T extends Mat3Like>(m: T): T {
@@ -508,8 +504,8 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (left x right) left to right.
-	 * @param left Matrix a
-	 * @param right Matrix b
+	 * @param left - Matrix a
+	 * @param right - Matrix b
 	 * @returns The product of the two matrices
 	 */
 	static multiply<T extends Mat3Like>(left: T, right: Mat3Like): T {
@@ -518,7 +514,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	multiply(other: Mat3Like): this {
@@ -527,7 +523,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) right to left.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	multiplyRTL(other: Mat3Like): this {
@@ -536,7 +532,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Alias for multiplyRTL. Multiplies the matrices (this x other) right to left.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	postMultiply(m: Mat3Like): this {
@@ -553,8 +549,8 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Check if two matrices are equal to one another.
-	 * @param a Matrix a
-	 * @param b Matrix b
+	 * @param a - Matrix a
+	 * @param b - Matrix b
 	 * @returns Equality result
 	 */
 	static equal(a: Mat3, b: Mat3Like): boolean {
@@ -563,7 +559,7 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Check if this matrix is equal to another.
-	 * @param m Other matrix
+	 * @param m - Other matrix
 	 * @returns Equality result
 	 */
 	equal(m: Mat3Like): boolean {
@@ -574,7 +570,7 @@ export class Mat3 extends Array<number> {
 /**
  * Transposes a matrix.
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  * @returns New, transposed matrix
  */
 export function transpose3D<T extends Mat3Like>(m: T): T {
@@ -599,7 +595,7 @@ export function transpose3D<T extends Mat3Like>(m: T): T {
 /**
  * Throws an error if input is not a 3x3 matrix.
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  */
 function assertMat3(m: Mat3Like): void {
 	if (m.length !== 9) throw new Error('not a valid 3x3 matrix');
@@ -608,7 +604,7 @@ function assertMat3(m: Mat3Like): void {
 /**
  * Throws an error if input is not a 2D array
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  */
 function assertVec3(v: Vec3Like): void {
 	if (v.length !== 3) throw new Error('not a valid 3D vector');
@@ -617,7 +613,7 @@ function assertVec3(v: Vec3Like): void {
 /**
  * Computes the determinant of a matrix.
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  * @returns Determinant
  */
 export function determinantM3(m: Mat3Like): number {
@@ -632,8 +628,8 @@ export function determinantM3(m: Mat3Like): number {
 /**
  * Multiplies the matrices (left x right) left to right.
  * @category Linear Algebra
- * @param l Left matrix
- * @param r Right matrix
+ * @param l - Left matrix
+ * @param r - Right matrix
  * @returns The product of the two matrices
  */
 export function multiplyM3M3<T extends Mat3Like>(l: T, r: Mat3Like): T {
@@ -662,8 +658,8 @@ export function multiplyM3M3<T extends Mat3Like>(l: T, r: Mat3Like): T {
 /**
  * Multiplies a 3x3 matrix by a 2D vector
  * @category Linear Algebra
- * @param m Matrix
- * @param v Vector
+ * @param m - Matrix
+ * @param v - Vector
  * @returns Product (2D Vector)
  */
 export function multiplyM3V3(m: Mat3Like, v: Vec3Like): Vec3 {

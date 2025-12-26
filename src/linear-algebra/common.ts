@@ -25,9 +25,9 @@ export function addScalar<T extends Vector>(p: T, s: number): T {
 
 /**
  * Approaches a target vector by an amount without overshooting the target.
- * @param from Input vector
- * @param to Targt vector
- * @param amount Amount to approach
+ * @param from - Input vector
+ * @param to - Targt vector
+ * @param amount - Amount to approach
  * @returns
  */
 export function approachVec<
@@ -46,9 +46,9 @@ export function hashPos(pos: Vector): string {
 
 /**
  * Checks whether a point lies on a line.
- * @param p The point to test
- * @param a The start of the line
- * @param b The end of the line
+ * @param p - The point to test
+ * @param a - The start of the line
+ * @param b - The end of the line
  */
 export function isPointOnLine<T extends Vector>(p: T, a: T, b: T): boolean {
 	const pp = posDistance(a, p) + posDistance(p, b) - posDistance(a, b);
@@ -57,18 +57,16 @@ export function isPointOnLine<T extends Vector>(p: T, a: T, b: T): boolean {
 
 /**
  * Checks whether a point is within bounds. Start is inclusive, end is exclusive.
- * @param p The point to test
- * @param start The upper left of the bounds rect
- * @param end The lower right of the bounds rect
+ * @param p - The point to test
+ * @param start - The upper left of the bounds rect
+ * @param end - The lower right of the bounds rect
  */
 export function isWithinBounds<T extends Vector>(
 	p: T,
 	start: T,
 	end: T,
 ): boolean {
-	return p.every(
-		(x: number, i: number) => x >= start[i] && x < end[i],
-	) as boolean;
+	return p.every((x: number, i: number) => x >= start[i] && x < end[i]);
 }
 
 export function lengthSq(a: Vector): number {
@@ -80,11 +78,11 @@ export function length(a: Vector): number {
 }
 
 export function posDistance<T extends Vector = Vector>(a: T, b: T): number {
-	return distance(subPos(b, a) as number[]);
+	return distance(subPos(b, a));
 }
 
 export function posDistanceSq<T extends Vector = Vector>(a: T, b: T): number {
-	return distanceSq(subPos(b, a) as number[]);
+	return distanceSq(subPos(b, a));
 }
 
 export function posEqual<T extends Vector | number[]>(a: T, b: T): boolean {

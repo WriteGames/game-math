@@ -22,11 +22,12 @@ module.exports = {
 		project,
 	},
 	ignorePatterns: [
-		'node_modules/',
+		'.eslintrc.cjs',
+		'**.config.ts',
 		'**/*.js',
 		'bin/',
-		'**.config.ts',
-		'.eslintrc.cjs',
+		'docs/',
+		'node_modules/',
 		// TODO(bret): maybe re-enable these
 		'tests/',
 		'scripts/',
@@ -83,6 +84,5 @@ module.exports = {
 		'@typescript-eslint/non-nullable-type-assertion-style': 0,
 
 		'@typescript-eslint/naming-convention': 0,
-		'tsdoc/syntax': 0,
 	},
 };

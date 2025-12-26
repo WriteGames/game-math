@@ -8,7 +8,7 @@ export const RAD_TO_DEG = 180 / Math.PI;
 
 /**
  * Converts angle in radians to degrees.
- * @param rad Radian to convert
+ * @param rad - Radian to convert
  * @returns Angle in degrees
  */
 export function radToDeg(rad: number): number {
@@ -35,7 +35,7 @@ export const RAD_720 = 720 * DEG_TO_RAD;
 
 /**
  * Converts angle in degrees to radians.
- * @param deg Degree to convert
+ * @param deg - Degree to convert
  * @returns Angle in radians
  */
 export function degToRad(deg: number): number {
@@ -44,8 +44,8 @@ export function degToRad(deg: number): number {
 
 /**
  * Calculates the angle between two given angles.
- * @param a Angle a
- * @param b Angle b
+ * @param a - Angle a
+ * @param b - Angle b
  * @returns The angle (in radians) between the two angles
  */
 export function angleDifference(a: number, b: number): number {
@@ -54,8 +54,8 @@ export function angleDifference(a: number, b: number): number {
 
 /**
  * Calculates the angle between two given angles.
- * @param a Angle a
- * @param b Angle b
+ * @param a - Angle a
+ * @param b - Angle b
  * @returns The angle (in degrees) between the two angles
  */
 export function angleDifferenceDeg(a: number, b: number): number {
@@ -64,8 +64,8 @@ export function angleDifferenceDeg(a: number, b: number): number {
 
 /**
  * Calculates the angle between two given angles.
- * @param a Angle a
- * @param b Angle b
+ * @param a - Angle a
+ * @param b - Angle b
  * @returns The angle (in radians) between the two angles
  */
 export function angleDifferenceSign(a: number, b: number): number {
@@ -75,8 +75,8 @@ export function angleDifferenceSign(a: number, b: number): number {
 
 /**
  * Calculates the angle between two given angles.
- * @param a Angle a
- * @param b Angle b
+ * @param a - Angle a
+ * @param b - Angle b
  * @returns The angle (in degrees) between the two angles
  */
 export function angleDifferenceSignDeg(a: number, b: number): number {
@@ -86,9 +86,9 @@ export function angleDifferenceSignDeg(a: number, b: number): number {
 
 /**
  * Approaches a target angle by an amount without exceeding the target.
- * @param from Input angle (radians)
- * @param to Target angle (radians)
- * @param rad Amount (radians) to approach
+ * @param from - Input angle (radians)
+ * @param to - Target angle (radians)
+ * @param rad - Amount (radians) to approach
  * @returns
  */
 export function approachAngle(from: number, to: number, rad: number): number {
@@ -100,9 +100,9 @@ export function approachAngle(from: number, to: number, rad: number): number {
 
 /**
  * Approaches a target angle by an amount without exceeding the target.
- * @param from Input angle (degrees)
- * @param to Target angle (degrees)
- * @param deg Amount (degrees) to approach
+ * @param from - Input angle (degrees)
+ * @param to - Target angle (degrees)
+ * @param deg - Amount (degrees) to approach
  * @returns
  */
 export function approachAngleDeg(
@@ -118,7 +118,7 @@ export function approachAngleDeg(
 
 /**
  * Returns the cosine of a number using degrees.
- * @param x A numeric expression that contains an angle measured in degrees.
+ * @param x - A numeric expression that contains an angle measured in degrees.
  */
 export function cosDeg(x: number): number {
 	return Math.cos(x * DEG_TO_RAD);
@@ -126,7 +126,7 @@ export function cosDeg(x: number): number {
 
 /**
  * Returns the sine of a number using degrees.
- * @param x A numeric expression that contains an angle measured in degree.
+ * @param x - A numeric expression that contains an angle measured in degree.
  */
 export function sinDeg(x: number): number {
 	return Math.sin(x * DEG_TO_RAD);
@@ -134,7 +134,7 @@ export function sinDeg(x: number): number {
 
 /**
  * Returns the tangent of a number using degrees.
- * @param x A numeric expression that contains an angle measured in degrees.
+ * @param x - A numeric expression that contains an angle measured in degrees.
  */
 export function tanDeg(x: number): number {
 	return Math.tan(x * DEG_TO_RAD);
@@ -142,7 +142,7 @@ export function tanDeg(x: number): number {
 
 /**
  * Returns the arc cosine (or inverse cosine) of a number using degrees.
- * @param x A numeric expression.
+ * @param x - A numeric expression.
  */
 export function acosDeg(x: number): number {
 	return Math.acos(x) * RAD_TO_DEG;
@@ -150,7 +150,7 @@ export function acosDeg(x: number): number {
 
 /**
  * Returns the arcsine of a number using degrees.
- * @param x A numeric expression.
+ * @param x - A numeric expression.
  */
 
 export function asinDeg(x: number): number {
@@ -159,7 +159,7 @@ export function asinDeg(x: number): number {
 
 /**
  * Returns the arctangent of a number using degrees.
- * @param x A numeric expression for which the arctangent is needed.
+ * @param x - A numeric expression for which the arctangent is needed.
  */
 export function atanDeg(x: number): number {
 	return Math.atan(x) * RAD_TO_DEG;
@@ -167,8 +167,8 @@ export function atanDeg(x: number): number {
 
 /**
  * Returns the angle (in degrees) between the X axis and the line going through both the origin and the given point.
- * @param y A numeric expression representing the cartesian y-coordinate.
- * @param x A numeric expression representing the cartesian x-coordinate.
+ * @param y - A numeric expression representing the cartesian y-coordinate.
+ * @param x - A numeric expression representing the cartesian x-coordinate.
  */
 export function atan2Deg(y: number, x: number): number {
 	return Math.atan2(y, x) * RAD_TO_DEG;
@@ -176,7 +176,7 @@ export function atan2Deg(y: number, x: number): number {
 
 /**
  * Wraps an angle to fall between [0, 2pi)
- * @param radian Input angle
+ * @param radian - Input angle
  * @returns Wrapped angle, [0, 2pi)
  */
 export function wrapAngle(radian: number): number {
@@ -185,7 +185,7 @@ export function wrapAngle(radian: number): number {
 
 /**
  * Wraps an angle to fall between [0, 360)
- * @param radian Input angle
+ * @param radian - Input angle
  * @returns Wrapped angle, [0, 360)
  */
 export function wrapAngleDeg(degree: number): number {

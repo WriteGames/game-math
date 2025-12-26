@@ -5,7 +5,7 @@ import { Vec2 } from './vec2';
 /**
  * Checks if a given argument is an instance of {@link Mat2}.
  * @category Linear Algebra
- * @param mat Potential Mat2
+ * @param mat - Potential Mat2
  * @returns Whether or not the argument is a Mat2
  */
 export function isMat2(mat: Matrix): mat is Mat2 {
@@ -38,10 +38,10 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Uninitialized values defaults to the 2x2 identity matrix.
-	 * @param {number} m00 Element at column 0, row 0
-	 * @param {number} m10 Element at column 1, row 0
-	 * @param {number} m01 Element at column 0, row 1
-	 * @param {number} m11 Element at column 1, row 1
+	 * @param m00 - Element at column 0, row 0
+	 * @param m10 - Element at column 1, row 0
+	 * @param m01 - Element at column 0, row 1
+	 * @param m11 - Element at column 1, row 1
 	 */
 	constructor(m00 = 1, m10 = 0, m01 = 0, m11 = 1) {
 		// prettier-ignore
@@ -141,8 +141,7 @@ export class Mat2 extends Array<number> {
 	}
 
 	/**
-	 * Alias for column0
-	 * @alias Mat2#column0
+	 * Alias for {@link Mat2#column0}.
 	 */
 	get col0(): Vec2 {
 		return this.column0;
@@ -151,8 +150,7 @@ export class Mat2 extends Array<number> {
 		this.column0 = v;
 	}
 	/**
-	 * Alias for column1
-	 * @alias Mat2#column1
+	 * Alias for {@link Mat2#column1}.
 	 */
 	get col1(): Vec2 {
 		return this.column1;
@@ -161,8 +159,7 @@ export class Mat2 extends Array<number> {
 		this.column1 = v;
 	}
 	/**
-	 * Alias for columns
-	 * @alias Mat2#columns
+	 * Alias for {@link Mat2#columns}.
 	 */
 	get cols(): [Vec2, Vec2] {
 		return this.columns;
@@ -197,10 +194,10 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Sets the matrix to new values
-	 * @param m00 Element at column 0, row 0
-	 * @param m10 Element at column 1, row 0
-	 * @param m01 Element at column 0, row 1
-	 * @param m11 Element at column 1, row 1
+	 * @param m00 - Element at column 0, row 0
+	 * @param m10 - Element at column 1, row 0
+	 * @param m01 - Element at column 0, row 1
+	 * @param m11 - Element at column 1, row 1
 	 * @returns this
 	 */
 	set(m00: number, m01: number, m10: number, m11: number): this {
@@ -213,7 +210,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Sets this matrix to the values of another matrix.
-	 * @param m New values
+	 * @param m - New values
 	 * @returns this
 	 */
 	setMat2(m: Mat2Like): this {
@@ -226,7 +223,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Returns a 2x2 rotation matrix.
-	 * @param angle Angle of rotation
+	 * @param angle - Angle of rotation
 	 */
 	static rotate(angle: number): Mat2 {
 		const cos = Math.cos(angle);
@@ -240,13 +237,13 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Returns a 2x2 scale matrix.
-	 * @param scale Scale factor
+	 * @param scale - Scale factor
 	 */
 	static scale(scale: number): Mat2;
 	/**
 	 * Returns a 2x2 scale matrix.
-	 * @param x X-scale factor
-	 * @param y Y-scale factor
+	 * @param x - X-scale factor
+	 * @param y - Y-scale factor
 	 */
 	static scale(x: number, y: number): Mat2;
 	static scale(x: number, y = x): Mat2 {
@@ -259,7 +256,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Returns the determinant of a matrix
-	 * @param m Input matrix
+	 * @param m - Input matrix
 	 * @returns Determinant
 	 */
 	static determinant(m: Mat2Like): number {
@@ -276,7 +273,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Transposes a matrix
-	 * @param m Input matrix
+	 * @param m - Input matrix
 	 * @returns New, transposed matrix
 	 */
 	static transpose<T extends Mat2Like>(m: T): T {
@@ -293,8 +290,8 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (left x right) left to right.
-	 * @param left Matrix a
-	 * @param right Matrix b
+	 * @param left - Matrix a
+	 * @param right - Matrix b
 	 * @returns The product of the two matrices
 	 */
 	static multiply<T extends Mat2Like>(left: T, right: Mat2Like): T {
@@ -303,7 +300,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	multiply(other: Mat2Like): this {
@@ -312,7 +309,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) right to left.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	multiplyRTL(other: Mat2Like): this {
@@ -321,7 +318,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Alias for multiplyRTL. Multiplies the matrices (this x other) right to left.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	postMultiply(other: Mat2Like): this {
@@ -344,8 +341,8 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Check if two matrices are equal to one another.
-	 * @param a Matrix a
-	 * @param b Matrix b
+	 * @param a - Matrix a
+	 * @param b - Matrix b
 	 * @returns Equality result
 	 */
 	static equal(a: Mat2, b: Mat2Like): boolean {
@@ -354,7 +351,7 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Check if this matrix is equal to another.
-	 * @param m Other matrix
+	 * @param m - Other matrix
 	 * @returns Equality result
 	 */
 	equal(m: Mat2Like): boolean {
@@ -365,7 +362,7 @@ export class Mat2 extends Array<number> {
 /**
  * Transposes a matrix
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  * @returns New, transposed matrix
  */
 export function transpose2D<T extends Mat2Like>(m: T): T {
@@ -380,7 +377,7 @@ export function transpose2D<T extends Mat2Like>(m: T): T {
 /**
  * Throws an error if input is not a 2x2 matrix.
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  */
 function assertMat2(m: Mat2Like): void {
 	if (m.length !== 4) throw new Error('not a valid 2x2 matrix');
@@ -389,7 +386,7 @@ function assertMat2(m: Mat2Like): void {
 /**
  * Throws an error if input is not a 2D array
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  */
 function assertVec2(v: Vec2Like): void {
 	if (v.length !== 2) throw new Error('not a valid 2D vector');
@@ -398,7 +395,7 @@ function assertVec2(v: Vec2Like): void {
 /**
  * Computes the determinant of a matrix.
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  * @returns Determinant
  */
 export function determinantM2(m: Mat2Like): number {
@@ -409,8 +406,8 @@ export function determinantM2(m: Mat2Like): number {
 /**
  * Multiplies the matrices (left x right) left to right.
  * @category Linear Algebra
- * @param left Matrix a
- * @param right Matrix b
+ * @param left - Matrix a
+ * @param right - Matrix b
  * @returns The product of the two matrices
  */
 export function multiplyM2M2<T extends Mat2Like>(left: T, right: Mat2Like): T {
@@ -427,8 +424,8 @@ export function multiplyM2M2<T extends Mat2Like>(left: T, right: Mat2Like): T {
 /**
  * Multiplies a 2x2 matrix by a 2D vector
  * @category Linear Algebra
- * @param m Matrix
- * @param v Vector
+ * @param m - Matrix
+ * @param v - Vector
  * @returns Product (2D Vector)
  */
 export function multiplyM2V2(m: Mat2Like, v: Vec2Like): Vec2 {

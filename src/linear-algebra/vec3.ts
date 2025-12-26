@@ -7,7 +7,7 @@ import { Vec2 } from './vec2.js';
 /**
  * Checks if a given argument is an instance of {@link Vec3}.
  * @category Linear Algebra
- * @param vec Potential Vec3
+ * @param vec - Potential Vec3
  * @returns Whether or not the argument is a Vec3
  */
 export function isVec3(vec: Vector): vec is Vec3 {
@@ -37,17 +37,17 @@ export class Vec3 extends Array<number> {
 	// length: 3 = 3 as const;
 
 	/**
-	 * Uninitialized values default to <0, 0, 0>.
-	 * @param {number} x X value
-	 * @param {number} y Y value
-	 * @param {number} z Z value
+	 * Uninitialized values default to \<0, 0, 0\>.
+	 * @param x - X value
+	 * @param y - Y value
+	 * @param z - Z value
 	 */
 	constructor(x = 0, y = 0, z = 0) {
 		super(x, y, z);
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <0, 0, 0>
+	 * Creates an instance of a Vec3 at \<0, 0, 0\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -56,7 +56,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <1, 1, 1>
+	 * Creates an instance of a Vec3 at \<1, 1, 1\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -65,7 +65,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <-1, 0, 0>
+	 * Creates an instance of a Vec3 at \<-1, 0, 0\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -74,7 +74,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <1, 0, 0>
+	 * Creates an instance of a Vec3 at \<1, 0, 0\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -83,7 +83,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <0, -1, 0>
+	 * Creates an instance of a Vec3 at \<0, -1, 0\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -92,7 +92,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <0, 1, 0>
+	 * Creates an instance of a Vec3 at \<0, 1, 0\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -101,7 +101,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <0, 0, -1>
+	 * Creates an instance of a Vec3 at \<0, 0, -1\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -110,7 +110,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at <0, 0, 1>
+	 * Creates an instance of a Vec3 at \<0, 0, 1\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
@@ -174,7 +174,7 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Sets x/y to another Vec3's properties.
-	 * @param {Vec3} v Input vector
+	 * @param v - Input vector
 	 */
 	set(v: Vec3): void {
 		this.x = v.x;
@@ -184,9 +184,9 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Sets the vector to a given x/y/z triplet.
-	 * @param {number} x New x position
-	 * @param {number} y New y position
-	 * @param {number} z New z position
+	 * @param x - New x position
+	 * @param y - New y position
+	 * @param z - New z position
 	 */
 	setXYZ(x: number, y: number, z: number): void {
 		this.x = x;
@@ -196,11 +196,9 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Normalizes a vector, setting its magnitude to 1.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} v The vector to normalize
-	 * @returns {Vec3Like} The input vector
+	 * @param v - The vector to normalize
+	 * @returns The input vector
 	 */
 	static normalize<T extends Vec3Like>(v: T): T {
 		let [x, y, z] = v;
@@ -213,7 +211,7 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Normalizes the vector, setting its magnitude to 1.
-	 * @returns {this} this
+	 * @returns this
 	 */
 	normalize(): this {
 		return this.invScale(this.magnitude);
@@ -221,7 +219,7 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Creates a new Vec3 instance with identical properties.
-	 * @returns {Vec3} A clone of the vector
+	 * @returns A clone of the vector
 	 */
 	clone(): Vec3 {
 		return new Vec3(...this);
@@ -229,12 +227,10 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Adds two 3D vectors and returns a new 3D vector with the sum.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} a Vector a
-	 * @param {Vec3Like} b Vector b
-	 * @returns {Vec3Like} Sum
+	 * @param a - Vector a
+	 * @param b - Vector b
+	 * @returns Sum
 	 */
 	static add<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		const [x, y, z] = addPos(a, b);
@@ -243,8 +239,8 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Adds a vector to itself.
-	 * @param v Vector to add
-	 * @returns {this} this
+	 * @param v - Vector to add
+	 * @returns this
 	 */
 	add(v: Vec3Like): this {
 		this.x += v[X];
@@ -255,12 +251,10 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * An alias for {@link Vec3.add}.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} a Vector a
-	 * @param {Vec3Like} b Vector b
-	 * @returns {Vec3Like} Sum
+	 * @param a - Vector a
+	 * @param b - Vector b
+	 * @returns Sum
 	 */
 	static plus<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		return Vec3.add(a, b);
@@ -268,8 +262,8 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * An alias for {@link Vec3#add}.
-	 * @param {Vec3Like} v Vector to add
-	 * @returns {this} this
+	 * @param v - Vector to add
+	 * @returns this
 	 */
 	plus(v: Vec3Like): this {
 		return this.add(v);
@@ -277,12 +271,10 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Subtracts two 3D vectors and returns a new 3D vector with the difference.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} a Vector a
-	 * @param {Vec3Like} b Vector b
-	 * @returns {Vec3Like} Difference
+	 * @param a - Vector a
+	 * @param b - Vector b
+	 * @returns Difference
 	 */
 	static sub<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		return subPos(a, b);
@@ -290,8 +282,8 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Subtracts a vector from itself.
-	 * @param {Vec3Like} v Vector to subtract
-	 * @returns {this} this
+	 * @param v - Vector to subtract
+	 * @returns this
 	 */
 	sub(v: Vec3Like): this {
 		this.x -= v[X];
@@ -302,12 +294,10 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * An alias for {@link Vec3.sub}.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} a Vector a
-	 * @param {Vec3Like} b Vector b
-	 * @returns {Vec3Like} Vec3
+	 * @param a - Vector a
+	 * @param b - Vector b
+	 * @returns Vec3
 	 */
 	static minus<T extends Vec3Like>(a: T, b: Vec3Like): T {
 		return Vec3.sub(a, b);
@@ -315,8 +305,8 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * An alias for {@link Vec3#sub}.
-	 * @param {Vec3Like} v Vector to subtract
-	 * @returns {this} this
+	 * @param v - Vector to subtract
+	 * @returns this
 	 */
 	minus(v: Vec3Like): this {
 		return this.sub(v);
@@ -324,12 +314,10 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Scales a vector by a scalar.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} v Vector to scale
-	 * @param {number} s Scalar
-	 * @returns {Vec3Like} The vector, scaled
+	 * @param v - Vector to scale
+	 * @param s - Scalar
+	 * @returns The vector, scaled
 	 */
 	static scale<T extends Vec3Like>(v: T, s: number): T {
 		const [x, y, z] = scalePos(v, s);
@@ -338,8 +326,8 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Scales the vector by a scalar.
-	 * @param s Scalar
-	 * @returns {this}
+	 * @param s - Scalar
+	 * @returns
 	 */
 	scale(s: number): this {
 		this.x *= s;
@@ -350,12 +338,10 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Scales a vector by the inverse of a scalar.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} v Vector to scale
-	 * @param {number} s Scalar
-	 * @returns {Vec3Like} The vector, scaled inversely
+	 * @param v - Vector to scale
+	 * @param s - Scalar
+	 * @returns The vector, scaled inversely
 	 */
 	static invScale<T extends Vec3Like>(v: T, s: number): T {
 		const [x, y, z] = scalePos(v, 1 / s);
@@ -364,8 +350,8 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Scales the vector by the inverse of a scalar.
-	 * @param s Scalar
-	 * @returns {this}
+	 * @param s - Scalar
+	 * @returns
 	 */
 	invScale(s: number): this {
 		const iS = s !== 0 ? 1 / s : 0;
@@ -383,7 +369,7 @@ export class Vec3 extends Array<number> {
 	}
 
 	cross(v: Vec3): Vec3 {
-		return Vec3.cross(this, v);
+		return Vec3.cross(this as Vec3, v);
 	}
 
 	/**
@@ -403,8 +389,8 @@ export class Vec3 extends Array<number> {
 	 * Tests whether two 3D vectorss are equal, accounting for floating-point
 	 * arithmetic error.
 	 * @group Static
-	 * @param a Vector A
-	 * @param b Vector B
+	 * @param a - Vector A
+	 * @param b - Vector B
 	 * @returns Whether the two vectors are equal
 	 */
 	static equal(a: Vec3Like, b: Vec3Like): boolean {
@@ -413,7 +399,7 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Tests whether this vector is equal to another 3D vector.
-	 * @param v Other vector
+	 * @param v - Other vector
 	 * @returns Whether the two vetors are equal
 	 */
 	equal(v: Vec3Like): boolean {
@@ -422,13 +408,11 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Linearly interpolates between two 3D vectors.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {Vec3Like} a Start vector
-	 * @param {Vec3Like} b End vector
-	 * @param {number} t Percentage between a and b
-	 * @returns {Vec3Like}
+	 * @param a - Start vector
+	 * @param b - End vector
+	 * @param t - Percentage between a and b
+	 * @returns
 	 */
 	static lerp<T extends Vec3Like>(a: T, b: Vec3Like, t: number): T {
 		return Vec3.add(a, Vec3.scale(Vec3.sub(b, a), t));
@@ -436,9 +420,9 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Approaches a target 3D vector by an amount without exceeding the target.
-	 * @param v Input vector
-	 * @param target Target vector
-	 * @param amount Amount to approach
+	 * @param v - Input vector
+	 * @param target - Target vector
+	 * @param amount - Amount to approach
 	 * @returns
 	 */
 	static approach<T extends Vec3Like>(
@@ -452,9 +436,9 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Clamps a 3D vector within the bounds of the min and max vectors.
-	 * @param val Input vector
-	 * @param min Lower bound
-	 * @param max Upper bound
+	 * @param val - Input vector
+	 * @param min - Lower bound
+	 * @param max - Upper bound
 	 * @returns Clamped vector
 	 */
 	static clamp<T extends Vec3Like>(val: T, min: Vec3Like, max: Vec3Like): T {
@@ -466,11 +450,9 @@ export class Vec3 extends Array<number> {
 
 	/**
 	 * Returns a random {@link Vec3}, with a uniform sample distribution.
-	 * @memberof Vec3
-	 * @method
 	 * @group Static
-	 * @param {number} scale Magnitude of the vector, defaults to 1
-	 * @returns {Vec3} A random vector
+	 * @param scale - Magnitude of the vector, defaults to 1
+	 * @returns A random vector
 	 */
 	static random(scale = 1): Vec3 {
 		return Random.vec3(scale);

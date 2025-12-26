@@ -34,6 +34,7 @@
 	},
 	"author": "Write Games",
 	"devDependencies": {
+		"@vercel/style-guide": "^6.0.0",
 		"@vitest/coverage-v8": "^4.0.16",
 		"@writegames.com/style-guide": "^0.1.1",
 		"chi-squared": "^1.1.0",

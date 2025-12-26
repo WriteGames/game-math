@@ -9,7 +9,7 @@ import { Vec4 } from './vec4';
 /**
  * Checks if a given argument is an instance of {@link Mat4}.
  * @category Linear Algebra
- * @param mat Potential Mat4
+ * @param mat - Potential Mat4
  * @returns Whether or not the argument is a Mat4
  */
 export function isMat4(mat: Matrix): mat is Mat4 {
@@ -70,22 +70,22 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Uninitialized values defaults to the 4x4 identity matrix.
-	 * @param m00 Element at column 0, row 0
-	 * @param m10 Element at column 1, row 0
-	 * @param m20 Element at column 2, row 0
-	 * @param m30 Element at column 3, row 0
-	 * @param m01 Element at column 0, row 1
-	 * @param m11 Element at column 1, row 1
-	 * @param m21 Element at column 2, row 1
-	 * @param m31 Element at column 3, row 1
-	 * @param m02 Element at column 0, row 2
-	 * @param m12 Element at column 1, row 2
-	 * @param m22 Element at column 2, row 2
-	 * @param m32 Element at column 3, row 2
-	 * @param m03 Element at column 0, row 3
-	 * @param m13 Element at column 1, row 3
-	 * @param m23 Element at column 2, row 3
-	 * @param m33 Element at column 3, row 3
+	 * @param m00 - Element at column 0, row 0
+	 * @param m10 - Element at column 1, row 0
+	 * @param m20 - Element at column 2, row 0
+	 * @param m30 - Element at column 3, row 0
+	 * @param m01 - Element at column 0, row 1
+	 * @param m11 - Element at column 1, row 1
+	 * @param m21 - Element at column 2, row 1
+	 * @param m31 - Element at column 3, row 1
+	 * @param m02 - Element at column 0, row 2
+	 * @param m12 - Element at column 1, row 2
+	 * @param m22 - Element at column 2, row 2
+	 * @param m32 - Element at column 3, row 2
+	 * @param m03 - Element at column 0, row 3
+	 * @param m13 - Element at column 1, row 3
+	 * @param m23 - Element at column 2, row 3
+	 * @param m33 - Element at column 3, row 3
 	 */
 	// prettier-ignore
 	constructor(
@@ -347,8 +347,7 @@ export class Mat4 extends Array<number> {
 	}
 
 	/**
-	 * Alias for column0
-	 * @alias Mat4#column0
+	 * Alias for {@link Mat4#column0}.
 	 */
 	get col0(): Vec4 {
 		return this.column0;
@@ -357,8 +356,7 @@ export class Mat4 extends Array<number> {
 		this.column0 = v;
 	}
 	/**
-	 * Alias for column1
-	 * @alias Mat4#column1
+	 * Alias for {@link Mat4#column1}.
 	 */
 	get col1(): Vec4 {
 		return this.column1;
@@ -367,8 +365,7 @@ export class Mat4 extends Array<number> {
 		this.column1 = v;
 	}
 	/**
-	 * Alias for column2
-	 * @alias Mat4#column1
+	 * Alias for {@link Mat4#column1}.
 	 */
 	get col2(): Vec4 {
 		return this.column2;
@@ -377,8 +374,7 @@ export class Mat4 extends Array<number> {
 		this.column2 = v;
 	}
 	/**
-	 * Alias for column3
-	 * @alias Mat4#column1
+	 * Alias for {@link Mat4#column1}.
 	 */
 	get col3(): Vec4 {
 		return this.column3;
@@ -387,8 +383,7 @@ export class Mat4 extends Array<number> {
 		this.column3 = v;
 	}
 	/**
-	 * Alias for columns
-	 * @alias Mat4#columns
+	 * Alias for {@link Mat4#columns}.
 	 */
 	get cols(): [Vec4, Vec4, Vec4, Vec4] {
 		return this.columns;
@@ -441,15 +436,15 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Sets the matrix to new values
-	 * @param m00 Element at column 0, row 0
-	 * @param m10 Element at column 1, row 0
-	 * @param m20 Element at column 2, row 0
-	 * @param m01 Element at column 0, row 1
-	 * @param m11 Element at column 1, row 1
-	 * @param m21 Element at column 2, row 1
-	 * @param m02 Element at column 0, row 2
-	 * @param m12 Element at column 1, row 2
-	 * @param m22 Element at column 2, row 2
+	 * @param m00 - Element at column 0, row 0
+	 * @param m10 - Element at column 1, row 0
+	 * @param m20 - Element at column 2, row 0
+	 * @param m01 - Element at column 0, row 1
+	 * @param m11 - Element at column 1, row 1
+	 * @param m21 - Element at column 2, row 1
+	 * @param m02 - Element at column 0, row 2
+	 * @param m12 - Element at column 1, row 2
+	 * @param m22 - Element at column 2, row 2
 	 * @returns this
 	 */
 	// prettier-ignore
@@ -474,7 +469,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Sets this matrix to the values of another matrix.
-	 * @param m New values
+	 * @param m - New values
 	 * @returns this
 	 */
 	setMat4(m: Mat4Like): this {
@@ -503,9 +498,9 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Returns a 4x4 translation matrix around an axis.
-	 * @param x X factor
-	 * @param y Y factor
-	 * @param z Y factor
+	 * @param x - X factor
+	 * @param y - Y factor
+	 * @param z - Y factor
 	 */
 	static translate(x: number, y: number, z: number): Mat4 {
 		const result = new Mat4();
@@ -517,8 +512,8 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Returns a 4x4 rotation matrix around an axis.
-	 * @param axis Axis to rotate around
-	 * @param angle Angle of rotation
+	 * @param axis - Axis to rotate around
+	 * @param angle - Angle of rotation
 	 */
 	static rotate(axis: Vec3Like, angle: number): Mat4 {
 		const result = new Mat4();
@@ -558,7 +553,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Returns a 4x4 rotation matrix around the X-axis.
-	 * @param angle Angle of rotation
+	 * @param angle - Angle of rotation
 	 */
 	static rotateX(angle: number): Mat4 {
 		const c = Math.cos(angle);
@@ -574,7 +569,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Returns a 4x4 rotation matrix around the Y-axis.
-	 * @param angle Angle of rotation
+	 * @param angle - Angle of rotation
 	 */
 	static rotateY(angle: number): Mat4 {
 		const c = Math.cos(angle);
@@ -590,7 +585,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Returns a 4x4 rotation matrix around the Z-axis.
-	 * @param angle Angle of rotation
+	 * @param angle - Angle of rotation
 	 */
 	static rotateZ(angle: number): Mat4 {
 		const c = Math.cos(angle);
@@ -606,14 +601,14 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Returns a 4x4 scale matrix.
-	 * @param scale Scale factor
+	 * @param scale - Scale factor
 	 */
 	static scale(scale: number): Mat4;
 	/**
 	 * Returns a 4x4 scale matrix.
-	 * @param x X factor
-	 * @param y Y factor
-	 * @param z Z factor
+	 * @param x - X factor
+	 * @param y - Y factor
+	 * @param z - Z factor
 	 */
 	static scale(x: number, y: number, z: number): Mat4;
 	static scale(x: number, y = x, z = x): Mat4 {
@@ -628,7 +623,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Returns the determinant of a matrix
-	 * @param m Input matrix
+	 * @param m - Input matrix
 	 * @returns Determinant
 	 */
 	static determinant(m: Mat4Like): number {
@@ -645,7 +640,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Transposes a matrix
-	 * @param m Input matrix
+	 * @param m - Input matrix
 	 * @returns New, transposed matrix
 	 */
 	static transpose<T extends Mat4Like>(m: T): T {
@@ -662,8 +657,8 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (left x right) left to right.
-	 * @param left Matrix a
-	 * @param right Matrix b
+	 * @param left - Matrix a
+	 * @param right - Matrix b
 	 * @returns The product of the two matrices
 	 */
 	static multiply<T extends Mat4Like>(left: T, right: Mat4Like): T {
@@ -672,7 +667,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) left to right.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	multiply(other: Mat4Like): this {
@@ -681,7 +676,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Multiplies the matrices (this x other) right to left.
-	 * @param other
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	multiplyRTL(other: Mat4Like): this {
@@ -689,8 +684,8 @@ export class Mat4 extends Array<number> {
 	}
 
 	/**
-	 * Alias for multiplyRTL. Multiplies the matrices (this x other) right to left.
-	 * @param other
+	 * Alias for multiplyRTL. Multiplies the .matrices (this x other) right to left.
+	 * @param other -
 	 * @returns The product of the two matrices
 	 */
 	postMultiply(m: Mat4Like): this {
@@ -707,8 +702,8 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Check if two matrices are equal to one another.
-	 * @param a Matrix a
-	 * @param b Matrix b
+	 * @param a - Matrix a
+	 * @param b - Matrix b
 	 * @returns Equality result
 	 */
 	static equal(a: Mat4, b: Mat4Like): boolean {
@@ -717,7 +712,7 @@ export class Mat4 extends Array<number> {
 
 	/**
 	 * Check if this matrix is equal to another.
-	 * @param m Other matrix
+	 * @param m - Other matrix
 	 * @returns Equality result
 	 */
 	equal(m: Mat4Like): boolean {
@@ -729,7 +724,7 @@ export class Mat4 extends Array<number> {
 	 * Mike Day's implementation:
 	 * https://d3cw3dd2w32x2b.cloudfront.net/wp-content/uploads/2015/01/matrix-to-quat.pdf
 	 * @group Static
-	 * @param m The matrix to convert
+	 * @param m - The matrix to convert
 	 * @returns Equivalanet quaternion
 	 */
 	static toQuat(m: Mat4Like): Quat {
@@ -787,7 +782,7 @@ export class Mat4 extends Array<number> {
 /**
  * Transposes a matrix
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  * @returns New, transposed matrix
  */
 export function transpose4D<T extends Mat4Like>(m: T): T {
@@ -825,7 +820,7 @@ export function transpose4D<T extends Mat4Like>(m: T): T {
 /**
  * Throws an error if input is not a 4x4 matrix.
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  */
 function assertMat4(m: Mat4Like): void {
 	if (m.length !== 16) throw new Error('not a valid 4x4 matrix');
@@ -834,7 +829,7 @@ function assertMat4(m: Mat4Like): void {
 /**
  * Throws an error if input is not a 2D array
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  */
 function assertVec4(v: Vec4Like): void {
 	if (v.length !== 4) throw new Error('not a valid 4D vector');
@@ -843,7 +838,7 @@ function assertVec4(v: Vec4Like): void {
 /**
  * Computes the determinant of a matrix.
  * @category Linear Algebra
- * @param m Input matrix
+ * @param m - Input matrix
  * @returns Determinant
  */
 export function determinantM4(m: Mat4Like): number {
@@ -884,8 +879,8 @@ export function determinantM4(m: Mat4Like): number {
 /**
  * Multiplies the matrices (left x right) left to right.
  * @category Linear Algebra
- * @param l Left matrix
- * @param r Right matrix
+ * @param l - Left matrix
+ * @param r - Right matrix
  * @returns The product of the two matrices
  */
 export function multiplyM4M4<T extends Mat4Like>(l: T, r: Mat4Like): T {
@@ -943,8 +938,8 @@ export function multiplyM4M4<T extends Mat4Like>(l: T, r: Mat4Like): T {
 /**
  * Multiplies a 4x4 matrix by a 2D vector
  * @category Linear Algebra
- * @param m Matrix
- * @param v Vector
+ * @param m - Matrix
+ * @param v - Vector
  * @returns Product (2D Vector)
  */
 export function multiplyM4V4(m: Mat4Like, v: Vec4Like): Vec4 {
