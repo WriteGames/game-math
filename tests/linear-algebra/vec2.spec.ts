@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Vec2, Vec3, Vec4 } from '../../src/linear-algebra/index.js';
+import { Vec2, Vec3, Vec4 } from '../../src/linear-algebra/index';
 import {
 	VEC2_A,
 	VEC2_B,
@@ -7,7 +7,7 @@ import {
 	VEC2_SUM,
 	VEC3_B,
 	VEC4_B,
-} from '../data.mock.js';
+} from '../data.mock';
 
 describe('Vec2', () => {
 	describe('getter/setters work as intended', () => {

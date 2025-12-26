@@ -14,7 +14,7 @@ export * from './random.js';
 export const EPSILON = 0.000001 as const;
 
 /**
- * Approaches a target value by an amount without exceeding the target.
+ * Approaches a target value by an amount without overshooting the target.
  * @param from Input value
  * @param to Target value
  * @param amount Amount to approach

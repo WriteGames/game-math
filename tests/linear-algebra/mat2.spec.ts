@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { Vec2, type M2_T, type V2_T } from '../../src/linear-algebra/index.js';
+import { Vec2, type M2_T, type V2_T } from '../../src/linear-algebra/index';
 import {
 	determinantM2,
 	Mat2,
 	multiplyM2M2,
 	multiplyM2V2,
 	transpose2D,
-} from '../../src/linear-algebra/mat2.js';
+} from '../../src/linear-algebra/mat2';
 
 // prettier-ignore
 const INDICES = [

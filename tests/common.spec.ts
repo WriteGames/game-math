@@ -11,13 +11,13 @@ import {
 	posDistance,
 	posDistanceSq,
 	posEqual,
+	Quat,
 	scalePos,
 	subPos,
 	V2_T,
 	Vec2,
 	Vec3,
 	Vec4,
-	Quat,
 } from '../src';
 
 describe(`${addPos.name}()`, () => {

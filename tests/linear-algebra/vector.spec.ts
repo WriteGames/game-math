@@ -14,8 +14,8 @@ import {
 	type V2_T,
 	type V3_T,
 	type V4_T,
-} from '../../src/linear-algebra/index.js';
-import { equal } from '../../src/util/index.js';
+} from '../../src/linear-algebra/index';
+import { equal } from '../../src/util/index';
 import {
 	VEC2_A,
 	VEC2_B,
@@ -29,7 +29,7 @@ import {
 	VEC4_B,
 	VEC4_DIFF,
 	VEC4_SUM,
-} from '../data.mock.js';
+} from '../data.mock';
 
 describe('(Vec) Vector operations', () => {
 	describe('Vector & Vector', () => {

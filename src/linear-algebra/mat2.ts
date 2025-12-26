@@ -1,6 +1,6 @@
-import type { Mat2Like, Matrix, Vec2Like } from './common.js';
-import { posEqual } from './common.js';
-import { Vec2 } from './vec2.js';
+import type { Mat2Like, Matrix, Vec2Like } from './types';
+import { posEqual } from './common';
+import { Vec2 } from './vec2';
 
 /**
  * Checks if a given argument is an instance of {@link Mat2}.

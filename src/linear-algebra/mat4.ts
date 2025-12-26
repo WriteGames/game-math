@@ -1,17 +1,10 @@
-import { distance } from '../util/index.js';
-import type {
-	M4_T,
-	Mat4Like,
-	Matrix,
-	V4_T,
-	Vec3Like,
-	Vec4Like,
-} from './common.js';
-import { posEqual, scalePos } from './common.js';
-import { Mat3 } from './mat3.js';
-import { Quat } from './quat.js';
-import { Vec3 } from './vec3.js';
-import { Vec4 } from './vec4.js';
+import { distance } from '../util/index';
+import type { M4_T, Mat4Like, Matrix, V4_T, Vec3Like, Vec4Like } from './types';
+import { posEqual, scalePos } from './common';
+import { Mat3 } from './mat3';
+import { Quat } from './quat';
+import { Vec3 } from './vec3';
+import { Vec4 } from './vec4';
 
 /**
  * Checks if a given argument is an instance of {@link Mat4}.

@@ -1,9 +1,10 @@
-import { distance } from '../util';
-import { posEqual, QuatLike, scalePos, V4_T, type Vector } from './common';
-import { Mat4 } from './mat4';
-import { Vec2 } from './vec2';
-import { Vec3 } from './vec3';
-import { dotProduct4D } from './vec4';
+import { distance } from '../util/index.js';
+import { posEqual, scalePos } from './common.js';
+import { Mat4 } from './mat4.js';
+import type { QuatLike, V4_T, Vector } from './types';
+import { Vec2 } from './vec2.js';
+import { Vec3 } from './vec3.js';
+import { dotProduct4D } from './vec4.js';
 
 /**
  * Checks if a given argument is an instance of {@link Quat}.

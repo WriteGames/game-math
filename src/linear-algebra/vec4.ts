@@ -1,17 +1,7 @@
 import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
-import {
-	addPos,
-	approachVec,
-	posEqual,
-	scalePos,
-	subPos,
-	type QuatLike,
-	type Vec2Like,
-	type Vec3Like,
-	type Vec4Like,
-	type Vector,
-} from './common.js';
+import { addPos, approachVec, posEqual, scalePos, subPos } from './common.js';
+import type { QuatLike, Vec2Like, Vec3Like, Vec4Like, Vector } from './types';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
 

@@ -1,14 +1,7 @@
 import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
-import {
-	addPos,
-	approachVec,
-	posEqual,
-	scalePos,
-	subPos,
-	type Vec2Like,
-	type Vector,
-} from './common.js';
+import { addPos, approachVec, posEqual, scalePos, subPos } from './common.js';
+import type { Vec2Like, Vector } from './types';
 
 /**
  * Checks if a given argument is an instance of {@link Vec2}.
