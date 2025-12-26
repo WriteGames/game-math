@@ -1,6 +1,6 @@
 {
 	"name": "@writegames.com/game-math",
-	"version": "0.6.0",
+	"version": "0.7.0",
 	"license": "MIT",
 	"description": "A library of useful math classes & functions for game development, involving linear algebra, angles, and more.",
 	"main": "bin/index.js",
