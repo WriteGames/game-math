@@ -33,7 +33,7 @@ import {
 
 describe('(Vec) Vector operations', () => {
 	describe('Vector & Vector', () => {
-		describe('addPos(a, b)', () => {
+		describe('addVec(a, b)', () => {
 			describe('when a & b are both the same length', () => {
 				test('Vec2 + Vec2 should result in a Vec2 sum', () => {
 					const a = new Vec2(...VEC2_A);
@@ -74,7 +74,7 @@ describe('(Vec) Vector operations', () => {
 			});
 		});
 
-		describe('subPos(a, b)', () => {
+		describe('subVec(a, b)', () => {
 			describe('when a & b are both the same length', () => {
 				test('Vec2 - Vec2 should result in a Vec2 difference', () => {
 					const a = new Vec2(...VEC2_A);
@@ -115,7 +115,7 @@ describe('(Vec) Vector operations', () => {
 			});
 		});
 
-		describe('posEqual(a, b)', () => {
+		describe('vecEqual(a, b)', () => {
 			test('equal returns true?', () => {
 				const a = new Vec2(1, 2);
 				const b = new Vec2(1, 2);
@@ -171,7 +171,7 @@ describe('(Vec) Vector operations', () => {
 			});
 		});
 
-		describe('scalePos(p, s)', () => {
+		describe('scaleVec(p, s)', () => {
 			test('should return a vector of equal length scaled by a scalar', () => {
 				const scaled = scaleVec(new Vec2(1, 2), 5);
 				expect(scaled).toHaveLength(2);
@@ -216,7 +216,7 @@ describe('Scalar operations', () => {
 
 describe('Vector operations', () => {
 	describe('Vector & Vector', () => {
-		describe('addPos(a, b)', () => {
+		describe('addVec(a, b)', () => {
 			describe('when a & b are both the same length', () => {
 				test('V2 + V2 should result in a V2 sum', () => {
 					const sum = addVec([4, 5], [0, 1]);
@@ -254,7 +254,7 @@ describe('Vector operations', () => {
 			});
 		});
 
-		describe('subPos(a, b)', () => {
+		describe('subVec(a, b)', () => {
 			describe('when a & b are both the same length', () => {
 				test('V2 - V2 should result in a V2 difference', () => {
 					const diff = subVec([4, 5], [0, 1]);
@@ -292,7 +292,7 @@ describe('Vector operations', () => {
 			});
 		});
 
-		describe('posEqual(a, b)', () => {
+		describe('vecEqual(a, b)', () => {
 			test('should return true if both vectors are of equal length and have the same valued elements', () => {
 				const isEqual = vecEqual([1, 2, 3], [1, 2, 3]);
 				expect(isEqual).toEqual(true);
@@ -328,7 +328,7 @@ describe('Vector operations', () => {
 			});
 		});
 
-		describe('scalePos(p, s)', () => {
+		describe('scaleVec(p, s)', () => {
 			test('should return a vector of equal length scaled by a scalar', () => {
 				const scaled = scaleVec([1, 2, 3], 5);
 				expect(scaled).toHaveLength(3);

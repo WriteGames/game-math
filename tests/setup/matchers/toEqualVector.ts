@@ -1,8 +1,8 @@
-import { posEqual } from '../../../.';
+import { vecEqual } from '../../../.';
 import type { Vector } from '../../../.';
 
 export const toEqualVector = (actual: Vector, expected: Vector) => {
-	const pass = posEqual(actual, expected);
+	const pass = vecEqual(actual, expected);
 
 	return {
 		pass,
