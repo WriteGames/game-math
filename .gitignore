@@ -7,10 +7,10 @@ tsconfig*.tsbuildinfo
 *.map
 
 # output
-bin/*
-dist/*
-docs/*
-tests/coverage/*
+bin
+docs
+dist
+tests/coverage
 
 # npm pack
 *.tgz
