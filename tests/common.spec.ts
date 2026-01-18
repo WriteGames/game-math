@@ -1,16 +1,15 @@
 import { describe, expect, test } from 'vitest';
 import {
-	addVec,
 	addScalar,
+	addVec,
 	approachVec,
+	betweenInterval,
 	hashVec,
 	isPointOnLine,
 	isWithinBounds,
 	length,
 	lengthSq,
-	vecDistance,
-	vecDistanceSq,
-	vecEqual,
+	onInterval,
 	Quat,
 	scaleVec,
 	subVec,
@@ -18,6 +17,9 @@ import {
 	Vec2,
 	Vec3,
 	Vec4,
+	vecDistance,
+	vecDistanceSq,
+	vecEqual,
 } from '../src';
 
 describe(`${addVec.name}()`, () => {
@@ -69,6 +71,73 @@ describe(`${approachVec.name}()`, () => {
 
 	test('should approach a vector of a larger length', () => {
 		expect(approachVec([0, 0], [5, 5, 5], [2, 2])).toEqualVec2([2, 2]);
+	});
+});
+
+describe(`${betweenInterval.name}`, () => {
+	const interval = 10;
+
+	test('should return false when not between interval', () => {
+		for (let t = 0; t < interval; ++t) {
+			expect(betweenInterval(t, interval)).toBeFalsy();
+			expect(betweenInterval(t + interval * 2, interval)).toBeFalsy();
+		}
+	});
+
+	test('should return true when between interval', () => {
+		for (let t = 0; t < interval; ++t) {
+			expect(betweenInterval(interval + t, interval)).toBeTruthy();
+			expect(betweenInterval(3 * interval + t, interval)).toBeTruthy();
+		}
+	});
+
+	test('should continue to alternate between true and false', () => {
+		let expected = false;
+		let t = 0;
+		for (let x = 0; x < 6; ++x) {
+			for (let i = 0; i < interval; ++i, ++t) {
+				expect(betweenInterval(t, interval)).toEqual(expected);
+			}
+			expected = !expected;
+		}
+	});
+
+	test('should correctly factor in offset', () => {
+		const offset = 3;
+		let expected = false;
+		let t = 0;
+
+		for (; t < interval + offset; ++t) {
+			expect(betweenInterval(t, interval, offset)).toEqual(expected);
+		}
+
+		expected = !expected;
+
+		for (let x = 0; x < 6; ++x) {
+			for (let i = 0; i < interval; ++i, ++t) {
+				expect(betweenInterval(t, interval, offset)).toEqual(expected);
+			}
+			expected = !expected;
+		}
+	});
+
+	test('should correctly factor in negative offset', () => {
+		const offset = -3;
+		let expected = false;
+		let t = 0;
+
+		for (; t < interval + offset; ++t) {
+			expect(betweenInterval(t, interval, offset)).toEqual(expected);
+		}
+
+		expected = !expected;
+
+		for (let x = 0; x < 6; ++x) {
+			for (let i = 0; i < interval; ++i, ++t) {
+				expect(betweenInterval(t, interval, offset)).toEqual(expected);
+			}
+			expected = !expected;
+		}
 	});
 });
 
@@ -143,41 +212,20 @@ describe(`${lengthSq.name}()`, () => {
 	});
 });
 
-describe(`${vecDistance.name}()`, () => {
-	test('should find the distance between two vectors', () => {
-		const a: V2_T = [-1, -1];
-		const b: V2_T = [2, 3];
-		expect(vecDistance(a, b)).toEqual(5);
-	});
-});
+describe(`${onInterval.name}`, () => {
+	const delta = 1 / 60;
+	const interval = 1 / 7; // NOTE(bret): chose due to 60 not being divisible by 7
 
-describe(`${vecDistanceSq.name}()`, () => {
-	test('should find the distance between two vectors, squared', () => {
-		const a: V2_T = [-1, -1];
-		const b: V2_T = [2, 3];
-		expect(vecDistanceSq(a, b)).toEqual(25);
-	});
-});
+	test('', () => {
+		let t = 0;
+		expect(onInterval(t, delta, interval)).toBeTruthy();
+		t += delta;
 
-describe(`${vecEqual.name}()`, () => {
-	test('should match equal vectors', () => {
-		const a1 = [5, 5];
-		const a2 = [5, 5];
-		const b1 = new Vec2(5, 5);
-		const b2 = new Vec2(5, 5);
-		expect(vecEqual(a1, a2)).toEqual(true);
-		expect(vecEqual(b1, b2)).toEqual(true);
-		expect(vecEqual(a1, b2)).toEqual(true);
-	});
+		for (; t < interval; t += delta) {
+			expect(onInterval(t, delta, interval)).toBeFalsy();
+		}
 
-	test('should not match non-equal vectors', () => {
-		const a1 = [5, 5];
-		const a2 = [0, 0];
-		const b1 = new Vec2(5, 5);
-		const b2 = new Vec2(0, 0);
-		expect(vecEqual(a1, a2)).toEqual(false);
-		expect(vecEqual(b1, b2)).toEqual(false);
-		expect(vecEqual(a1, b2)).toEqual(false);
+		expect(onInterval(t, delta, interval)).toBeTruthy();
 	});
 });
 
@@ -216,5 +264,43 @@ describe(`${subVec.name}()`, () => {
 		expect(subVec([1, 2], new Vec2(3, 4))).toEqualVec2([-2, -2]);
 
 		expect(subVec([1, 2, 3], [3, 4])).toEqualVec3([-2, -2, 3]);
+	});
+});
+
+describe(`${vecDistance.name}()`, () => {
+	test('should find the distance between two vectors', () => {
+		const a: V2_T = [-1, -1];
+		const b: V2_T = [2, 3];
+		expect(vecDistance(a, b)).toEqual(5);
+	});
+});
+
+describe(`${vecDistanceSq.name}()`, () => {
+	test('should find the distance between two vectors, squared', () => {
+		const a: V2_T = [-1, -1];
+		const b: V2_T = [2, 3];
+		expect(vecDistanceSq(a, b)).toEqual(25);
+	});
+});
+
+describe(`${vecEqual.name}()`, () => {
+	test('should match equal vectors', () => {
+		const a1 = [5, 5];
+		const a2 = [5, 5];
+		const b1 = new Vec2(5, 5);
+		const b2 = new Vec2(5, 5);
+		expect(vecEqual(a1, a2)).toEqual(true);
+		expect(vecEqual(b1, b2)).toEqual(true);
+		expect(vecEqual(a1, b2)).toEqual(true);
+	});
+
+	test('should not match non-equal vectors', () => {
+		const a1 = [5, 5];
+		const a2 = [0, 0];
+		const b1 = new Vec2(5, 5);
+		const b2 = new Vec2(0, 0);
+		expect(vecEqual(a1, a2)).toEqual(false);
+		expect(vecEqual(b1, b2)).toEqual(false);
+		expect(vecEqual(a1, b2)).toEqual(false);
 	});
 });
