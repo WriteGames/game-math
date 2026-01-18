@@ -1,12 +1,21 @@
 import { describe, expect, test } from 'vitest';
 import {
+	acosDeg,
 	angleDifference,
 	angleDifferenceDeg,
 	angleDifferenceSign,
 	angleDifferenceSignDeg,
 	approachAngle,
 	approachAngleDeg,
+	asinDeg,
+	atan2Deg,
+	atanDeg,
+	cosDeg,
 	DEG_TO_RAD,
+	degToRad,
+	radToDeg,
+	sinDeg,
+	tanDeg,
 	wrapAngle,
 	wrapAngleDeg,
 } from '../src/util/trig';
@@ -133,6 +142,71 @@ describe(`${approachAngle.name}()/${approachAngleDeg.name}()`, () => {
 			expect(approachAngle(Math.PI, PI_4, -PI_4)).toEqual(Math.PI + PI_4);
 
 			expect(approachAngleDeg(180, 45, -45)).toEqual(225);
+		});
+	});
+});
+
+const degToRadPairs = [
+	[0, 0],
+	[90, Math.PI / 2],
+	[180, Math.PI],
+	[270, (3 * Math.PI) / 2],
+	[360, 2 * Math.PI],
+	[-360, -2 * Math.PI],
+] as const;
+
+describe(`${degToRad.name}()`, () => {
+	test('should convert from degrees to radians', () => {
+		degToRadPairs.forEach(([deg, rad]) => {
+			expect(degToRad(deg)).toEqual(rad);
+		});
+	});
+});
+
+const trigFuncs = [
+	[cosDeg, Math.cos, 'should calculate the cosine of the angle'],
+	[sinDeg, Math.sin, 'should calculate the sine of the angle'],
+	[tanDeg, Math.tan, 'should calculate the tangent of the angle'],
+] as const;
+
+trigFuncs.forEach(([degFunc, radFunc, str]) => {
+	describe(`${degFunc.name}()`, () => {
+		test(str, () => {
+			degToRadPairs.forEach(([deg, rad]) => {
+				expect(degFunc(deg)).toEqual(radFunc(rad));
+			});
+		});
+	});
+});
+
+const invTrigFuncs = [
+	[acosDeg, Math.acos, 'should calculate the inverse cosine'],
+	[asinDeg, Math.asin, 'should calculate the inverse sine'],
+	[atanDeg, Math.atan, 'should calculate the inverse tangent'],
+] as const;
+
+invTrigFuncs.forEach(([degFunc, radFunc, str]) => {
+	describe(`${degFunc.name}()`, () => {
+		test(str, () => {
+			const a = degFunc(3 / 4);
+			const b = radFunc(3 / 4);
+			expect(a * DEG_TO_RAD).toBeCloseTo(b);
+		});
+	});
+});
+
+describe(`${atan2Deg.name}()`, () => {
+	test('should calculate the inverse tangent', () => {
+		const a = atan2Deg(3, 4);
+		const b = Math.atan2(3, 4);
+		expect(a * DEG_TO_RAD).toBeCloseTo(b);
+	});
+});
+
+describe(`${radToDeg.name}()`, () => {
+	test('should convert from radians to degrees', () => {
+		degToRadPairs.forEach(([deg, rad]) => {
+			expect(radToDeg(rad)).toEqual(deg);
 		});
 	});
 });
