@@ -1,4 +1,4 @@
-import { equal } from '.';
+import { equal } from './index.js';
 
 /** Tau, approx equivalent to 6.283185. Equals two times Pi */
 export const TAU = Math.PI * 2;

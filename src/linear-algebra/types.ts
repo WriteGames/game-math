@@ -1,10 +1,10 @@
-import type { Mat2 } from './mat2.js';
-import type { Mat3 } from './mat3.js';
-import type { Mat4 } from './mat4.js';
-import type { Quat } from './quat.js';
-import type { Vec2 } from './vec2.js';
-import type { Vec3 } from './vec3.js';
-import type { Vec4 } from './vec4.js';
+import type { Mat2 } from './mat2';
+import type { Mat3 } from './mat3';
+import type { Mat4 } from './mat4';
+import type { Quat } from './quat';
+import type { Vec2 } from './vec2';
+import type { Vec3 } from './vec3';
+import type { Vec4 } from './vec4';
 
 // TYPE(bret): Find a home for these
 /**
@@ -39,12 +39,12 @@ export type Vector = Vector_T | Vec2 | Vec3 | Vec4 | Quat;
 export type VectorToTuple<T extends Vector> = T extends Vec2
 	? V2_T
 	: T extends Vec3
-	? V3_T
-	: T extends Vec4
-	? V4_T
-	: T extends Quat
-	? V4_T
-	: T;
+		? V3_T
+		: T extends Vec4
+			? V4_T
+			: T extends Quat
+				? V4_T
+				: T;
 
 // DECIDE(bret): Internally, Mat2 uses column-major; however, its constructor
 // takes row-major. This makes the array-based version and the Mat2 version

@@ -1,7 +1,7 @@
-import { distance } from '../util/index';
+import { distance } from '../util/index.js';
 import type { Mat3Like, Matrix, Vec3Like } from './types';
-import { vecEqual } from './common';
-import { Vec3 } from './vec3';
+import { vecEqual } from './common.js';
+import { Vec3 } from './vec3.js';
 
 /**
  * Checks if a given argument is an instance of {@link Mat3}.

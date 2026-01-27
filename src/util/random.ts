@@ -1,4 +1,4 @@
-import { Vec2, Vec3, Vec4 } from '../linear-algebra';
+import { Vec2, Vec3, Vec4 } from '../linear-algebra/index.js';
 
 function xorShift32(seed: number): number {
 	let x = seed;
