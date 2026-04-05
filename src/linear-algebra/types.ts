@@ -25,11 +25,11 @@ export type V4_T = [x: number, y: number, z: number, w: number];
  */
 export type Vector_T =
 	| V2_T
-	| Readonly<V2_T>
+	// | Readonly<V2_T>
 	| V3_T
-	| Readonly<V3_T>
-	| V4_T
-	| Readonly<V4_T>;
+	// | Readonly<V3_T>
+	| V4_T;
+// | Readonly<V4_T>;
 
 /**
  * @category Linear Algebra

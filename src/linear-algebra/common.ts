@@ -1,6 +1,16 @@
 import { approach, distance, distanceSq, equal } from '../util/index.js';
 import { isQuat, Quat } from './quat.js';
-import type { Vector, VectorToTuple } from './types';
+import type {
+	QuatLike,
+	V2_T,
+	V3_T,
+	V4_T,
+	Vec2Like,
+	Vec3Like,
+	Vec4Like,
+	Vector,
+	VectorToTuple,
+} from './types';
 import { isVec2, Vec2 } from './vec2.js';
 import { isVec3, Vec3 } from './vec3.js';
 import { isVec4, Vec4 } from './vec4.js';
@@ -163,13 +173,27 @@ export function scaleVec<T extends Vector>(v: T, s: number): T {
  * @param b - Vector B
  * @returns Difference of vectors
  */
-export function subVec<
-	T extends Vector = Vector,
-	A extends T = T,
-	B extends T = T,
-	R = VectorToTuple<A>,
->(a: A, b: B): R {
-	return a.map((v, i) => v - (b[i] ?? 0)) as R;
+// export function subVec<
+// 	T extends Vector = Vector,
+// 	A extends T = T,
+// 	B extends T = T,
+// 	R = VectorToTuple<A>,
+// >(a: A, b: B): R
+export function subVec(a: Vec2, b: Vec2Like): Vec2;
+export function subVec(a: V2_T, b: Vec2Like): V2_T;
+export function subVec(a: Vec3, b: Vec3Like): Vec3;
+export function subVec(a: V3_T, b: Vec3Like): V3_T;
+export function subVec(a: Vec4, b: Vec4Like): Vec4;
+export function subVec(a: V4_T, b: Vec4Like): V4_T;
+export function subVec(a: Quat, b: QuatLike): Quat;
+export function subVec<T extends Vector = Vector>(a: T, b: T): VectorToTuple<T>;
+export function subVec(a: Vector, b: Vector): Vector {
+	const diff = a.map((v, i) => v - (b[i] ?? 0)) as Vector;
+	if (isVec2(a)) return new Vec2(...diff);
+	if (isVec3(a)) return new Vec3(...diff);
+	if (isVec4(a)) return new Vec4(...diff);
+	if (isQuat(a)) return new Quat(...diff);
+	return diff;
 }
 
 /**
