@@ -6,7 +6,6 @@ import type { Vec2 } from './vec2';
 import type { Vec3 } from './vec3';
 import type { Vec4 } from './vec4';
 
-// TYPE(bret): Find a home for these
 /**
  * @category Linear Algebra
  */
@@ -23,13 +22,9 @@ export type V4_T = [x: number, y: number, z: number, w: number];
 /**
  * @category Linear Algebra
  */
-export type Vector_T =
-	| V2_T
-	// | Readonly<V2_T>
-	| V3_T
-	// | Readonly<V3_T>
-	| V4_T;
-// | Readonly<V4_T>;
+export type Vector_T = V2_T | V3_T | V4_T;
+// TYPE(bret): Revisit this, might be needed for Canvas Lord
+// | Readonly<V2_T> | Readonly<V3_T> | Readonly<V4_T>;
 
 /**
  * @category Linear Algebra

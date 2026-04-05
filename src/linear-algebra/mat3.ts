@@ -1,7 +1,7 @@
 import { distance } from '../util/index.js';
 import type { Mat3Like, Matrix, Vec3Like } from './types';
 import { vecEqual } from './common.js';
-import { Vec3 } from './vec3.js';
+import { isVec3, Vec3 } from './vec3.js';
 
 /**
  * Checks if a given argument is an instance of {@link Mat3}.
@@ -490,7 +490,8 @@ export class Mat3 extends Array<number> {
 	 * @param m - Input matrix
 	 * @returns New, transposed matrix
 	 */
-	static transpose<T extends Mat3Like>(m: T): T {
+	static transpose<T extends Mat3Like>(m: T): T;
+	static transpose(m: Mat3Like): Mat3Like {
 		return transpose3D(m);
 	}
 
@@ -508,7 +509,8 @@ export class Mat3 extends Array<number> {
 	 * @param right - Matrix b
 	 * @returns The product of the two matrices
 	 */
-	static multiply<T extends Mat3Like>(left: T, right: Mat3Like): T {
+	static multiply<T extends Mat3Like>(left: T, right: Mat3Like): T;
+	static multiply(left: Mat3Like, right: Mat3Like): Mat3Like {
 		return multiplyM3M3(left, right);
 	}
 
@@ -662,14 +664,14 @@ export function multiplyM3M3<T extends Mat3Like>(l: T, r: Mat3Like): T {
  * @param v - Vector
  * @returns Product (2D Vector)
  */
-export function multiplyM3V3(m: Mat3Like, v: Vec3Like): Vec3 {
+export function multiplyM3V3<T extends Vec3Like>(m: Mat3Like, v: T): T;
+export function multiplyM3V3(m: Mat3Like, v: Vec3Like): Vec3Like {
 	assertMat3(m);
 	assertVec3(v);
-	const result = new Vec3();
-	result[0] = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2];
-	result[1] = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2];
-	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2];
-	return result;
+	const x = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2];
+	const y = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2];
+	const z = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2];
+	return isVec3(v) ? new Vec3(x, y, z) : [x, y, z];
 }
 
 /**

@@ -4,7 +4,7 @@ import { vecEqual, scaleVec } from './common.js';
 import { Mat3 } from './mat3.js';
 import { Quat } from './quat.js';
 import { Vec3 } from './vec3.js';
-import { Vec4 } from './vec4.js';
+import { isVec4, Vec4 } from './vec4.js';
 
 /**
  * Checks if a given argument is an instance of {@link Mat4}.
@@ -643,7 +643,8 @@ export class Mat4 extends Array<number> {
 	 * @param m - Input matrix
 	 * @returns New, transposed matrix
 	 */
-	static transpose<T extends Mat4Like>(m: T): T {
+	static transpose<T extends Mat4Like>(m: T): T;
+	static transpose(m: Mat4Like): Mat4Like {
 		return transpose4D(m);
 	}
 
@@ -661,7 +662,8 @@ export class Mat4 extends Array<number> {
 	 * @param right - Matrix b
 	 * @returns The product of the two matrices
 	 */
-	static multiply<T extends Mat4Like>(left: T, right: Mat4Like): T {
+	static multiply<T extends Mat4Like>(left: T, right: Mat4Like): T;
+	static multiply(left: Mat4Like, right: Mat4Like): Mat4Like {
 		return multiplyM4M4(left, right);
 	}
 
@@ -785,7 +787,8 @@ export class Mat4 extends Array<number> {
  * @param m - Input matrix
  * @returns New, transposed matrix
  */
-export function transpose4D<T extends Mat4Like>(m: T): T {
+export function transpose4D<T extends Mat4Like>(m: T): T;
+export function transpose4D(m: Mat4Like): Mat4Like {
 	if (m.length !== 16) throw new Error('not a valid 4x4 matrix');
 
 	const result = (isMat4(m) ? m.clone() : [...m]) as typeof m;
@@ -883,7 +886,8 @@ export function determinantM4(m: Mat4Like): number {
  * @param r - Right matrix
  * @returns The product of the two matrices
  */
-export function multiplyM4M4<T extends Mat4Like>(l: T, r: Mat4Like): T {
+export function multiplyM4M4<T extends Mat4Like>(l: T, r: Mat4Like): T;
+export function multiplyM4M4(l: Mat4Like, r: Mat4Like): Mat4Like {
 	assertMat4(l);
 	assertMat4(r);
 
@@ -894,7 +898,7 @@ export function multiplyM4M4<T extends Mat4Like>(l: T, r: Mat4Like): T {
 		0, 0, 1, 0,
 		0, 0, 0, 1,
 	] satisfies M4_T;
-	const result = (isMat4(l) ? new Mat4() : f) as typeof l;
+	const result = isMat4(l) ? new Mat4() : (f as typeof l);
 
 	result[M00] =
 		l[M00] * r[M00] + l[M10] * r[M01] + l[M20] * r[M02] + l[M30] * r[M03];
@@ -942,16 +946,15 @@ export function multiplyM4M4<T extends Mat4Like>(l: T, r: Mat4Like): T {
  * @param v - Vector
  * @returns Product (2D Vector)
  */
-export function multiplyM4V4(m: Mat4Like, v: Vec4Like): Vec4 {
+export function multiplyM4V4<T extends Vec4Like>(m: Mat4Like, v: T): T;
+export function multiplyM4V4(m: Mat4Like, v: Vec4Like): Vec4Like {
 	assertMat4(m);
 	assertVec4(v);
-
-	const result = new Vec4();
-	result[0] = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2] + m[M30] * v[3];
-	result[1] = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2] + m[M31] * v[3];
-	result[2] = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2] + m[M32] * v[3];
-	result[3] = m[M03] * v[0] + m[M13] * v[1] + m[M23] * v[2] + m[M33] * v[3];
-	return result;
+	const x = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2] + m[M30] * v[3];
+	const y = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2] + m[M31] * v[3];
+	const z = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2] + m[M32] * v[3];
+	const w = m[M03] * v[0] + m[M13] * v[1] + m[M23] * v[2] + m[M33] * v[3];
+	return isVec4(v) ? new Vec4(x, y, z, w) : [x, y, z, w];
 }
 
 /**

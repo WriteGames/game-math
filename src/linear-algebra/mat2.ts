@@ -1,6 +1,6 @@
 import type { Mat2Like, Matrix, Vec2Like } from './types';
 import { vecEqual } from './common.js';
-import { Vec2 } from './vec2.js';
+import { isVec2, Vec2 } from './vec2.js';
 
 /**
  * Checks if a given argument is an instance of {@link Mat2}.
@@ -276,7 +276,8 @@ export class Mat2 extends Array<number> {
 	 * @param m - Input matrix
 	 * @returns New, transposed matrix
 	 */
-	static transpose<T extends Mat2Like>(m: T): T {
+	static transpose<T extends Mat2Like>(m: T): T;
+	static transpose(m: Mat2Like): Mat2Like {
 		return transpose2D(m);
 	}
 
@@ -294,7 +295,8 @@ export class Mat2 extends Array<number> {
 	 * @param right - Matrix b
 	 * @returns The product of the two matrices
 	 */
-	static multiply<T extends Mat2Like>(left: T, right: Mat2Like): T {
+	static multiply<T extends Mat2Like>(left: T, right: Mat2Like): T;
+	static multiply(left: Mat2Like, right: Mat2Like): Mat2Like {
 		return multiplyM2M2(left, right);
 	}
 
@@ -345,7 +347,7 @@ export class Mat2 extends Array<number> {
 	 * @param b - Matrix b
 	 * @returns Equality result
 	 */
-	static equal(a: Mat2, b: Mat2Like): boolean {
+	static equal(a: Mat2Like, b: Mat2Like): boolean {
 		return vecEqual(a, b);
 	}
 
@@ -365,7 +367,8 @@ export class Mat2 extends Array<number> {
  * @param m - Input matrix
  * @returns New, transposed matrix
  */
-export function transpose2D<T extends Mat2Like>(m: T): T {
+export function transpose2D<T extends Mat2Like>(m: T): T;
+export function transpose2D(m: Mat2Like): Mat2Like {
 	if (m.length !== 4) throw new Error('not a valid 2x2 matrix');
 	const result = (isMat2(m) ? m.clone() : [...m]) as typeof m;
 	const temp = result[M01];
@@ -410,10 +413,11 @@ export function determinantM2(m: Mat2Like): number {
  * @param right - Matrix b
  * @returns The product of the two matrices
  */
-export function multiplyM2M2<T extends Mat2Like>(left: T, right: Mat2Like): T {
+export function multiplyM2M2<T extends Mat2Like>(left: T, right: Mat2Like): T;
+export function multiplyM2M2(left: Mat2Like, right: Mat2Like): Mat2Like {
 	assertMat2(left);
 	assertMat2(right);
-	const result = (isMat2(left) ? new Mat2() : [1, 0, 0, 1]) as typeof left;
+	const result = isMat2(left) ? new Mat2() : ([1, 0, 0, 1] as typeof left);
 	result[M00] = left[M00] * right[M00] + left[M10] * right[M01];
 	result[M01] = left[M01] * right[M00] + left[M11] * right[M01];
 	result[M10] = left[M00] * right[M10] + left[M10] * right[M11];
@@ -428,11 +432,11 @@ export function multiplyM2M2<T extends Mat2Like>(left: T, right: Mat2Like): T {
  * @param v - Vector
  * @returns Product (2D Vector)
  */
-export function multiplyM2V2(m: Mat2Like, v: Vec2Like): Vec2 {
+export function multiplyM2V2<T extends Vec2Like>(m: Mat2Like, v: T): T;
+export function multiplyM2V2(m: Mat2Like, v: Vec2Like): Vec2Like {
 	assertMat2(m);
 	assertVec2(v);
-	const result = new Vec2();
-	result[0] = m[M00] * v[0] + m[M10] * v[1];
-	result[1] = m[M01] * v[0] + m[M11] * v[1];
-	return result;
+	const x = m[M00] * v[0] + m[M10] * v[1];
+	const y = m[M01] * v[0] + m[M11] * v[1];
+	return isVec2(v) ? new Vec2(x, y) : [x, y];
 }
