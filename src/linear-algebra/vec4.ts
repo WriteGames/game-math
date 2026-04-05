@@ -1,14 +1,7 @@
 import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
 import { addVec, approachVec, vecEqual, scaleVec, subVec } from './common.js';
-import type {
-	QuatLike,
-	V4_T,
-	Vec2Like,
-	Vec3Like,
-	Vec4Like,
-	Vector,
-} from './types';
+import type { QuatLike, Vec2Like, Vec3Like, Vec4Like, Vector } from './types';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
 
@@ -28,8 +21,15 @@ function asVec4Like<T extends Vec4Like>(
 	y: number,
 	z: number,
 	w: number,
-): T {
-	return (isVec4(v) ? new Vec4(x, y, z, w) : [x, y, z, w]) as T;
+): T;
+function asVec4Like(
+	v: Vec4Like,
+	x: number,
+	y: number,
+	z: number,
+	w: number,
+): Vec4Like {
+	return isVec4(v) ? new Vec4(x, y, z, w) : [x, y, z, w];
 }
 
 const error = 'Vec4';
@@ -184,8 +184,6 @@ export class Vec4 extends Array<number> {
 	 * @returns The input vector
 	 */
 	static normalize<T extends Vec4Like>(v: T): T;
-	static normalize(v: Vec4): Vec4;
-	static normalize(v: V4_T): V4_T;
 	static normalize(v: Vec4Like): Vec4Like {
 		let [x, y, z, w] = v;
 		const invMag = 1 / distance(v);
@@ -220,8 +218,6 @@ export class Vec4 extends Array<number> {
 	 * @returns Sum
 	 */
 	static add<T extends Vec4Like>(a: T, b: Vec4Like): T;
-	static add(a: Vec4, b: Vec4Like): Vec4;
-	static add(a: V4_T, b: Vec4Like): V4_T;
 	static add(a: Vec4Like, b: Vec4Like): Vec4Like {
 		const [x, y, z, w] = addVec(a, b);
 		return asVec4Like(a, x, y, z, w);
@@ -248,8 +244,6 @@ export class Vec4 extends Array<number> {
 	 * @returns Sum
 	 */
 	static plus<T extends Vec4Like>(a: T, b: Vec4Like): T;
-	static plus(a: Vec4, b: Vec4Like): Vec4;
-	static plus(a: V4_T, b: Vec4Like): V4_T;
 	static plus(a: Vec4Like, b: Vec4Like): Vec4Like {
 		return Vec4.add(a, b);
 	}
@@ -271,8 +265,6 @@ export class Vec4 extends Array<number> {
 	 * @returns Vec4
 	 */
 	static sub<T extends Vec4Like>(a: T, b: Vec4Like): T;
-	static sub(a: Vec4, b: Vec4Like): Vec4;
-	static sub(a: V4_T, b: Vec4Like): V4_T;
 	static sub(a: Vec4Like, b: Vec4Like): Vec4Like {
 		return subVec(a, b);
 	}
@@ -298,8 +290,6 @@ export class Vec4 extends Array<number> {
 	 * @returns Vec4
 	 */
 	static minus<T extends Vec4Like>(a: T, b: Vec4Like): T;
-	static minus(a: Vec4, b: Vec4Like): Vec4;
-	static minus(a: V4_T, b: Vec4Like): V4_T;
 	static minus(a: Vec4Like, b: Vec4Like): Vec4Like {
 		return subVec(a, b);
 	}
@@ -321,8 +311,6 @@ export class Vec4 extends Array<number> {
 	 * @returns The vector, scaled
 	 */
 	static scale<T extends Vec4Like>(a: T, s: number): T;
-	static scale(a: Vec4, s: number): Vec4;
-	static scale(a: V4_T, s: number): V4_T;
 	static scale(v: Vec4Like, s: number): Vec4Like {
 		const [x, y, z, w] = scaleVec(v, s);
 		return asVec4Like(v, x, y, z, w);
@@ -349,8 +337,6 @@ export class Vec4 extends Array<number> {
 	 * @returns The vector, scaled inversely
 	 */
 	static invScale<T extends Vec4Like>(a: T, s: number): T;
-	static invScale(a: Vec4, s: number): Vec4;
-	static invScale(a: V4_T, s: number): V4_T;
 	static invScale(v: Vec4Like, s: number): Vec4Like {
 		const [x, y, z, w] = scaleVec(v, 1 / s);
 		return asVec4Like(v, x, y, z, w);
@@ -411,8 +397,6 @@ export class Vec4 extends Array<number> {
 	 * @returns
 	 */
 	static lerp<T extends Vec4Like>(a: T, b: Vec4Like, t: number): T;
-	static lerp(a: Vec4, b: Vec4Like, t: number): Vec4;
-	static lerp(a: V4_T, b: Vec4Like, t: number): V4_T;
 	static lerp(a: Vec4Like, b: Vec4Like, t: number): Vec4Like {
 		return Vec4.add(a, Vec4.scale(Vec4.sub(b, a), t));
 	}
@@ -429,8 +413,6 @@ export class Vec4 extends Array<number> {
 		target: Vec4Like,
 		amount: Vec4Like,
 	): T;
-	static approach(v: Vec4, target: Vec4Like, amount: Vec4Like): Vec4;
-	static approach(v: V4_T, target: Vec4Like, amount: Vec4Like): V4_T;
 	static approach(v: Vec4Like, target: Vec4Like, amount: Vec4Like): Vec4Like {
 		const [x, y, z, w] = approachVec(v, target, amount);
 		return asVec4Like(v, x, y, z, w);
@@ -444,8 +426,6 @@ export class Vec4 extends Array<number> {
 	 * @returns Clamped vector
 	 */
 	static clamp<T extends Vec4Like>(val: T, min: Vec4Like, max: Vec4Like): T;
-	static clamp(val: Vec4, min: Vec4Like, max: Vec4Like): Vec4;
-	static clamp(val: V4_T, min: Vec4Like, max: Vec4Like): V4_T;
 	static clamp(val: Vec4Like, min: Vec4Like, max: Vec4Like): Vec4Like {
 		const x = clamp(val[X], min[X], max[X]);
 		const y = clamp(val[Y], min[Y], max[Y]);

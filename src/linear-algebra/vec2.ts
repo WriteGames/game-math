@@ -1,7 +1,7 @@
 import { clamp, distance } from '../util/index.js';
 import { Random } from '../util/random.js';
-import { addVec, approachVec, vecEqual, scaleVec, subVec } from './common.js';
-import type { V2_T, Vec2Like, Vector } from './types';
+import { addVec, approachVec, scaleVec, subVec, vecEqual } from './common.js';
+import type { Vec2Like, Vector } from './types';
 
 /**
  * Checks if a given argument is an instance of {@link Vec2}.
@@ -13,8 +13,9 @@ export function isVec2(vec: Vector): vec is Vec2 {
 	return vec instanceof Vec2;
 }
 
-function asVec2Like<T extends Vec2Like>(v: T, x: number, y: number): T {
-	return (isVec2(v) ? new Vec2(x, y) : [x, y]) as T;
+function asVec2Like<T extends Vec2Like>(v: T, x: number, y: number): T;
+function asVec2Like(v: Vec2Like, x: number, y: number): Vec2Like {
+	return isVec2(v) ? new Vec2(x, y) : [x, y];
 }
 
 const error = 'Vec2';
@@ -148,8 +149,6 @@ export class Vec2 extends Array<number> {
 	 * @returns The input vector
 	 */
 	static normalize<T extends Vec2Like>(v: T): T;
-	static normalize(v: Vec2): Vec2;
-	static normalize(v: V2_T): V2_T;
 	static normalize(v: Vec2Like): Vec2Like {
 		let [x, y] = v;
 		const invMag = 1 / distance(v);
@@ -182,8 +181,6 @@ export class Vec2 extends Array<number> {
 	 * @returns Sum
 	 */
 	static add<T extends Vec2Like>(a: T, b: Vec2Like): T;
-	static add(a: Vec2, b: Vec2Like): Vec2;
-	static add(a: V2_T, b: Vec2Like): V2_T;
 	static add(a: Vec2Like, b: Vec2Like): Vec2Like {
 		return addVec(a, b);
 	}
@@ -207,8 +204,6 @@ export class Vec2 extends Array<number> {
 	 * @returns Sum
 	 */
 	static plus<T extends Vec2Like>(a: T, b: Vec2Like): T;
-	static plus(a: Vec2, b: Vec2Like): Vec2;
-	static plus(a: V2_T, b: Vec2Like): V2_T;
 	static plus(a: Vec2Like, b: Vec2Like): Vec2Like {
 		return Vec2.add(a, b);
 	}
@@ -230,8 +225,6 @@ export class Vec2 extends Array<number> {
 	 * @returns Vec2
 	 */
 	static sub<T extends Vec2Like>(a: T, b: Vec2Like): T;
-	static sub(a: Vec2, b: Vec2Like): Vec2;
-	static sub(a: V2_T, b: Vec2Like): V2_T;
 	static sub(a: Vec2Like, b: Vec2Like): Vec2Like {
 		return subVec(a, b);
 	}
@@ -255,8 +248,6 @@ export class Vec2 extends Array<number> {
 	 * @returns Vec2
 	 */
 	static minus<T extends Vec2Like>(a: T, b: Vec2Like): T;
-	static minus(a: Vec2, b: Vec2Like): Vec2;
-	static minus(a: V2_T, b: Vec2Like): V2_T;
 	static minus(a: Vec2Like, b: Vec2Like): Vec2Like {
 		return subVec(a, b);
 	}
@@ -278,8 +269,6 @@ export class Vec2 extends Array<number> {
 	 * @returns The vector, scaled
 	 */
 	static scale<T extends Vec2Like>(v: T, s: number): T;
-	static scale(v: Vec2, s: number): Vec2;
-	static scale(v: V2_T, s: number): V2_T;
 	static scale(v: Vec2Like, s: number): Vec2Like {
 		return scaleVec(v, s);
 	}
@@ -303,8 +292,6 @@ export class Vec2 extends Array<number> {
 	 * @returns The vector, scaled inversely
 	 */
 	static invScale<T extends Vec2Like>(v: T, s: number): T;
-	static invScale(v: Vec2, s: number): Vec2;
-	static invScale(v: V2_T, s: number): V2_T;
 	static invScale(v: Vec2Like, s: number): Vec2Like {
 		return scaleVec(v, 1 / s);
 	}
@@ -347,8 +334,6 @@ export class Vec2 extends Array<number> {
 	 * @group Static
 	 */
 	static rotate<T extends Vec2Like>(v: T, angle: number): T;
-	static rotate(v: Vec2, angle: number): Vec2;
-	static rotate(v: V2_T, angle: number): V2_T;
 	static rotate(v: Vec2Like, angle: number): Vec2Like {
 		return rotate2D(v, angle);
 	}
@@ -390,8 +375,6 @@ export class Vec2 extends Array<number> {
 	 * @returns
 	 */
 	static lerp<T extends Vec2Like>(a: T, b: Vec2Like, t: number): T;
-	static lerp(a: Vec2, b: Vec2Like, t: number): Vec2;
-	static lerp(a: V2_T, b: Vec2Like, t: number): V2_T;
 	static lerp(a: Vec2Like, b: Vec2Like, t: number): Vec2Like {
 		return Vec2.add(a, Vec2.scale(Vec2.sub(b, a), t));
 	}
@@ -408,8 +391,6 @@ export class Vec2 extends Array<number> {
 		target: Vec2Like,
 		amount: Vec2Like,
 	): T;
-	static approach(v: Vec2, target: Vec2Like, amount: Vec2Like): Vec2;
-	static approach(v: V2_T, target: Vec2Like, amount: Vec2Like): V2_T;
 	static approach(v: Vec2Like, target: Vec2Like, amount: Vec2Like): Vec2Like {
 		const [x, y] = approachVec(v, target, amount);
 		return asVec2Like(v, x, y);
@@ -423,8 +404,6 @@ export class Vec2 extends Array<number> {
 	 * @returns Clamped vector
 	 */
 	static clamp<T extends Vec2Like>(val: T, min: Vec2Like, max: Vec2Like): T;
-	static clamp(val: Vec2, min: Vec2Like, max: Vec2Like): Vec2;
-	static clamp(val: V2_T, min: Vec2Like, max: Vec2Like): V2_T;
 	static clamp(val: Vec2Like, min: Vec2Like, max: Vec2Like): Vec2Like {
 		const x = clamp(val[X], min[X], max[X]);
 		const y = clamp(val[Y], min[Y], max[Y]);
@@ -494,8 +473,6 @@ export function posToIndex([x, y]: Vec2Like, stride: number): number {
 }
 
 export function rotate2D<T extends Vec2Like>(v: T, angle: number): T;
-export function rotate2D(v: Vec2, angle: number): Vec2;
-export function rotate2D(v: V2_T, angle: number): V2_T;
 export function rotate2D(v: Vec2Like, angle: number): Vec2Like {
 	const cos = Math.cos(angle);
 	const sin = Math.sin(angle);

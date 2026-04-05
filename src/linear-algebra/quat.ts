@@ -1,7 +1,7 @@
 import { distance } from '../util/index.js';
-import { vecEqual, scaleVec } from './common.js';
+import { scaleVec, vecEqual } from './common.js';
 import { Mat4 } from './mat4.js';
-import type { QuatLike, V4_T, Vector } from './types';
+import type { QuatLike, Vector } from './types';
 import { Vec2 } from './vec2.js';
 import { Vec3 } from './vec3.js';
 import { dotProduct4D } from './vec4.js';
@@ -14,6 +14,23 @@ import { dotProduct4D } from './vec4.js';
  */
 export function isQuat(quat: Vector): quat is Quat {
 	return quat instanceof Quat;
+}
+
+function asQuatLike<T extends QuatLike>(
+	v: T,
+	x: number,
+	y: number,
+	z: number,
+	w: number,
+): T;
+function asQuatLike(
+	v: QuatLike,
+	x: number,
+	y: number,
+	z: number,
+	w: number,
+): QuatLike {
+	return isQuat(v) ? new Quat(x, y, z, w) : [x, y, z, w];
 }
 
 const error = 'Quat';
@@ -150,7 +167,8 @@ export class Quat extends Array<number> {
 	 * @param v - The quaternion to normalize
 	 * @returns The input quaternion
 	 */
-	static normalize(v: Quat): Quat {
+	static normalize<T extends QuatLike>(v: T): T;
+	static normalize(v: QuatLike): QuatLike {
 		return scaleVec(v, 1 / distance(v));
 	}
 
@@ -175,11 +193,11 @@ export class Quat extends Array<number> {
 	/**
 	 * @group Static
 	 */
-	static equal(a: Quat, b: Quat | V4_T): boolean {
+	static equal(a: QuatLike, b: QuatLike): boolean {
 		return vecEqual(a, b);
 	}
 
-	equal(v: Quat | V4_T): boolean {
+	equal(v: QuatLike): boolean {
 		return Quat.equal(this, v);
 	}
 
@@ -243,9 +261,10 @@ export class Quat extends Array<number> {
 	 * @param t - Percentage between a and b
 	 * @returns
 	 */
-	static nlerp(a: Quat, b: Quat, t: number): Quat {
+	static nlerp<T extends QuatLike>(a: T, b: Quat, t: number): T;
+	static nlerp(a: QuatLike, b: Quat, t: number): QuatLike {
 		const result = _mixQ4Q4(a, 1 - t, b, t);
-		return result.normalize();
+		return isQuat(result) ? result.normalize() : Quat.normalize(result);
 	}
 
 	/**
@@ -256,7 +275,8 @@ export class Quat extends Array<number> {
 	 * @param t - Percentage between a and b
 	 * @returns
 	 */
-	static slerp(a: Quat, b: Quat, t: number): Quat {
+	static slerp<T extends QuatLike>(a: T, b: Quat, t: number): T;
+	static slerp(a: QuatLike, b: Quat, t: number): QuatLike {
 		let theta = dotProduct4D(a, b);
 		if (theta < 0) {
 			theta = -theta;
@@ -271,7 +291,7 @@ export class Quat extends Array<number> {
 		const bT = Math.sin(t * angle);
 
 		const result = _mixQ4Q4(a, aT, b, bT);
-		return result.normalize();
+		return isQuat(result) ? result.normalize() : Quat.normalize(result);
 	}
 
 	// #region overrides
@@ -324,45 +344,51 @@ export function inverseQ4(q: Quat): Quat {
 	return divideQ4Scalar(result, dotProduct4D(q, q));
 }
 
-export function multiplyQ4Q4(a: Quat, b: Quat): Quat {
-	const result = new Quat();
+export function multiplyQ4Q4<T extends QuatLike>(a: T, b: QuatLike): T;
+export function multiplyQ4Q4(a: QuatLike, b: QuatLike): QuatLike {
+	let x = b[3] * +a[0];
+	let y = b[2] * -a[0];
+	let z = b[1] * +a[0];
+	let w = b[0] * -a[0];
 
-	result.x = b[3] * +a[0];
-	result.y = b[2] * -a[0];
-	result.z = b[1] * +a[0];
-	result.w = b[0] * -a[0];
+	x += b[2] * +a[1];
+	y += b[3] * +a[1];
+	z += b[0] * -a[1];
+	w += b[1] * -a[1];
 
-	result.x += b[2] * +a[1];
-	result.y += b[3] * +a[1];
-	result.z += b[0] * -a[1];
-	result.w += b[1] * -a[1];
+	x += b[1] * -a[2];
+	y += b[0] * +a[2];
+	z += b[3] * +a[2];
+	w += b[2] * -a[2];
 
-	result.x += b[1] * -a[2];
-	result.y += b[0] * +a[2];
-	result.z += b[3] * +a[2];
-	result.w += b[2] * -a[2];
+	x += b[0] * +a[3];
+	y += b[1] * +a[3];
+	z += b[2] * +a[3];
+	w += b[3] * +a[3];
 
-	result.x += b[0] * +a[3];
-	result.y += b[1] * +a[3];
-	result.z += b[2] * +a[3];
-	result.w += b[3] * +a[3];
-
-	return result;
+	return asQuatLike(a, x, y, z, w);
 }
 
-export function multiplyQ4Scalar(q: Quat, v: number): Quat {
+export function multiplyQ4Scalar<T extends QuatLike>(q: T, v: number): T;
+export function multiplyQ4Scalar(q: QuatLike, v: number): QuatLike {
 	return scaleVec(q, v);
 }
 
-export function divideQ4Scalar(q: Quat, v: number): Quat {
+export function divideQ4Scalar<T extends QuatLike>(q: T, v: number): T;
+export function divideQ4Scalar(q: QuatLike, v: number): QuatLike {
 	return scaleVec(q, 1 / v);
 }
 
-function _mixQ4Q4(a: Quat, aT: number, b: Quat, bT: number): Quat {
-	const result = new Quat();
-	result[X] = a[X] * aT + b[X] * bT;
-	result[Y] = a[Y] * aT + b[Y] * bT;
-	result[Z] = a[Z] * aT + b[Z] * bT;
-	result[W] = a[W] * aT + b[W] * bT;
-	return result;
+function _mixQ4Q4<T extends QuatLike>(
+	a: T,
+	aT: number,
+	b: QuatLike,
+	bT: number,
+): T;
+function _mixQ4Q4(a: QuatLike, aT: number, b: QuatLike, bT: number): QuatLike {
+	const x = a[X] * aT + b[X] * bT;
+	const y = a[Y] * aT + b[Y] * bT;
+	const z = a[Z] * aT + b[Z] * bT;
+	const w = a[W] * aT + b[W] * bT;
+	return asQuatLike(a, x, y, z, w);
 }
