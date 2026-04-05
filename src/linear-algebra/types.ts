@@ -31,16 +31,6 @@ export type Vector_T = V2_T | V3_T | V4_T;
  */
 export type Vector = Vector_T | Vec2 | Vec3 | Vec4 | Quat;
 
-export type VectorToTuple<T extends Vector> = T extends Vec2
-	? V2_T
-	: T extends Vec3
-		? V3_T
-		: T extends Vec4
-			? V4_T
-			: T extends Quat
-				? V4_T
-				: T;
-
 // DECIDE(bret): Internally, Mat2 uses column-major; however, its constructor
 // takes row-major. This makes the array-based version and the Mat2 version
 // have different interfaces. Will need to think about this

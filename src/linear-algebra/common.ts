@@ -1,6 +1,6 @@
 import { approach, distance, distanceSq, equal } from '../util/index.js';
 import { isQuat, Quat } from './quat.js';
-import type { Vector, VectorToTuple } from './types';
+import type { Vector } from './types';
 import { isVec2, Vec2 } from './vec2.js';
 import { isVec3, Vec3 } from './vec3.js';
 import { isVec4, Vec4 } from './vec4.js';
@@ -11,7 +11,7 @@ import { isVec4, Vec4 } from './vec4.js';
  * @param b - Vector B
  * @returns Sum of vectors
  */
-export function addVec<T extends Vector>(a: T, b: Vector): VectorToTuple<T>;
+export function addVec<T extends Vector>(a: T, b: Vector): T;
 export function addVec(a: Vector, b: Vector): Vector {
 	const sum = a.map((v, i) => v + (b[i] ?? 0)) as Vector;
 	if (isVec2(a)) return new Vec2(...sum);
@@ -48,7 +48,7 @@ export function approachVec<T extends Vector>(
 	from: T,
 	to: Vector,
 	amount: Vector,
-): VectorToTuple<T>;
+): T;
 export function approachVec(from: Vector, to: Vector, amount: Vector): Vector {
 	const result = from.map((v, i) =>
 		approach(v, to[i] ?? 0, amount[i] ?? 0),
@@ -169,7 +169,7 @@ export function scaleVec(v: Vector, s: number): Vector {
  * @param b - Vector B
  * @returns Difference of vectors
  */
-export function subVec<T extends Vector>(a: T, b: Vector): VectorToTuple<T>;
+export function subVec<T extends Vector>(a: T, b: Vector): T;
 export function subVec(a: Vector, b: Vector): Vector {
 	const diff = a.map((v, i) => v - (b[i] ?? 0)) as Vector;
 	if (isVec2(a)) return new Vec2(...diff);
