@@ -94,12 +94,12 @@ describe('Vec3', () => {
 			expect(Vec3.up).toEqualVec3([0, 1, 0]);
 		});
 
-		test('Vec3.back should be a Vec3 set to <0, 0, -1>', () => {
-			expect(Vec3.back).toEqualVec3([0, 0, -1]);
+		test('Vec3.back should be a Vec3 set to <0, 0, 1>', () => {
+			expect(Vec3.back).toEqualVec3([0, 0, 1]);
 		});
 
-		test('Vec3.forward should be a Vec3 set to <0, 0, 1>', () => {
-			expect(Vec3.forward).toEqualVec3([0, 0, 1]);
+		test('Vec3.forward should be a Vec3 set to <0, 0, -1>', () => {
+			expect(Vec3.forward).toEqualVec3([0, 0, -1]);
 		});
 	});
 

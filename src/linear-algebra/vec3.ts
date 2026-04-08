@@ -102,22 +102,21 @@ export class Vec3 extends Array<number> {
 	}
 
 	/**
-	 * Creates an instance of a Vec3 at \<0, 0, -1\>.
-	 * @group Helper
-	 * @type Vec3
-	 */
-	static get back(): Vec3 {
-		return new Vec3(0, 0, -1);
-	}
-
-	/**
 	 * Creates an instance of a Vec3 at \<0, 0, 1\>.
 	 * @group Helper
 	 * @type Vec3
 	 */
-	static get forward(): Vec3 {
-		// DECIDE(bret): which way is forward?
+	static get back(): Vec3 {
 		return new Vec3(0, 0, 1);
+	}
+
+	/**
+	 * Creates an instance of a Vec3 at \<0, 0, -1\>.
+	 * @group Helper
+	 * @type Vec3
+	 */
+	static get forward(): Vec3 {
+		return new Vec3(0, 0, -1);
 	}
 
 	/**
