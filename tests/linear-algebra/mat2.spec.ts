@@ -15,8 +15,8 @@ const INDICES = [
 ] as const satisfies M2_T;
 
 const M2_00 = INDICES[0];
-const M2_10 = INDICES[1];
-const M2_01 = INDICES[2];
+const M2_01 = INDICES[1];
+const M2_10 = INDICES[2];
 const M2_11 = INDICES[3];
 
 describe('Matrix operations', () => {
@@ -37,29 +37,29 @@ describe('Matrix operations', () => {
 		});
 
 		describe('getters', () => {
-			const [M00, M01] = [1, 2];
-			const [M11, M10] = [3, 4];
+			const [M00, M10] = [1, 2];
+			const [M11, M01] = [3, 4];
 			// prettier-ignore
 			const a = new Mat2(
-				M00, M10,
-				M01, M11,
+				M00, M01,
+				M10, M11,
 			);
 
-			const col0: V2_T = [M00, M01];
-			const col1: V2_T = [M10, M11];
+			const col0: V2_T = [M00, M10];
+			const col1: V2_T = [M01, M11];
 
-			const row0: V2_T = [M00, M10];
-			const row1: V2_T = [M01, M11];
+			const row0: V2_T = [M00, M01];
+			const row1: V2_T = [M10, M11];
 
 			test('get mXX/[x]', () => {
 				expect(a.m00).toEqual(M00);
 				expect(a[M2_00]).toEqual(M00);
 
-				expect(a.m10).toEqual(M10);
-				expect(a[M2_10]).toEqual(M10);
-
 				expect(a.m01).toEqual(M01);
 				expect(a[M2_01]).toEqual(M01);
+
+				expect(a.m10).toEqual(M10);
+				expect(a[M2_10]).toEqual(M10);
 
 				expect(a.m11).toEqual(M11);
 				expect(a[M2_11]).toEqual(M11);
@@ -89,14 +89,14 @@ describe('Matrix operations', () => {
 		});
 
 		describe('setters', () => {
-			const [M00, M01] = [1, 2];
-			const [M11, M10] = [3, 4];
+			const [M00, M10] = [1, 2];
+			const [M11, M01] = [3, 4];
 
-			const col0: V2_T = [M00, M01];
-			const col1: V2_T = [M10, M11];
+			const col0: V2_T = [M00, M10];
+			const col1: V2_T = [M01, M11];
 
-			const row0: V2_T = [M00, M10];
-			const row1: V2_T = [M01, M11];
+			const row0: V2_T = [M00, M01];
+			const row1: V2_T = [M10, M11];
 
 			test('set mXX/[x]', () => {
 				const a = new Mat2();
@@ -106,15 +106,15 @@ describe('Matrix operations', () => {
 				a[M2_00] = -M00;
 				expect(a.m00).toEqual(-M00);
 
-				a.m10 = M10;
-				expect(a.m10).toEqual(M10);
-				a[M2_10] = -M10;
-				expect(a.m10).toEqual(-M10);
-
 				a.m01 = M01;
 				expect(a.m01).toEqual(M01);
 				a[M2_01] = -M01;
 				expect(a.m01).toEqual(-M01);
+
+				a.m10 = M10;
+				expect(a.m10).toEqual(M10);
+				a[M2_10] = -M10;
+				expect(a.m10).toEqual(-M10);
 
 				a.m11 = M11;
 				expect(a.m11).toEqual(M11);

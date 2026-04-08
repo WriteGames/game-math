@@ -19,23 +19,23 @@ const INDICES = [
 ] as const satisfies M4_T;
 
 const M4_00 = INDICES[0];
-const M4_10 = INDICES[1];
-const M4_20 = INDICES[2];
-const M4_30 = INDICES[3];
+const M4_01 = INDICES[1];
+const M4_02 = INDICES[2];
+const M4_03 = INDICES[3];
 
-const M4_01 = INDICES[4];
+const M4_10 = INDICES[4];
 const M4_11 = INDICES[5];
-const M4_21 = INDICES[6];
-const M4_31 = INDICES[7];
+const M4_12 = INDICES[6];
+const M4_13 = INDICES[7];
 
-const M4_02 = INDICES[8];
-const M4_12 = INDICES[9];
+const M4_20 = INDICES[8];
+const M4_21 = INDICES[9];
 const M4_22 = INDICES[10];
-const M4_32 = INDICES[11];
+const M4_23 = INDICES[11];
 
-const M4_03 = INDICES[12];
-const M4_13 = INDICES[13];
-const M4_23 = INDICES[14];
+const M4_30 = INDICES[12];
+const M4_31 = INDICES[13];
+const M4_32 = INDICES[14];
 const M4_33 = INDICES[15];
 
 describe('Matrix operations', () => {
@@ -74,74 +74,74 @@ describe('Matrix operations', () => {
 		});
 
 		describe('getters', () => {
-			const [M00, M10, M20, M30] = [1, 2, 3, 4];
-			const [M01, M11, M21, M31] = [5, 6, 7, 8];
-			const [M02, M12, M22, M32] = [9, 10, 11, 12];
-			const [M03, M13, M23, M33] = [13, 14, 15, 16];
+			const [M00, M01, M02, M03] = [1, 2, 3, 4];
+			const [M10, M11, M12, M13] = [5, 6, 7, 8];
+			const [M20, M21, M22, M23] = [9, 10, 11, 12];
+			const [M30, M31, M32, M33] = [13, 14, 15, 16];
 
 			// prettier-ignore
 			const a = new Mat4(
-				M00, M10, M20, M30,
-				M01, M11, M21, M31,
-				M02, M12, M22, M32,
-				M03, M13, M23, M33,
+				M00, M01, M02, M03,
+				M10, M11, M12, M13,
+				M20, M21, M22, M23,
+				M30, M31, M32, M33,
 			);
 
-			const row0: V4_T = [M00, M10, M20, M30];
-			const row1: V4_T = [M01, M11, M21, M31];
-			const row2: V4_T = [M02, M12, M22, M32];
-			const row3: V4_T = [M03, M13, M23, M33];
+			const row0: V4_T = [M00, M01, M02, M03];
+			const row1: V4_T = [M10, M11, M12, M13];
+			const row2: V4_T = [M20, M21, M22, M23];
+			const row3: V4_T = [M30, M31, M32, M33];
 
-			const col0: V4_T = [M00, M01, M02, M03];
-			const col1: V4_T = [M10, M11, M12, M13];
-			const col2: V4_T = [M20, M21, M22, M23];
-			const col3: V4_T = [M30, M31, M32, M33];
+			const col0: V4_T = [M00, M10, M20, M30];
+			const col1: V4_T = [M01, M11, M21, M31];
+			const col2: V4_T = [M02, M12, M22, M32];
+			const col3: V4_T = [M03, M13, M23, M33];
 
 			test('get mXX/[x]', () => {
 				expect(a.m00).toEqual(M00);
 				expect(a[M4_00]).toEqual(M00);
 
-				expect(a.m01).toEqual(M01);
-				expect(a[M4_01]).toEqual(M01);
-
-				expect(a.m02).toEqual(M02);
-				expect(a[M4_02]).toEqual(M02);
-
-				expect(a.m03).toEqual(M03);
-				expect(a[M4_03]).toEqual(M03);
-
 				expect(a.m10).toEqual(M10);
 				expect(a[M4_10]).toEqual(M10);
-
-				expect(a.m11).toEqual(M11);
-				expect(a[M4_11]).toEqual(M11);
-
-				expect(a.m12).toEqual(M12);
-				expect(a[M4_12]).toEqual(M12);
-
-				expect(a.m13).toEqual(M13);
-				expect(a[M4_13]).toEqual(M13);
 
 				expect(a.m20).toEqual(M20);
 				expect(a[M4_20]).toEqual(M20);
 
-				expect(a.m21).toEqual(M21);
-				expect(a[M4_21]).toEqual(M21);
-
-				expect(a.m22).toEqual(M22);
-				expect(a[M4_22]).toEqual(M22);
-
-				expect(a.m23).toEqual(M23);
-				expect(a[M4_23]).toEqual(M23);
-
 				expect(a.m30).toEqual(M30);
 				expect(a[M4_30]).toEqual(M30);
+
+				expect(a.m01).toEqual(M01);
+				expect(a[M4_01]).toEqual(M01);
+
+				expect(a.m11).toEqual(M11);
+				expect(a[M4_11]).toEqual(M11);
+
+				expect(a.m21).toEqual(M21);
+				expect(a[M4_21]).toEqual(M21);
 
 				expect(a.m31).toEqual(M31);
 				expect(a[M4_31]).toEqual(M31);
 
+				expect(a.m02).toEqual(M02);
+				expect(a[M4_02]).toEqual(M02);
+
+				expect(a.m12).toEqual(M12);
+				expect(a[M4_12]).toEqual(M12);
+
+				expect(a.m22).toEqual(M22);
+				expect(a[M4_22]).toEqual(M22);
+
 				expect(a.m32).toEqual(M32);
 				expect(a[M4_32]).toEqual(M32);
+
+				expect(a.m03).toEqual(M03);
+				expect(a[M4_03]).toEqual(M03);
+
+				expect(a.m13).toEqual(M13);
+				expect(a[M4_13]).toEqual(M13);
+
+				expect(a.m23).toEqual(M23);
+				expect(a[M4_23]).toEqual(M23);
 
 				expect(a.m33).toEqual(M33);
 				expect(a[M4_33]).toEqual(M33);
@@ -181,28 +181,28 @@ describe('Matrix operations', () => {
 		});
 
 		describe('setters', () => {
-			const [M00, M10, M20, M30] = [1, 2, 3, 4];
-			const [M01, M11, M21, M31] = [5, 6, 7, 8];
-			const [M02, M12, M22, M32] = [9, 10, 11, 12];
-			const [M03, M13, M23, M33] = [13, 14, 15, 16];
+			const [M00, M01, M02, M03] = [1, 2, 3, 4];
+			const [M10, M11, M12, M13] = [5, 6, 7, 8];
+			const [M20, M21, M22, M23] = [9, 10, 11, 12];
+			const [M30, M31, M32, M33] = [13, 14, 15, 16];
 
 			// prettier-ignore
 			const a = new Mat4(
-				M00, M10, M20, M30,
-				M01, M11, M21, M31,
-				M02, M12, M22, M32,
-				M03, M13, M23, M33,
+				M00, M01, M02, M03,
+				M10, M11, M12, M13,
+				M20, M21, M22, M23,
+				M30, M31, M32, M33,
 			);
 
-			const row0: V4_T = [M00, M10, M20, M30];
-			const row1: V4_T = [M01, M11, M21, M31];
-			const row2: V4_T = [M02, M12, M22, M32];
-			const row3: V4_T = [M03, M13, M23, M33];
+			const row0: V4_T = [M00, M01, M02, M03];
+			const row1: V4_T = [M10, M11, M12, M13];
+			const row2: V4_T = [M20, M21, M22, M23];
+			const row3: V4_T = [M30, M31, M32, M33];
 
-			const col0: V4_T = [M00, M01, M02, M03];
-			const col1: V4_T = [M10, M11, M12, M13];
-			const col2: V4_T = [M20, M21, M22, M23];
-			const col3: V4_T = [M30, M31, M32, M33];
+			const col0: V4_T = [M00, M10, M20, M30];
+			const col1: V4_T = [M01, M11, M21, M31];
+			const col2: V4_T = [M02, M12, M22, M32];
+			const col3: V4_T = [M03, M13, M23, M33];
 
 			test('set mXX/[x]', () => {
 				const a = new Mat4();
@@ -212,75 +212,75 @@ describe('Matrix operations', () => {
 				a[M4_00] = -M00;
 				expect(a.m00).toEqual(-M00);
 
-				a.m01 = M01;
-				expect(a.m01).toEqual(M01);
-				a[M4_01] = -M01;
-				expect(a.m01).toEqual(-M01);
-
-				a.m02 = M02;
-				expect(a.m02).toEqual(M02);
-				a[M4_02] = -M02;
-				expect(a.m02).toEqual(-M02);
-
-				a.m03 = M03;
-				expect(a.m03).toEqual(M03);
-				a[M4_03] = -M03;
-				expect(a.m03).toEqual(-M03);
-
 				a.m10 = M10;
 				expect(a.m10).toEqual(M10);
 				a[M4_10] = -M10;
 				expect(a.m10).toEqual(-M10);
-
-				a.m11 = M11;
-				expect(a.m11).toEqual(M11);
-				a[M4_11] = -M11;
-				expect(a.m11).toEqual(-M11);
-
-				a.m12 = M12;
-				expect(a.m12).toEqual(M12);
-				a[M4_12] = -M12;
-				expect(a.m12).toEqual(-M12);
-
-				a.m13 = M13;
-				expect(a.m13).toEqual(M13);
-				a[M4_13] = -M13;
-				expect(a.m13).toEqual(-M13);
 
 				a.m20 = M20;
 				expect(a.m20).toEqual(M20);
 				a[M4_20] = -M20;
 				expect(a.m20).toEqual(-M20);
 
-				a.m21 = M21;
-				expect(a.m21).toEqual(M21);
-				a[M4_21] = -M21;
-				expect(a.m21).toEqual(-M21);
-
-				a.m22 = M22;
-				expect(a.m22).toEqual(M22);
-				a[M4_22] = -M22;
-				expect(a.m22).toEqual(-M22);
-
-				a.m23 = M23;
-				expect(a.m23).toEqual(M23);
-				a[M4_23] = -M23;
-				expect(a.m23).toEqual(-M23);
-
 				a.m30 = M30;
 				expect(a.m30).toEqual(M30);
 				a[M4_30] = -M30;
 				expect(a.m30).toEqual(-M30);
+
+				a.m01 = M01;
+				expect(a.m01).toEqual(M01);
+				a[M4_01] = -M01;
+				expect(a.m01).toEqual(-M01);
+
+				a.m11 = M11;
+				expect(a.m11).toEqual(M11);
+				a[M4_11] = -M11;
+				expect(a.m11).toEqual(-M11);
+
+				a.m21 = M21;
+				expect(a.m21).toEqual(M21);
+				a[M4_21] = -M21;
+				expect(a.m21).toEqual(-M21);
 
 				a.m31 = M31;
 				expect(a.m31).toEqual(M31);
 				a[M4_31] = -M31;
 				expect(a.m31).toEqual(-M31);
 
+				a.m02 = M02;
+				expect(a.m02).toEqual(M02);
+				a[M4_02] = -M02;
+				expect(a.m02).toEqual(-M02);
+
+				a.m12 = M12;
+				expect(a.m12).toEqual(M12);
+				a[M4_12] = -M12;
+				expect(a.m12).toEqual(-M12);
+
+				a.m22 = M22;
+				expect(a.m22).toEqual(M22);
+				a[M4_22] = -M22;
+				expect(a.m22).toEqual(-M22);
+
 				a.m32 = M32;
 				expect(a.m32).toEqual(M32);
 				a[M4_32] = -M32;
 				expect(a.m32).toEqual(-M32);
+
+				a.m03 = M03;
+				expect(a.m03).toEqual(M03);
+				a[M4_03] = -M03;
+				expect(a.m03).toEqual(-M03);
+
+				a.m13 = M13;
+				expect(a.m13).toEqual(M13);
+				a[M4_13] = -M13;
+				expect(a.m13).toEqual(-M13);
+
+				a.m23 = M23;
+				expect(a.m23).toEqual(M23);
+				a[M4_23] = -M23;
+				expect(a.m23).toEqual(-M23);
 
 				a.m33 = M33;
 				expect(a.m33).toEqual(M33);

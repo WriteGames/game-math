@@ -223,23 +223,23 @@ export class Quat extends Array<number> {
 		const WZ = normalized[Z] * normalized[W];
 
 		result.m00 = 1.0 - 2.0 * (YY + ZZ);
-		result.m01 = 2.0 * (XY + WZ);
-		result.m02 = 2.0 * (XZ - WY);
-		result.m03 = 0.0;
-
-		result.m10 = 2.0 * (XY - WZ);
-		result.m11 = 1.0 - 2.0 * (XX + ZZ);
-		result.m12 = 2.0 * (YZ + WX);
-		result.m13 = 0.0;
-
-		result.m20 = 2.0 * (XZ + WY);
-		result.m21 = 2.0 * (YZ - WX);
-		result.m22 = 1.0 - 2.0 * (XX + YY);
-		result.m23 = 0.0;
-
+		result.m10 = 2.0 * (XY + WZ);
+		result.m20 = 2.0 * (XZ - WY);
 		result.m30 = 0.0;
+
+		result.m01 = 2.0 * (XY - WZ);
+		result.m11 = 1.0 - 2.0 * (XX + ZZ);
+		result.m21 = 2.0 * (YZ + WX);
 		result.m31 = 0.0;
+
+		result.m02 = 2.0 * (XZ + WY);
+		result.m12 = 2.0 * (YZ - WX);
+		result.m22 = 1.0 - 2.0 * (XX + YY);
 		result.m32 = 0.0;
+
+		result.m03 = 0.0;
+		result.m13 = 0.0;
+		result.m23 = 0.0;
 		result.m33 = 1.0;
 
 		return result;

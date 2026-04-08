@@ -21,10 +21,10 @@ const INDICES = [
 /** Column 0, Row 0 index */
 const M00 = INDICES[0];
 /** Column 1, Row 0 index */
-const M10 = INDICES[1];
+const M01 = INDICES[1];
 
 /** Column 0, Row 1 index */
-const M01 = INDICES[2];
+const M10 = INDICES[2];
 /** Column 1, Row 1 index */
 const M11 = INDICES[3];
 
@@ -39,15 +39,15 @@ export class Mat2 extends Array<number> {
 	/**
 	 * Uninitialized values defaults to the 2x2 identity matrix.
 	 * @param m00 - Element at column 0, row 0
-	 * @param m10 - Element at column 1, row 0
-	 * @param m01 - Element at column 0, row 1
+	 * @param m01 - Element at column 1, row 0
+	 * @param m10 - Element at column 0, row 1
 	 * @param m11 - Element at column 1, row 1
 	 */
-	constructor(m00 = 1, m10 = 0, m01 = 0, m11 = 1) {
+	constructor(m00 = 1, m01 = 0, m10 = 0, m11 = 1) {
 		// prettier-ignore
 		super(
-			m00, m01,
-			m10, m11
+			m00, m10,
+			m01, m11
 		);
 	}
 
@@ -67,19 +67,19 @@ export class Mat2 extends Array<number> {
 	}
 
 	/** Element at column 1, row 0 */
-	get m10(): number {
-		return this[M10];
-	}
-	set m10(value: number) {
-		this[M10] = value;
-	}
-
-	/** Element at column 0, row 1 */
 	get m01(): number {
 		return this[M01];
 	}
 	set m01(value: number) {
 		this[M01] = value;
+	}
+
+	/** Element at column 0, row 1 */
+	get m10(): number {
+		return this[M10];
+	}
+	set m10(value: number) {
+		this[M10] = value;
 	}
 
 	/** Element at column 1, row 1 */
@@ -92,18 +92,18 @@ export class Mat2 extends Array<number> {
 
 	/** Returns row 0 as a Vec2 */
 	get row0(): Vec2 {
-		return new Vec2(this[M00], this[M10]);
+		return new Vec2(this[M00], this[M01]);
 	}
 	set row0(v: Vec2Like) {
 		this[M00] = v[0];
-		this[M10] = v[1];
+		this[M01] = v[1];
 	}
 	/** Returns row 1 as a Vec2 */
 	get row1(): Vec2 {
-		return new Vec2(this[M01], this[M11]);
+		return new Vec2(this[M10], this[M11]);
 	}
 	set row1(v: Vec2Like) {
-		this[M01] = v[0];
+		this[M10] = v[0];
 		this[M11] = v[1];
 	}
 	/** Returns all rows as an array of Vec2s */
@@ -117,18 +117,18 @@ export class Mat2 extends Array<number> {
 
 	/** Returns column 0 as a Vec2 */
 	get column0(): Vec2 {
-		return new Vec2(this[M00], this[M01]);
+		return new Vec2(this[M00], this[M10]);
 	}
 	set column0(v: Vec2Like) {
 		this[M00] = v[0];
-		this[M01] = v[1];
+		this[M10] = v[1];
 	}
 	/** Returns column 1 as a Vec2 */
 	get column1(): Vec2 {
-		return new Vec2(this[M10], this[M11]);
+		return new Vec2(this[M01], this[M11]);
 	}
 	set column1(v: Vec2Like) {
-		this[M10] = v[0];
+		this[M01] = v[0];
 		this[M11] = v[1];
 	}
 	/** Returns all columns as an array of Vec2s */
@@ -175,8 +175,8 @@ export class Mat2 extends Array<number> {
 	clone(): Mat2 {
 		// prettier-ignore
 		return new Mat2(
-			this[M00], this[M10],
-			this[M01], this[M11]
+			this[M00], this[M01],
+			this[M10], this[M11]
 		);
 	}
 
@@ -186,8 +186,8 @@ export class Mat2 extends Array<number> {
 	 */
 	setIdentity(): this {
 		this[M00] = 1;
-		this[M01] = 0;
 		this[M10] = 0;
+		this[M01] = 0;
 		this[M11] = 1;
 		return this;
 	}
@@ -195,15 +195,15 @@ export class Mat2 extends Array<number> {
 	/**
 	 * Sets the matrix to new values
 	 * @param m00 - Element at column 0, row 0
-	 * @param m10 - Element at column 1, row 0
-	 * @param m01 - Element at column 0, row 1
+	 * @param m01 - Element at column 1, row 0
+	 * @param m10 - Element at column 0, row 1
 	 * @param m11 - Element at column 1, row 1
 	 * @returns this
 	 */
-	set(m00: number, m01: number, m10: number, m11: number): this {
+	set(m00: number, m10: number, m01: number, m11: number): this {
 		this[M00] = m00;
-		this[M01] = m10;
 		this[M10] = m01;
+		this[M01] = m10;
 		this[M11] = m11;
 		return this;
 	}
@@ -215,8 +215,8 @@ export class Mat2 extends Array<number> {
 	 */
 	setMat2(m: Mat2Like): this {
 		this[M00] = m[M00];
-		this[M01] = m[M01];
 		this[M10] = m[M10];
+		this[M01] = m[M01];
 		this[M11] = m[M11];
 		return this;
 	}
@@ -335,8 +335,8 @@ export class Mat2 extends Array<number> {
 		const invDeterminant = 1 / this.determinant();
 		const temp = this[M00];
 		this[M00] = invDeterminant * this[M11];
-		this[M10] *= -invDeterminant;
 		this[M01] *= -invDeterminant;
+		this[M10] *= -invDeterminant;
 		this[M11] = invDeterminant * temp;
 		return this;
 	}
@@ -371,9 +371,9 @@ export function transpose2D<T extends Mat2Like>(m: T): T;
 export function transpose2D(m: Mat2Like): Mat2Like {
 	if (m.length !== 4) throw new Error('not a valid 2x2 matrix');
 	const result = (isMat2(m) ? m.clone() : [...m]) as typeof m;
-	const temp = result[M01];
-	result[M01] = result[M10];
-	result[M10] = temp;
+	const temp = result[M10];
+	result[M10] = result[M01];
+	result[M01] = temp;
 	return result;
 }
 
@@ -403,7 +403,7 @@ function assertVec2(v: Vec2Like): void {
  */
 export function determinantM2(m: Mat2Like): number {
 	assertMat2(m);
-	return m[M00] * m[M11] - m[M10] * m[M01];
+	return m[M00] * m[M11] - m[M01] * m[M10];
 }
 
 /**
@@ -418,10 +418,10 @@ export function multiplyM2M2(left: Mat2Like, right: Mat2Like): Mat2Like {
 	assertMat2(left);
 	assertMat2(right);
 	const result = isMat2(left) ? new Mat2() : ([1, 0, 0, 1] as typeof left);
-	result[M00] = left[M00] * right[M00] + left[M10] * right[M01];
-	result[M01] = left[M01] * right[M00] + left[M11] * right[M01];
-	result[M10] = left[M00] * right[M10] + left[M10] * right[M11];
-	result[M11] = left[M01] * right[M10] + left[M11] * right[M11];
+	result[M00] = left[M00] * right[M00] + left[M01] * right[M10];
+	result[M10] = left[M10] * right[M00] + left[M11] * right[M10];
+	result[M01] = left[M00] * right[M01] + left[M01] * right[M11];
+	result[M11] = left[M10] * right[M01] + left[M11] * right[M11];
 	return result;
 }
 
@@ -436,7 +436,7 @@ export function multiplyM2V2<T extends Vec2Like>(m: Mat2Like, v: T): T;
 export function multiplyM2V2(m: Mat2Like, v: Vec2Like): Vec2Like {
 	assertMat2(m);
 	assertVec2(v);
-	const x = m[M00] * v[0] + m[M10] * v[1];
-	const y = m[M01] * v[0] + m[M11] * v[1];
+	const x = m[M00] * v[0] + m[M01] * v[1];
+	const y = m[M10] * v[0] + m[M11] * v[1];
 	return isVec2(v) ? new Vec2(x, y) : [x, y];
 }

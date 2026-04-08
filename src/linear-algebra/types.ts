@@ -38,27 +38,27 @@ export type Vector = Vector_T | Vec2 | Vec3 | Vec4 | Quat;
  */
 // prettier-ignore
 export type M2_T = [
-	m00: number, m10: number,
-	m01: number, m11: number,
+	m00: number, m01: number,
+	m10: number, m11: number,
 ];
 /**
  * @category Linear Algebra
  */
 // prettier-ignore
 export type M3_T = [
-	m00: number, m10: number, m20: number,
-	m01: number, m11: number, m21: number,
-	m02: number, m12: number, m22: number,
+	m00: number, m01: number, m02: number,
+	m10: number, m11: number, m12: number,
+	m20: number, m21: number, m22: number,
 ];
 /**
  * @category Linear Algebra
  */
 // prettier-ignore
 export type M4_T = [
-	m00: number, m10: number, m20: number, m30: number,
-	m01: number, m11: number, m21: number, m31: number,
-	m02: number, m12: number, m22: number, m32: number,
-	m03: number, m13: number, m23: number, m33: number,
+	m00: number, m01: number, m02: number, m03: number,
+	m10: number, m11: number, m12: number, m13: number,
+	m20: number, m21: number, m22: number, m23: number,
+	m30: number, m31: number, m32: number, m33: number,
 ];
 
 /**

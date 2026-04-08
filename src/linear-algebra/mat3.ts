@@ -23,21 +23,21 @@ const INDICES = [
 /** Column 0, Row 0 index */
 const M00 = INDICES[0];
 /** Column 1, Row 0 index */
-const M10 = INDICES[1];
+const M01 = INDICES[1];
 /** Column 2, Row 0 index */
-const M20 = INDICES[2];
+const M02 = INDICES[2];
 
 /** Column 0, Row 1 index */
-const M01 = INDICES[3];
+const M10 = INDICES[3];
 /** Column 1, Row 1 index */
 const M11 = INDICES[4];
 /** Column 2, Row 1 index */
-const M21 = INDICES[5];
+const M12 = INDICES[5];
 
 /** Column 0, Row 2 index */
-const M02 = INDICES[6];
+const M20 = INDICES[6];
 /** Column 1, Row 2 index */
-const M12 = INDICES[7];
+const M21 = INDICES[7];
 /** Column 2, Row 2 index */
 const M22 = INDICES[8];
 
@@ -52,26 +52,26 @@ export class Mat3 extends Array<number> {
 	/**
 	 * Uninitialized values defaults to the 3x3 identity matrix.
 	 * @param m00 - Element at column 0, row 0
-	 * @param m10 - Element at column 1, row 0
-	 * @param m20 - Element at column 2, row 0
-	 * @param m01 - Element at column 0, row 1
+	 * @param m01 - Element at column 1, row 0
+	 * @param m02 - Element at column 2, row 0
+	 * @param m10 - Element at column 0, row 1
 	 * @param m11 - Element at column 1, row 1
-	 * @param m21 - Element at column 2, row 1
-	 * @param m02 - Element at column 0, row 2
-	 * @param m12 - Element at column 1, row 2
+	 * @param m12 - Element at column 2, row 1
+	 * @param m20 - Element at column 0, row 2
+	 * @param m21 - Element at column 1, row 2
 	 * @param m22 - Element at column 2, row 2
 	 */
 	// prettier-ignore
 	constructor(
-		m00 = 1, m10 = 0, m20 = 0,
-		m01 = 0, m11 = 1, m21 = 0,
-		m02 = 0, m12 = 0, m22 = 1,
+		m00 = 1, m01 = 0, m02 = 0,
+		m10 = 0, m11 = 1, m12 = 0,
+		m20 = 0, m21 = 0, m22 = 1,
 	) {
 		// prettier-ignore
 		super(
-			m00, m01, m02,
-			m10, m11, m12,
-			m20, m21, m22,
+			m00, m10, m20,
+			m01, m11, m21,
+			m02, m12, m22,
 		);
 	}
 
@@ -96,27 +96,27 @@ export class Mat3 extends Array<number> {
 	}
 
 	/** Element at column 1, row 0 */
-	get m10(): number {
-		return this[M10];
-	}
-	set m10(value: number) {
-		this[M10] = value;
-	}
-
-	/** Element at column 2, row 0 */
-	get m20(): number {
-		return this[M20];
-	}
-	set m20(value: number) {
-		this[M20] = value;
-	}
-
-	/** Element at column 0, row 1 */
 	get m01(): number {
 		return this[M01];
 	}
 	set m01(value: number) {
 		this[M01] = value;
+	}
+
+	/** Element at column 2, row 0 */
+	get m02(): number {
+		return this[M02];
+	}
+	set m02(value: number) {
+		this[M02] = value;
+	}
+
+	/** Element at column 0, row 1 */
+	get m10(): number {
+		return this[M10];
+	}
+	set m10(value: number) {
+		this[M10] = value;
 	}
 
 	/** Element at column 1, row 1 */
@@ -128,27 +128,27 @@ export class Mat3 extends Array<number> {
 	}
 
 	/** Element at column 2, row 1 */
-	get m21(): number {
-		return this[M21];
-	}
-	set m21(value: number) {
-		this[M21] = value;
-	}
-
-	/** Element at column 0, row 2 */
-	get m02(): number {
-		return this[M02];
-	}
-	set m02(value: number) {
-		this[M02] = value;
-	}
-
-	/** Element at column 1, row 2 */
 	get m12(): number {
 		return this[M12];
 	}
 	set m12(value: number) {
 		this[M12] = value;
+	}
+
+	/** Element at column 0, row 2 */
+	get m20(): number {
+		return this[M20];
+	}
+	set m20(value: number) {
+		this[M20] = value;
+	}
+
+	/** Element at column 1, row 2 */
+	get m21(): number {
+		return this[M21];
+	}
+	set m21(value: number) {
+		this[M21] = value;
 	}
 
 	/** Element at column 2, row 2 */
@@ -161,29 +161,29 @@ export class Mat3 extends Array<number> {
 
 	/** Returns row 0 as a Vec3 */
 	get row0(): Vec3 {
-		return new Vec3(this[M00], this[M10], this[M20]);
+		return new Vec3(this[M00], this[M01], this[M02]);
 	}
 	set row0(v: Vec3Like) {
 		this[M00] = v[0];
-		this[M10] = v[1];
-		this[M20] = v[2];
+		this[M01] = v[1];
+		this[M02] = v[2];
 	}
 	/** Returns row 1 as a Vec3 */
 	get row1(): Vec3 {
-		return new Vec3(this[M01], this[M11], this[M21]);
+		return new Vec3(this[M10], this[M11], this[M12]);
 	}
 	set row1(v: Vec3Like) {
-		this[M01] = v[0];
+		this[M10] = v[0];
 		this[M11] = v[1];
-		this[M21] = v[2];
+		this[M12] = v[2];
 	}
 	/** Returns row 2 as a Vec3 */
 	get row2(): Vec3 {
-		return new Vec3(this[M02], this[M12], this[M22]);
+		return new Vec3(this[M20], this[M21], this[M22]);
 	}
 	set row2(v: Vec3Like) {
-		this[M02] = v[0];
-		this[M12] = v[1];
+		this[M20] = v[0];
+		this[M21] = v[1];
 		this[M22] = v[2];
 	}
 	/** Returns all rows as an array of Vec3s */
@@ -198,29 +198,29 @@ export class Mat3 extends Array<number> {
 
 	/** Returns column 0 as a Vec3 */
 	get column0(): Vec3 {
-		return new Vec3(this[M00], this[M01], this[M02]);
+		return new Vec3(this[M00], this[M10], this[M20]);
 	}
 	set column0(v: Vec3Like) {
 		this[M00] = v[0];
-		this[M01] = v[1];
-		this[M02] = v[2];
+		this[M10] = v[1];
+		this[M20] = v[2];
 	}
 	/** Returns column 1 as a Vec3 */
 	get column1(): Vec3 {
-		return new Vec3(this[M10], this[M11], this[M12]);
+		return new Vec3(this[M01], this[M11], this[M21]);
 	}
 	set column1(v: Vec3Like) {
-		this[M10] = v[0];
+		this[M01] = v[0];
 		this[M11] = v[1];
-		this[M12] = v[2];
+		this[M21] = v[2];
 	}
 	/** Returns column 2 as a Vec3 */
 	get column2(): Vec3 {
-		return new Vec3(this[M20], this[M21], this[M22]);
+		return new Vec3(this[M02], this[M12], this[M22]);
 	}
 	set column2(v: Vec3Like) {
-		this[M20] = v[0];
-		this[M21] = v[1];
+		this[M02] = v[0];
+		this[M12] = v[1];
 		this[M22] = v[2];
 	}
 	/** Returns all columns as an array of Vec3s */
@@ -277,9 +277,9 @@ export class Mat3 extends Array<number> {
 	clone(): Mat3 {
 		// prettier-ignore
 		return new Mat3(
-			this[M00], this[M10], this[M20],
-			this[M01], this[M11], this[M21],
-			this[M02], this[M12], this[M22],
+			this[M00], this[M01], this[M02],
+			this[M10], this[M11], this[M12],
+			this[M20], this[M21], this[M22],
 		);
 	}
 
@@ -289,15 +289,15 @@ export class Mat3 extends Array<number> {
 	 */
 	setIdentity(): this {
 		this[M00] = 1;
-		this[M01] = 0;
-		this[M02] = 0;
-
 		this[M10] = 0;
-		this[M11] = 1;
-		this[M12] = 0;
-
 		this[M20] = 0;
+
+		this[M01] = 0;
+		this[M11] = 1;
 		this[M21] = 0;
+
+		this[M02] = 0;
+		this[M12] = 0;
 		this[M22] = 1;
 
 		return this;
@@ -306,32 +306,32 @@ export class Mat3 extends Array<number> {
 	/**
 	 * Sets the matrix to new values
 	 * @param m00 - Element at column 0, row 0
-	 * @param m10 - Element at column 1, row 0
-	 * @param m20 - Element at column 2, row 0
-	 * @param m01 - Element at column 0, row 1
+	 * @param m01 - Element at column 1, row 0
+	 * @param m02 - Element at column 2, row 0
+	 * @param m10 - Element at column 0, row 1
 	 * @param m11 - Element at column 1, row 1
-	 * @param m21 - Element at column 2, row 1
-	 * @param m02 - Element at column 0, row 2
-	 * @param m12 - Element at column 1, row 2
+	 * @param m12 - Element at column 2, row 1
+	 * @param m20 - Element at column 0, row 2
+	 * @param m21 - Element at column 1, row 2
 	 * @param m22 - Element at column 2, row 2
 	 * @returns this
 	 */
 	// prettier-ignore
 	set(
-		m00: number, m01: number, m02: number,
-		m10: number, m11: number, m12: number,
-		m20: number, m21: number, m22: number,
+		m00: number, m10: number, m20: number,
+		m01: number, m11: number, m21: number,
+		m02: number, m12: number, m22: number,
 	): this {
 		this[M00] = m00;
-		this[M01] = m01;
-		this[M02] = m02;
-
 		this[M10] = m10;
-		this[M11] = m11;
-		this[M12] = m12;
-
 		this[M20] = m20;
+
+		this[M01] = m01;
+		this[M11] = m11;
 		this[M21] = m21;
+
+		this[M02] = m02;
+		this[M12] = m12;
 		this[M22] = m22;
 		return this;
 	}
@@ -343,15 +343,15 @@ export class Mat3 extends Array<number> {
 	 */
 	setMat3(m: Mat3Like): this {
 		this[M00] = m[M00];
-		this[M01] = m[M01];
-		this[M02] = m[M02];
-
 		this[M10] = m[M10];
-		this[M11] = m[M11];
-		this[M12] = m[M12];
-
 		this[M20] = m[M20];
+
+		this[M01] = m[M01];
+		this[M11] = m[M11];
 		this[M21] = m[M21];
+
+		this[M02] = m[M02];
+		this[M12] = m[M12];
 		this[M22] = m[M22];
 
 		return this;
@@ -364,8 +364,8 @@ export class Mat3 extends Array<number> {
 	 */
 	static translate(x: number, y: number): Mat3 {
 		const result = new Mat3();
-		result[M20] = x;
-		result[M21] = y;
+		result[M02] = x;
+		result[M12] = y;
 		return result;
 	}
 
@@ -388,15 +388,15 @@ export class Mat3 extends Array<number> {
 		const o = 1 - c;
 
 		result[M00] = x * x * o + c;
-		result[M01] = x * y * o + z * s;
-		result[M02] = x * z * o - y * s;
+		result[M10] = x * y * o + z * s;
+		result[M20] = x * z * o - y * s;
 
-		result[M10] = y * x * o - z * s;
+		result[M01] = y * x * o - z * s;
 		result[M11] = y * y * o + c;
-		result[M12] = y * z * o + x * s;
+		result[M21] = y * z * o + x * s;
 
-		result[M20] = z * x * o + y * s;
-		result[M21] = z * y * o - x * s;
+		result[M02] = z * x * o + y * s;
+		result[M12] = z * y * o - x * s;
 		result[M22] = z * z * o + c;
 
 		return result;
@@ -579,17 +579,17 @@ export function transpose3D<T extends Mat3Like>(m: T): T {
 	if (m.length !== 9) throw new Error('not a valid 3x3 matrix');
 	const result = (isMat3(m) ? m.clone() : [...m]) as typeof m;
 
-	let temp = result[M01];
-	result[M01] = result[M10];
-	result[M10] = temp;
+	let temp = result[M10];
+	result[M10] = result[M01];
+	result[M01] = temp;
 
-	temp = result[M02];
-	result[M02] = result[M20];
-	result[M20] = temp;
+	temp = result[M20];
+	result[M20] = result[M02];
+	result[M02] = temp;
 
-	temp = result[M12];
-	result[M12] = result[M21];
-	result[M21] = temp;
+	temp = result[M21];
+	result[M21] = result[M12];
+	result[M12] = temp;
 
 	return result;
 }
@@ -621,9 +621,9 @@ function assertVec3(v: Vec3Like): void {
 export function determinantM3(m: Mat3Like): number {
 	assertMat3(m);
 	return (
-		m[M00] * (m[M22] * m[M11] - m[M12] * m[M21]) +
-		m[M01] * (m[M12] * m[M20] - m[M22] * m[M10]) +
-		m[M02] * (m[M21] * m[M10] - m[M11] * m[M20])
+		m[M00] * (m[M22] * m[M11] - m[M21] * m[M12]) +
+		m[M10] * (m[M21] * m[M02] - m[M22] * m[M01]) +
+		m[M20] * (m[M12] * m[M01] - m[M11] * m[M02])
 	);
 }
 
@@ -642,17 +642,17 @@ export function multiplyM3M3<T extends Mat3Like>(l: T, r: Mat3Like): T {
 		isMat3(l) ? new Mat3() : [1, 0, 0, 0, 1, 0, 0, 0, 1]
 	) as typeof l;
 
-	result[M00] = l[M00] * r[M00] + l[M10] * r[M01] + l[M20] * r[M02];
-	result[M01] = l[M01] * r[M00] + l[M11] * r[M01] + l[M21] * r[M02];
-	result[M02] = l[M02] * r[M00] + l[M12] * r[M01] + l[M22] * r[M02];
+	result[M00] = l[M00] * r[M00] + l[M01] * r[M10] + l[M02] * r[M20];
+	result[M10] = l[M10] * r[M00] + l[M11] * r[M10] + l[M12] * r[M20];
+	result[M20] = l[M20] * r[M00] + l[M21] * r[M10] + l[M22] * r[M20];
 
-	result[M10] = l[M00] * r[M10] + l[M10] * r[M11] + l[M20] * r[M12];
-	result[M11] = l[M01] * r[M10] + l[M11] * r[M11] + l[M21] * r[M12];
-	result[M12] = l[M02] * r[M10] + l[M12] * r[M11] + l[M22] * r[M12];
+	result[M01] = l[M00] * r[M01] + l[M01] * r[M11] + l[M02] * r[M21];
+	result[M11] = l[M10] * r[M01] + l[M11] * r[M11] + l[M12] * r[M21];
+	result[M21] = l[M20] * r[M01] + l[M21] * r[M11] + l[M22] * r[M21];
 
-	result[M20] = l[M00] * r[M20] + l[M10] * r[M21] + l[M20] * r[M22];
-	result[M21] = l[M01] * r[M20] + l[M11] * r[M21] + l[M21] * r[M22];
-	result[M22] = l[M02] * r[M20] + l[M12] * r[M21] + l[M22] * r[M22];
+	result[M02] = l[M00] * r[M02] + l[M01] * r[M12] + l[M02] * r[M22];
+	result[M12] = l[M10] * r[M02] + l[M11] * r[M12] + l[M12] * r[M22];
+	result[M22] = l[M20] * r[M02] + l[M21] * r[M12] + l[M22] * r[M22];
 
 	return result;
 }
@@ -668,9 +668,9 @@ export function multiplyM3V3<T extends Vec3Like>(m: Mat3Like, v: T): T;
 export function multiplyM3V3(m: Mat3Like, v: Vec3Like): Vec3Like {
 	assertMat3(m);
 	assertVec3(v);
-	const x = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2];
-	const y = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2];
-	const z = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2];
+	const x = m[M00] * v[0] + m[M01] * v[1] + m[M02] * v[2];
+	const y = m[M10] * v[0] + m[M11] * v[1] + m[M12] * v[2];
+	const z = m[M20] * v[0] + m[M21] * v[1] + m[M22] * v[2];
 	return isVec3(v) ? new Vec3(x, y, z) : [x, y, z];
 }
 

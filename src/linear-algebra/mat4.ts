@@ -27,36 +27,36 @@ const INDICES = [
 /** Column 0, Row 0 index */
 const M00 = INDICES[0];
 /** Column 1, Row 0 index */
-const M10 = INDICES[1];
+const M01 = INDICES[1];
 /** Column 2, Row 0 index */
-const M20 = INDICES[2];
+const M02 = INDICES[2];
 /** Column 2, Row 0 index */
-const M30 = INDICES[3];
+const M03 = INDICES[3];
 
 /** Column 0, Row 1 index */
-const M01 = INDICES[4];
+const M10 = INDICES[4];
 /** Column 1, Row 1 index */
 const M11 = INDICES[5];
 /** Column 2, Row 1 index */
-const M21 = INDICES[6];
+const M12 = INDICES[6];
 /** Column 3, Row 1 index */
-const M31 = INDICES[7];
+const M13 = INDICES[7];
 
 /** Column 0, Row 2 index */
-const M02 = INDICES[8];
+const M20 = INDICES[8];
 /** Column 1, Row 2 index */
-const M12 = INDICES[9];
+const M21 = INDICES[9];
 /** Column 2, Row 2 index */
 const M22 = INDICES[10];
 /** Column 3, Row 2 index */
-const M32 = INDICES[11];
+const M23 = INDICES[11];
 
 /** Column 0, Row 2 index */
-const M03 = INDICES[12];
+const M30 = INDICES[12];
 /** Column 1, Row 2 index */
-const M13 = INDICES[13];
+const M31 = INDICES[13];
 /** Column 2, Row 2 index */
-const M23 = INDICES[14];
+const M32 = INDICES[14];
 /** Column 3, Row 2 index */
 const M33 = INDICES[15];
 
@@ -71,35 +71,35 @@ export class Mat4 extends Array<number> {
 	/**
 	 * Uninitialized values defaults to the 4x4 identity matrix.
 	 * @param m00 - Element at column 0, row 0
-	 * @param m10 - Element at column 1, row 0
-	 * @param m20 - Element at column 2, row 0
-	 * @param m30 - Element at column 3, row 0
-	 * @param m01 - Element at column 0, row 1
+	 * @param m01 - Element at column 1, row 0
+	 * @param m02 - Element at column 2, row 0
+	 * @param m03 - Element at column 3, row 0
+	 * @param m10 - Element at column 0, row 1
 	 * @param m11 - Element at column 1, row 1
-	 * @param m21 - Element at column 2, row 1
-	 * @param m31 - Element at column 3, row 1
-	 * @param m02 - Element at column 0, row 2
-	 * @param m12 - Element at column 1, row 2
+	 * @param m12 - Element at column 2, row 1
+	 * @param m13 - Element at column 3, row 1
+	 * @param m20 - Element at column 0, row 2
+	 * @param m21 - Element at column 1, row 2
 	 * @param m22 - Element at column 2, row 2
-	 * @param m32 - Element at column 3, row 2
-	 * @param m03 - Element at column 0, row 3
-	 * @param m13 - Element at column 1, row 3
-	 * @param m23 - Element at column 2, row 3
+	 * @param m23 - Element at column 3, row 2
+	 * @param m30 - Element at column 0, row 3
+	 * @param m31 - Element at column 1, row 3
+	 * @param m32 - Element at column 2, row 3
 	 * @param m33 - Element at column 3, row 3
 	 */
 	// prettier-ignore
 	constructor(
-		m00 = 1, m10 = 0, m20 = 0, m30 = 0,
-		m01 = 0, m11 = 1, m21 = 0, m31 = 0,
-		m02 = 0, m12 = 0, m22 = 1, m32 = 0,
-		m03 = 0, m13 = 0, m23 = 0, m33 = 1,
+		m00 = 1, m01 = 0, m02 = 0, m03 = 0,
+		m10 = 0, m11 = 1, m12 = 0, m13 = 0,
+		m20 = 0, m21 = 0, m22 = 1, m23 = 0,
+		m30 = 0, m31 = 0, m32 = 0, m33 = 1,
 	) {
 		// prettier-ignore
 		super(
-			m00, m01, m02, m03,
-			m10, m11, m12, m13,
-			m20, m21, m22, m23,
-			m30, m31, m32, m33,
+			m00, m10, m20, m30,
+			m01, m11, m21, m31,
+			m02, m12, m22, m32,
+			m03, m13, m23, m33,
 		);
 	}
 
@@ -125,35 +125,35 @@ export class Mat4 extends Array<number> {
 	}
 
 	/** Element at column 1, row 0 */
-	get m10(): number {
-		return this[M10];
-	}
-	set m10(value: number) {
-		this[M10] = value;
-	}
-
-	/** Element at column 2, row 0 */
-	get m20(): number {
-		return this[M20];
-	}
-	set m20(value: number) {
-		this[M20] = value;
-	}
-
-	/** Element at column 3, row 0 */
-	get m30(): number {
-		return this[M30];
-	}
-	set m30(value: number) {
-		this[M30] = value;
-	}
-
-	/** Element at column 0, row 1 */
 	get m01(): number {
 		return this[M01];
 	}
 	set m01(value: number) {
 		this[M01] = value;
+	}
+
+	/** Element at column 2, row 0 */
+	get m02(): number {
+		return this[M02];
+	}
+	set m02(value: number) {
+		this[M02] = value;
+	}
+
+	/** Element at column 3, row 0 */
+	get m03(): number {
+		return this[M03];
+	}
+	set m03(value: number) {
+		this[M03] = value;
+	}
+
+	/** Element at column 0, row 1 */
+	get m10(): number {
+		return this[M10];
+	}
+	set m10(value: number) {
+		this[M10] = value;
 	}
 
 	/** Element at column 1, row 1 */
@@ -165,35 +165,35 @@ export class Mat4 extends Array<number> {
 	}
 
 	/** Element at column 2, row 1 */
-	get m21(): number {
-		return this[M21];
-	}
-	set m21(value: number) {
-		this[M21] = value;
-	}
-
-	/** Element at column 3, row 1 */
-	get m31(): number {
-		return this[M31];
-	}
-	set m31(value: number) {
-		this[M31] = value;
-	}
-
-	/** Element at column 0, row 2 */
-	get m02(): number {
-		return this[M02];
-	}
-	set m02(value: number) {
-		this[M02] = value;
-	}
-
-	/** Element at column 1, row 2 */
 	get m12(): number {
 		return this[M12];
 	}
 	set m12(value: number) {
 		this[M12] = value;
+	}
+
+	/** Element at column 3, row 1 */
+	get m13(): number {
+		return this[M13];
+	}
+	set m13(value: number) {
+		this[M13] = value;
+	}
+
+	/** Element at column 0, row 2 */
+	get m20(): number {
+		return this[M20];
+	}
+	set m20(value: number) {
+		this[M20] = value;
+	}
+
+	/** Element at column 1, row 2 */
+	get m21(): number {
+		return this[M21];
+	}
+	set m21(value: number) {
+		this[M21] = value;
 	}
 
 	/** Element at column 2, row 2 */
@@ -205,35 +205,35 @@ export class Mat4 extends Array<number> {
 	}
 
 	/** Element at column 3, row 2 */
-	get m32(): number {
-		return this[M32];
-	}
-	set m32(value: number) {
-		this[M32] = value;
-	}
-
-	/** Element at column 0, row 3 */
-	get m03(): number {
-		return this[M03];
-	}
-	set m03(value: number) {
-		this[M03] = value;
-	}
-
-	/** Element at column 1, row 3 */
-	get m13(): number {
-		return this[M13];
-	}
-	set m13(value: number) {
-		this[M13] = value;
-	}
-
-	/** Element at column 2, row 3 */
 	get m23(): number {
 		return this[M23];
 	}
 	set m23(value: number) {
 		this[M23] = value;
+	}
+
+	/** Element at column 0, row 3 */
+	get m30(): number {
+		return this[M30];
+	}
+	set m30(value: number) {
+		this[M30] = value;
+	}
+
+	/** Element at column 1, row 3 */
+	get m31(): number {
+		return this[M31];
+	}
+	set m31(value: number) {
+		this[M31] = value;
+	}
+
+	/** Element at column 2, row 3 */
+	get m32(): number {
+		return this[M32];
+	}
+	set m32(value: number) {
+		this[M32] = value;
 	}
 
 	/** Element at column 3, row 3 */
@@ -246,42 +246,42 @@ export class Mat4 extends Array<number> {
 
 	/** Returns row 0 as a Vec4 */
 	get row0(): Vec4 {
-		return new Vec4(this[M00], this[M10], this[M20], this[M30]);
+		return new Vec4(this[M00], this[M01], this[M02], this[M03]);
 	}
 	set row0(v: Vec4Like) {
 		this[M00] = v[0];
-		this[M10] = v[1];
-		this[M20] = v[2];
-		this[M30] = v[3];
+		this[M01] = v[1];
+		this[M02] = v[2];
+		this[M03] = v[3];
 	}
 	/** Returns row 1 as a Vec4 */
 	get row1(): Vec4 {
-		return new Vec4(this[M01], this[M11], this[M21], this[M31]);
+		return new Vec4(this[M10], this[M11], this[M12], this[M13]);
 	}
 	set row1(v: Vec4Like) {
-		this[M01] = v[0];
+		this[M10] = v[0];
 		this[M11] = v[1];
-		this[M21] = v[2];
-		this[M31] = v[3];
+		this[M12] = v[2];
+		this[M13] = v[3];
 	}
 	/** Returns row 2 as a Vec4 */
 	get row2(): Vec4 {
-		return new Vec4(this[M02], this[M12], this[M22], this[M32]);
+		return new Vec4(this[M20], this[M21], this[M22], this[M23]);
 	}
 	set row2(v: Vec4Like) {
-		this[M02] = v[0];
-		this[M12] = v[1];
+		this[M20] = v[0];
+		this[M21] = v[1];
 		this[M22] = v[2];
-		this[M32] = v[3];
+		this[M23] = v[3];
 	}
 	/** Returns row 3 as a Vec4 */
 	get row3(): Vec4 {
-		return new Vec4(this[M03], this[M13], this[M23], this[M33]);
+		return new Vec4(this[M30], this[M31], this[M32], this[M33]);
 	}
 	set row3(v: Vec4Like) {
-		this[M03] = v[0];
-		this[M13] = v[1];
-		this[M23] = v[2];
+		this[M30] = v[0];
+		this[M31] = v[1];
+		this[M32] = v[2];
 		this[M33] = v[3];
 	}
 	/** Returns all rows as an array of Vec4s */
@@ -297,42 +297,42 @@ export class Mat4 extends Array<number> {
 
 	/** Returns column 0 as a Vec4 */
 	get column0(): Vec4 {
-		return new Vec4(this[M00], this[M01], this[M02], this[M03]);
+		return new Vec4(this[M00], this[M10], this[M20], this[M30]);
 	}
 	set column0(v: Vec4Like) {
 		this[M00] = v[0];
-		this[M01] = v[1];
-		this[M02] = v[2];
-		this[M03] = v[3];
+		this[M10] = v[1];
+		this[M20] = v[2];
+		this[M30] = v[3];
 	}
 	/** Returns column 1 as a Vec4 */
 	get column1(): Vec4 {
-		return new Vec4(this[M10], this[M11], this[M12], this[M13]);
+		return new Vec4(this[M01], this[M11], this[M21], this[M31]);
 	}
 	set column1(v: Vec4Like) {
-		this[M10] = v[0];
+		this[M01] = v[0];
 		this[M11] = v[1];
-		this[M12] = v[2];
-		this[M13] = v[3];
+		this[M21] = v[2];
+		this[M31] = v[3];
 	}
 	/** Returns column 2 as a Vec4 */
 	get column2(): Vec4 {
-		return new Vec4(this[M20], this[M21], this[M22], this[M23]);
+		return new Vec4(this[M02], this[M12], this[M22], this[M32]);
 	}
 	set column2(v: Vec4Like) {
-		this[M20] = v[0];
-		this[M21] = v[1];
+		this[M02] = v[0];
+		this[M12] = v[1];
 		this[M22] = v[2];
-		this[M23] = v[3];
+		this[M32] = v[3];
 	}
 	/** Returns column 3 as a Vec4 */
 	get column3(): Vec4 {
-		return new Vec4(this[M30], this[M31], this[M32], this[M33]);
+		return new Vec4(this[M03], this[M13], this[M23], this[M33]);
 	}
 	set column3(v: Vec4Like) {
-		this[M30] = v[0];
-		this[M31] = v[1];
-		this[M32] = v[2];
+		this[M03] = v[0];
+		this[M13] = v[1];
+		this[M23] = v[2];
 		this[M33] = v[3];
 	}
 	/** Returns all columns as an array of Vec4s */
@@ -399,10 +399,10 @@ export class Mat4 extends Array<number> {
 	clone(): Mat4 {
 		// prettier-ignore
 		return new Mat4(
-			this[M00], this[M10], this[M20], this[M30],
-			this[M01], this[M11], this[M21], this[M31],
-			this[M02], this[M12], this[M22], this[M32],
-			this[M03], this[M13], this[M23], this[M33],
+			this[M00], this[M01], this[M02], this[M03],
+			this[M10], this[M11], this[M12], this[M13],
+			this[M20], this[M21], this[M22], this[M23],
+			this[M30], this[M31], this[M32], this[M33],
 		);
 	}
 
@@ -412,23 +412,23 @@ export class Mat4 extends Array<number> {
 	 */
 	setIdentity(): this {
 		this[M00] = 1;
-		this[M01] = 0;
-		this[M02] = 0;
-		this[M03] = 0;
-
 		this[M10] = 0;
-		this[M11] = 1;
-		this[M12] = 0;
-		this[M13] = 0;
-
 		this[M20] = 0;
-		this[M21] = 0;
-		this[M22] = 1;
-		this[M23] = 0;
-
 		this[M30] = 0;
+
+		this[M01] = 0;
+		this[M11] = 1;
+		this[M21] = 0;
 		this[M31] = 0;
+
+		this[M02] = 0;
+		this[M12] = 0;
+		this[M22] = 1;
 		this[M32] = 0;
+
+		this[M03] = 0;
+		this[M13] = 0;
+		this[M23] = 0;
 		this[M33] = 1;
 
 		return this;
@@ -437,32 +437,32 @@ export class Mat4 extends Array<number> {
 	/**
 	 * Sets the matrix to new values
 	 * @param m00 - Element at column 0, row 0
-	 * @param m10 - Element at column 1, row 0
-	 * @param m20 - Element at column 2, row 0
-	 * @param m01 - Element at column 0, row 1
+	 * @param m01 - Element at column 1, row 0
+	 * @param m02 - Element at column 2, row 0
+	 * @param m10 - Element at column 0, row 1
 	 * @param m11 - Element at column 1, row 1
-	 * @param m21 - Element at column 2, row 1
-	 * @param m02 - Element at column 0, row 2
-	 * @param m12 - Element at column 1, row 2
+	 * @param m12 - Element at column 2, row 1
+	 * @param m20 - Element at column 0, row 2
+	 * @param m21 - Element at column 1, row 2
 	 * @param m22 - Element at column 2, row 2
 	 * @returns this
 	 */
 	// prettier-ignore
 	set(
-		m00: number, m01: number, m02: number,
-		m10: number, m11: number, m12: number,
-		m20: number, m21: number, m22: number,
+		m00: number, m10: number, m20: number,
+		m01: number, m11: number, m21: number,
+		m02: number, m12: number, m22: number,
 	): this {
 		this[M00] = m00;
-		this[M01] = m01;
-		this[M02] = m02;
-
 		this[M10] = m10;
-		this[M11] = m11;
-		this[M12] = m12;
-
 		this[M20] = m20;
+
+		this[M01] = m01;
+		this[M11] = m11;
 		this[M21] = m21;
+
+		this[M02] = m02;
+		this[M12] = m12;
 		this[M22] = m22;
 		return this;
 	}
@@ -474,23 +474,23 @@ export class Mat4 extends Array<number> {
 	 */
 	setMat4(m: Mat4Like): this {
 		this[M00] = m[M00];
-		this[M01] = m[M01];
-		this[M02] = m[M02];
-		this[M03] = m[M03];
-
 		this[M10] = m[M10];
-		this[M11] = m[M11];
-		this[M12] = m[M12];
-		this[M13] = m[M13];
-
 		this[M20] = m[M20];
-		this[M21] = m[M21];
-		this[M22] = m[M22];
-		this[M23] = m[M23];
-
 		this[M30] = m[M30];
+
+		this[M01] = m[M01];
+		this[M11] = m[M11];
+		this[M21] = m[M21];
 		this[M31] = m[M31];
+
+		this[M02] = m[M02];
+		this[M12] = m[M12];
+		this[M22] = m[M22];
 		this[M32] = m[M32];
+
+		this[M03] = m[M03];
+		this[M13] = m[M13];
+		this[M23] = m[M23];
 		this[M33] = m[M33];
 
 		return this;
@@ -504,9 +504,9 @@ export class Mat4 extends Array<number> {
 	 */
 	static translate(x: number, y: number, z: number): Mat4 {
 		const result = new Mat4();
-		result[M30] = x;
-		result[M31] = y;
-		result[M32] = z;
+		result[M03] = x;
+		result[M13] = y;
+		result[M23] = z;
 		return result;
 	}
 
@@ -529,23 +529,23 @@ export class Mat4 extends Array<number> {
 		const o = 1 - c;
 
 		result[M00] = x * x * o + c;
-		result[M01] = x * y * o + z * s;
-		result[M02] = x * z * o - y * s;
-		result[M03] = 0;
-
-		result[M10] = y * x * o - z * s;
-		result[M11] = y * y * o + c;
-		result[M12] = y * z * o + x * s;
-		result[M13] = 0;
-
-		result[M20] = z * x * o + y * s;
-		result[M21] = z * y * o - x * s;
-		result[M22] = z * z * o + c;
-		result[M23] = 0;
-
+		result[M10] = x * y * o + z * s;
+		result[M20] = x * z * o - y * s;
 		result[M30] = 0;
+
+		result[M01] = y * x * o - z * s;
+		result[M11] = y * y * o + c;
+		result[M21] = y * z * o + x * s;
 		result[M31] = 0;
+
+		result[M02] = z * x * o + y * s;
+		result[M12] = z * y * o - x * s;
+		result[M22] = z * z * o + c;
 		result[M32] = 0;
+
+		result[M03] = 0;
+		result[M13] = 0;
+		result[M23] = 0;
 		result[M33] = 1;
 
 		return result;
@@ -738,34 +738,34 @@ export class Mat4 extends Array<number> {
 				t = 1 + m[M00] - m[M11] - m[M22];
 				result = new Quat(
 					t,
-					m[M01] + m[M10],
-					m[M20] + m[M02],
-					m[M12] - m[M21],
+					m[M10] + m[M01],
+					m[M02] + m[M20],
+					m[M21] - m[M12],
 				);
 			} else {
 				t = 1 - m[M00] + m[M11] - m[M22];
 				result = new Quat(
-					m[M01] + m[M10],
+					m[M10] + m[M01],
 					t,
-					m[M12] + m[M21],
-					m[M20] - m[M02],
+					m[M21] + m[M12],
+					m[M02] - m[M20],
 				);
 			}
 		} else {
 			if (m[M00] < -m[M11]) {
 				t = 1 - m[M00] - m[M11] + m[M22];
 				result = new Quat(
-					m[M20] + m[M02],
-					m[M12] + m[M21],
+					m[M02] + m[M20],
+					m[M21] + m[M12],
 					t,
-					m[M01] - m[M10],
+					m[M10] - m[M01],
 				);
 			} else {
 				t = 1 + m[M00] + m[M11] + m[M22];
 				result = new Quat(
-					m[M12] - m[M21],
-					m[M20] - m[M02],
-					m[M01] - m[M10],
+					m[M21] - m[M12],
+					m[M02] - m[M20],
+					m[M10] - m[M01],
 					t,
 				);
 			}
@@ -793,29 +793,29 @@ export function transpose4D(m: Mat4Like): Mat4Like {
 
 	const result = (isMat4(m) ? m.clone() : [...m]) as typeof m;
 
-	let temp = result[M01];
-	result[M01] = result[M10];
-	result[M10] = temp;
+	let temp = result[M10];
+	result[M10] = result[M01];
+	result[M01] = temp;
 
-	temp = result[M02];
-	result[M02] = result[M20];
-	result[M20] = temp;
+	temp = result[M20];
+	result[M20] = result[M02];
+	result[M02] = temp;
 
-	temp = result[M03];
-	result[M03] = result[M30];
-	result[M30] = temp;
+	temp = result[M30];
+	result[M30] = result[M03];
+	result[M03] = temp;
 
-	temp = result[M12];
-	result[M12] = result[M21];
-	result[M21] = temp;
+	temp = result[M21];
+	result[M21] = result[M12];
+	result[M12] = temp;
 
-	temp = result[M13];
-	result[M13] = result[M31];
-	result[M31] = temp;
+	temp = result[M31];
+	result[M31] = result[M13];
+	result[M13] = temp;
 
-	temp = result[M23];
-	result[M23] = result[M32];
-	result[M32] = temp;
+	temp = result[M32];
+	result[M32] = result[M23];
+	result[M23] = temp;
 
 	return result;
 }
@@ -849,33 +849,33 @@ export function determinantM4(m: Mat4Like): number {
 
 	// prettier-ignore
 	const a0 = new Mat3(
-		m[M11], m[M21], m[M31],
-		m[M12], m[M22], m[M32],
-		m[M13], m[M23], m[M33],
+		m[M11], m[M12], m[M13],
+		m[M21], m[M22], m[M23],
+		m[M31], m[M32], m[M33],
 	);
 	// prettier-ignore
 	const a1 = new Mat3(
-		m[M01], m[M21], m[M31],
-		m[M02], m[M22], m[M32],
-		m[M03], m[M23], m[M33],
+		m[M10], m[M12], m[M13],
+		m[M20], m[M22], m[M23],
+		m[M30], m[M32], m[M33],
 	);
 	// prettier-ignore
 	const a2 = new Mat3(
-		m[M01], m[M11], m[M31],
-		m[M02], m[M12], m[M32],
-		m[M03], m[M13], m[M33],
+		m[M10], m[M11], m[M13],
+		m[M20], m[M21], m[M23],
+		m[M30], m[M31], m[M33],
 	);
 	// prettier-ignore
 	const a3 = new Mat3(
-		m[M01], m[M11], m[M21],
-		m[M02], m[M12], m[M22],
-		m[M03], m[M13], m[M23],
+		m[M10], m[M11], m[M12],
+		m[M20], m[M21], m[M22],
+		m[M30], m[M31], m[M32],
 	);
 	return (
 		m[M00] * a0.determinant() -
-		m[M10] * a1.determinant() +
-		m[M20] * a2.determinant() -
-		m[M30] * a3.determinant()
+		m[M01] * a1.determinant() +
+		m[M02] * a2.determinant() -
+		m[M03] * a3.determinant()
 	);
 }
 
@@ -901,40 +901,40 @@ export function multiplyM4M4(l: Mat4Like, r: Mat4Like): Mat4Like {
 	const result = isMat4(l) ? new Mat4() : (f as typeof l);
 
 	result[M00] =
-		l[M00] * r[M00] + l[M10] * r[M01] + l[M20] * r[M02] + l[M30] * r[M03];
-	result[M01] =
-		l[M01] * r[M00] + l[M11] * r[M01] + l[M21] * r[M02] + l[M31] * r[M03];
-	result[M02] =
-		l[M02] * r[M00] + l[M12] * r[M01] + l[M22] * r[M02] + l[M32] * r[M03];
-	result[M03] =
-		l[M03] * r[M00] + l[M13] * r[M01] + l[M23] * r[M02] + l[M33] * r[M03];
-
+		l[M00] * r[M00] + l[M01] * r[M10] + l[M02] * r[M20] + l[M03] * r[M30];
 	result[M10] =
-		l[M00] * r[M10] + l[M10] * r[M11] + l[M20] * r[M12] + l[M30] * r[M13];
-	result[M11] =
-		l[M01] * r[M10] + l[M11] * r[M11] + l[M21] * r[M12] + l[M31] * r[M13];
-	result[M12] =
-		l[M02] * r[M10] + l[M12] * r[M11] + l[M22] * r[M12] + l[M32] * r[M13];
-	result[M13] =
-		l[M03] * r[M10] + l[M13] * r[M11] + l[M23] * r[M12] + l[M33] * r[M13];
-
+		l[M10] * r[M00] + l[M11] * r[M10] + l[M12] * r[M20] + l[M13] * r[M30];
 	result[M20] =
-		l[M00] * r[M20] + l[M10] * r[M21] + l[M20] * r[M22] + l[M30] * r[M23];
-	result[M21] =
-		l[M01] * r[M20] + l[M11] * r[M21] + l[M21] * r[M22] + l[M31] * r[M23];
-	result[M22] =
-		l[M02] * r[M20] + l[M12] * r[M21] + l[M22] * r[M22] + l[M32] * r[M23];
-	result[M23] =
-		l[M03] * r[M20] + l[M13] * r[M21] + l[M23] * r[M22] + l[M33] * r[M23];
-
+		l[M20] * r[M00] + l[M21] * r[M10] + l[M22] * r[M20] + l[M23] * r[M30];
 	result[M30] =
-		l[M00] * r[M30] + l[M10] * r[M31] + l[M20] * r[M32] + l[M30] * r[M33];
+		l[M30] * r[M00] + l[M31] * r[M10] + l[M32] * r[M20] + l[M33] * r[M30];
+
+	result[M01] =
+		l[M00] * r[M01] + l[M01] * r[M11] + l[M02] * r[M21] + l[M03] * r[M31];
+	result[M11] =
+		l[M10] * r[M01] + l[M11] * r[M11] + l[M12] * r[M21] + l[M13] * r[M31];
+	result[M21] =
+		l[M20] * r[M01] + l[M21] * r[M11] + l[M22] * r[M21] + l[M23] * r[M31];
 	result[M31] =
-		l[M01] * r[M30] + l[M11] * r[M31] + l[M21] * r[M32] + l[M31] * r[M33];
+		l[M30] * r[M01] + l[M31] * r[M11] + l[M32] * r[M21] + l[M33] * r[M31];
+
+	result[M02] =
+		l[M00] * r[M02] + l[M01] * r[M12] + l[M02] * r[M22] + l[M03] * r[M32];
+	result[M12] =
+		l[M10] * r[M02] + l[M11] * r[M12] + l[M12] * r[M22] + l[M13] * r[M32];
+	result[M22] =
+		l[M20] * r[M02] + l[M21] * r[M12] + l[M22] * r[M22] + l[M23] * r[M32];
 	result[M32] =
-		l[M02] * r[M30] + l[M12] * r[M31] + l[M22] * r[M32] + l[M32] * r[M33];
+		l[M30] * r[M02] + l[M31] * r[M12] + l[M32] * r[M22] + l[M33] * r[M32];
+
+	result[M03] =
+		l[M00] * r[M03] + l[M01] * r[M13] + l[M02] * r[M23] + l[M03] * r[M33];
+	result[M13] =
+		l[M10] * r[M03] + l[M11] * r[M13] + l[M12] * r[M23] + l[M13] * r[M33];
+	result[M23] =
+		l[M20] * r[M03] + l[M21] * r[M13] + l[M22] * r[M23] + l[M23] * r[M33];
 	result[M33] =
-		l[M03] * r[M30] + l[M13] * r[M31] + l[M23] * r[M32] + l[M33] * r[M33];
+		l[M30] * r[M03] + l[M31] * r[M13] + l[M32] * r[M23] + l[M33] * r[M33];
 
 	return result;
 }
@@ -950,10 +950,10 @@ export function multiplyM4V4<T extends Vec4Like>(m: Mat4Like, v: T): T;
 export function multiplyM4V4(m: Mat4Like, v: Vec4Like): Vec4Like {
 	assertMat4(m);
 	assertVec4(v);
-	const x = m[M00] * v[0] + m[M10] * v[1] + m[M20] * v[2] + m[M30] * v[3];
-	const y = m[M01] * v[0] + m[M11] * v[1] + m[M21] * v[2] + m[M31] * v[3];
-	const z = m[M02] * v[0] + m[M12] * v[1] + m[M22] * v[2] + m[M32] * v[3];
-	const w = m[M03] * v[0] + m[M13] * v[1] + m[M23] * v[2] + m[M33] * v[3];
+	const x = m[M00] * v[0] + m[M01] * v[1] + m[M02] * v[2] + m[M03] * v[3];
+	const y = m[M10] * v[0] + m[M11] * v[1] + m[M12] * v[2] + m[M13] * v[3];
+	const z = m[M20] * v[0] + m[M21] * v[1] + m[M22] * v[2] + m[M23] * v[3];
+	const w = m[M30] * v[0] + m[M31] * v[1] + m[M32] * v[2] + m[M33] * v[3];
 	return isVec4(v) ? new Vec4(x, y, z, w) : [x, y, z, w];
 }
 
