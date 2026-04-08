@@ -18,14 +18,14 @@ const INDICES = [
 	1, 3,
 ] as const;
 
-/** Column 0, Row 0 index */
+/** Row 0, Column 0 index */
 const M00 = INDICES[0];
-/** Column 1, Row 0 index */
+/** Row 0, Column 1 index */
 const M01 = INDICES[1];
 
-/** Column 0, Row 1 index */
+/** Row 1, Column 0 index */
 const M10 = INDICES[2];
-/** Column 1, Row 1 index */
+/** Row 1, Column 1 index */
 const M11 = INDICES[3];
 
 /**
@@ -38,10 +38,10 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Uninitialized values defaults to the 2x2 identity matrix.
-	 * @param m00 - Element at column 0, row 0
-	 * @param m01 - Element at column 1, row 0
-	 * @param m10 - Element at column 0, row 1
-	 * @param m11 - Element at column 1, row 1
+	 * @param m00 - Element at row 0, column 0
+	 * @param m01 - Element at row 0, column 1
+	 * @param m10 - Element at row 1, column 0
+	 * @param m11 - Element at row 1, column 1
 	 */
 	constructor(m00 = 1, m01 = 0, m10 = 0, m11 = 1) {
 		// prettier-ignore
@@ -58,7 +58,7 @@ export class Mat2 extends Array<number> {
 		return new Mat2(1, 0, 0, 1);
 	}
 
-	/** Element at column 0, row 0 */
+	/** Element at row 0, column 0 */
 	get m00(): number {
 		return this[M00];
 	}
@@ -66,7 +66,7 @@ export class Mat2 extends Array<number> {
 		this[M00] = value;
 	}
 
-	/** Element at column 1, row 0 */
+	/** Element at row 0, column 1 */
 	get m01(): number {
 		return this[M01];
 	}
@@ -74,7 +74,7 @@ export class Mat2 extends Array<number> {
 		this[M01] = value;
 	}
 
-	/** Element at column 0, row 1 */
+	/** Element at row 1, column 0 */
 	get m10(): number {
 		return this[M10];
 	}
@@ -82,7 +82,7 @@ export class Mat2 extends Array<number> {
 		this[M10] = value;
 	}
 
-	/** Element at column 1, row 1 */
+	/** Element at row 1, column 1 */
 	get m11(): number {
 		return this[M11];
 	}
@@ -194,16 +194,16 @@ export class Mat2 extends Array<number> {
 
 	/**
 	 * Sets the matrix to new values
-	 * @param m00 - Element at column 0, row 0
-	 * @param m01 - Element at column 1, row 0
-	 * @param m10 - Element at column 0, row 1
-	 * @param m11 - Element at column 1, row 1
+	 * @param m00 - Element at row 0, column 0
+	 * @param m01 - Element at row 0, column 1
+	 * @param m10 - Element at row 1, column 0
+	 * @param m11 - Element at row 1, column 1
 	 * @returns this
 	 */
-	set(m00: number, m10: number, m01: number, m11: number): this {
+	set(m00: number, m01: number, m10: number, m11: number): this {
 		this[M00] = m00;
-		this[M10] = m01;
-		this[M01] = m10;
+		this[M01] = m01;
+		this[M10] = m10;
 		this[M11] = m11;
 		return this;
 	}
@@ -215,8 +215,8 @@ export class Mat2 extends Array<number> {
 	 */
 	setMat2(m: Mat2Like): this {
 		this[M00] = m[M00];
-		this[M10] = m[M10];
 		this[M01] = m[M01];
+		this[M10] = m[M10];
 		this[M11] = m[M11];
 		return this;
 	}

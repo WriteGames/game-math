@@ -37,19 +37,19 @@ describe('Matrix operations', () => {
 		});
 
 		describe('getters', () => {
-			const [M00, M10] = [1, 2];
-			const [M11, M01] = [3, 4];
+			const [M00, M01] = [1, 2];
+			const [M10, M11] = [3, 4];
 			// prettier-ignore
 			const a = new Mat2(
 				M00, M01,
 				M10, M11,
 			);
 
-			const col0: V2_T = [M00, M10];
-			const col1: V2_T = [M01, M11];
-
 			const row0: V2_T = [M00, M01];
 			const row1: V2_T = [M10, M11];
+
+			const col0: V2_T = [M00, M10];
+			const col1: V2_T = [M01, M11];
 
 			test('get mXX/[x]', () => {
 				expect(a.m00).toEqual(M00);
@@ -89,14 +89,14 @@ describe('Matrix operations', () => {
 		});
 
 		describe('setters', () => {
-			const [M00, M10] = [1, 2];
-			const [M11, M01] = [3, 4];
-
-			const col0: V2_T = [M00, M10];
-			const col1: V2_T = [M01, M11];
+			const [M00, M01] = [1, 2];
+			const [M10, M11] = [3, 4];
 
 			const row0: V2_T = [M00, M01];
 			const row1: V2_T = [M10, M11];
+
+			const col0: V2_T = [M00, M10];
+			const col1: V2_T = [M01, M11];
 
 			test('set mXX/[x]', () => {
 				const a = new Mat2();

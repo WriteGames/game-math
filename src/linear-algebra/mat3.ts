@@ -20,25 +20,25 @@ const INDICES = [
 	2, 5, 8,
 ] as const;
 
-/** Column 0, Row 0 index */
+/** Row 0, Column 0 index */
 const M00 = INDICES[0];
-/** Column 1, Row 0 index */
+/** Row 0, Column 1 index */
 const M01 = INDICES[1];
-/** Column 2, Row 0 index */
+/** Row 0, Column 2 index */
 const M02 = INDICES[2];
 
-/** Column 0, Row 1 index */
+/** Row 1, Column 0 index */
 const M10 = INDICES[3];
-/** Column 1, Row 1 index */
+/** Row 1, Column 1 index */
 const M11 = INDICES[4];
-/** Column 2, Row 1 index */
+/** Row 1, Column 2 index */
 const M12 = INDICES[5];
 
-/** Column 0, Row 2 index */
+/** Row 2, Column 0 index */
 const M20 = INDICES[6];
-/** Column 1, Row 2 index */
+/** Row 2, Column 1 index */
 const M21 = INDICES[7];
-/** Column 2, Row 2 index */
+/** Row 2, Column 2 index */
 const M22 = INDICES[8];
 
 /**
@@ -51,15 +51,15 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Uninitialized values defaults to the 3x3 identity matrix.
-	 * @param m00 - Element at column 0, row 0
-	 * @param m01 - Element at column 1, row 0
-	 * @param m02 - Element at column 2, row 0
-	 * @param m10 - Element at column 0, row 1
-	 * @param m11 - Element at column 1, row 1
-	 * @param m12 - Element at column 2, row 1
-	 * @param m20 - Element at column 0, row 2
-	 * @param m21 - Element at column 1, row 2
-	 * @param m22 - Element at column 2, row 2
+	 * @param m00 - Element at row 0, column 0
+	 * @param m01 - Element at row 0, column 1
+	 * @param m02 - Element at row 0, column 2
+	 * @param m10 - Element at row 1, column 0
+	 * @param m11 - Element at row 1, column 1
+	 * @param m12 - Element at row 1, column 2
+	 * @param m20 - Element at row 2, column 0
+	 * @param m21 - Element at row 2, column 1
+	 * @param m22 - Element at row 2, column 2
 	 */
 	// prettier-ignore
 	constructor(
@@ -87,7 +87,7 @@ export class Mat3 extends Array<number> {
 		);
 	}
 
-	/** Element at column 0, row 0 */
+	/** Element at row 0, column 0 */
 	get m00(): number {
 		return this[M00];
 	}
@@ -95,7 +95,7 @@ export class Mat3 extends Array<number> {
 		this[M00] = value;
 	}
 
-	/** Element at column 1, row 0 */
+	/** Element at row 0, column 1 */
 	get m01(): number {
 		return this[M01];
 	}
@@ -103,7 +103,7 @@ export class Mat3 extends Array<number> {
 		this[M01] = value;
 	}
 
-	/** Element at column 2, row 0 */
+	/** Element at row 0, column 2 */
 	get m02(): number {
 		return this[M02];
 	}
@@ -111,7 +111,7 @@ export class Mat3 extends Array<number> {
 		this[M02] = value;
 	}
 
-	/** Element at column 0, row 1 */
+	/** Element at row 1, column 0 */
 	get m10(): number {
 		return this[M10];
 	}
@@ -119,7 +119,7 @@ export class Mat3 extends Array<number> {
 		this[M10] = value;
 	}
 
-	/** Element at column 1, row 1 */
+	/** Element at row 1, column 1 */
 	get m11(): number {
 		return this[M11];
 	}
@@ -127,7 +127,7 @@ export class Mat3 extends Array<number> {
 		this[M11] = value;
 	}
 
-	/** Element at column 2, row 1 */
+	/** Element at row 1, column 2 */
 	get m12(): number {
 		return this[M12];
 	}
@@ -135,7 +135,7 @@ export class Mat3 extends Array<number> {
 		this[M12] = value;
 	}
 
-	/** Element at column 0, row 2 */
+	/** Element at row 2, column 0 */
 	get m20(): number {
 		return this[M20];
 	}
@@ -143,7 +143,7 @@ export class Mat3 extends Array<number> {
 		this[M20] = value;
 	}
 
-	/** Element at column 1, row 2 */
+	/** Element at row 2, column 1 */
 	get m21(): number {
 		return this[M21];
 	}
@@ -151,7 +151,7 @@ export class Mat3 extends Array<number> {
 		this[M21] = value;
 	}
 
-	/** Element at column 2, row 2 */
+	/** Element at row 2, column 2 */
 	get m22(): number {
 		return this[M22];
 	}
@@ -305,34 +305,35 @@ export class Mat3 extends Array<number> {
 
 	/**
 	 * Sets the matrix to new values
-	 * @param m00 - Element at column 0, row 0
-	 * @param m01 - Element at column 1, row 0
-	 * @param m02 - Element at column 2, row 0
-	 * @param m10 - Element at column 0, row 1
-	 * @param m11 - Element at column 1, row 1
-	 * @param m12 - Element at column 2, row 1
-	 * @param m20 - Element at column 0, row 2
-	 * @param m21 - Element at column 1, row 2
-	 * @param m22 - Element at column 2, row 2
+	 * @param m00 - Element at row 0, column 0
+	 * @param m01 - Element at row 0, column 1
+	 * @param m02 - Element at row 0, column 2
+	 * @param m10 - Element at row 1, column 0
+	 * @param m11 - Element at row 1, column 1
+	 * @param m20 - Element at row 1, column 2
+	 * @param m20 - Element at row 2, column 0
+	 * @param m21 - Element at row 2, column 1
+	 * @param m22 - Element at row 2, column 2
 	 * @returns this
 	 */
 	// prettier-ignore
 	set(
-		m00: number, m10: number, m20: number,
-		m01: number, m11: number, m21: number,
-		m02: number, m12: number, m22: number,
+		m00: number, m01: number, m02: number,
+		m10: number, m11: number, m12: number,
+		m20: number, m21: number, m22: number,
 	): this {
 		this[M00] = m00;
-		this[M10] = m10;
-		this[M20] = m20;
-
 		this[M01] = m01;
-		this[M11] = m11;
-		this[M21] = m21;
-
 		this[M02] = m02;
+
+		this[M10] = m10;
+		this[M11] = m11;
 		this[M12] = m12;
+
+		this[M20] = m20;
+		this[M21] = m21;
 		this[M22] = m22;
+		
 		return this;
 	}
 
@@ -343,15 +344,15 @@ export class Mat3 extends Array<number> {
 	 */
 	setMat3(m: Mat3Like): this {
 		this[M00] = m[M00];
-		this[M10] = m[M10];
-		this[M20] = m[M20];
-
 		this[M01] = m[M01];
-		this[M11] = m[M11];
-		this[M21] = m[M21];
-
 		this[M02] = m[M02];
+
+		this[M10] = m[M10];
+		this[M11] = m[M11];
 		this[M12] = m[M12];
+
+		this[M20] = m[M20];
+		this[M21] = m[M21];
 		this[M22] = m[M22];
 
 		return this;

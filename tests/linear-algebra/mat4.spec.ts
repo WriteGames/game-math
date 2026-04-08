@@ -186,14 +186,6 @@ describe('Matrix operations', () => {
 			const [M20, M21, M22, M23] = [9, 10, 11, 12];
 			const [M30, M31, M32, M33] = [13, 14, 15, 16];
 
-			// prettier-ignore
-			const a = new Mat4(
-				M00, M01, M02, M03,
-				M10, M11, M12, M13,
-				M20, M21, M22, M23,
-				M30, M31, M32, M33,
-			);
-
 			const row0: V4_T = [M00, M01, M02, M03];
 			const row1: V4_T = [M10, M11, M12, M13];
 			const row2: V4_T = [M20, M21, M22, M23];
@@ -374,14 +366,19 @@ describe('Matrix operations', () => {
 
 			describe(`.${Mat4.translate.name}`, () => {
 				test(`should return a 3x3 translation matrix (one arg)`, () => {
-					const a = Mat4.translate(2, 3, 4);
+					const [X, Y, Z] = [2, 3, 4];
+					const result = Mat4.translate(X, Y, Z);
 					// prettier-ignore
-					expect(a).toEqualMat4(new Mat4(
-						1, 0, 0, 2,
-						0, 1, 0, 3,
-						0, 0, 1, 4,
+					const expected = new Mat4(
+						1, 0, 0, X,
+						0, 1, 0, Y,
+						0, 0, 1, Z,
 						0, 0, 0, 1,
-					));
+					);
+					expect(result).toEqualMat4(expected);
+					expect(result.m03).toEqual(X);
+					expect(result.m13).toEqual(Y);
+					expect(result.m23).toEqual(Z);
 				});
 			});
 

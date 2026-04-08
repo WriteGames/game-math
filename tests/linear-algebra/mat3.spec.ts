@@ -273,13 +273,17 @@ describe('Matrix operations', () => {
 
 			describe(`.${Mat3.translate.name}`, () => {
 				test(`should return a 3x3 translation matrix (one arg)`, () => {
-					const a = Mat3.translate(2, 3);
+					const [X, Y] = [2, 3];
+					const result = Mat3.translate(X, Y);
 					// prettier-ignore
-					expect(a).toEqualMat3(new Mat3(
-						1, 0, 2,
-						0, 1, 3,
+					const expected = new Mat3(
+						1, 0, X,
+						0, 1, Y,
 						0, 0, 1,
-					));
+					);
+					expect(result).toEqualMat3(expected);
+					expect(result.m02).toEqual(X);
+					expect(result.m12).toEqual(Y);
 				});
 			});
 
